@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 {% block title %}{{ boat.title }} — MG Náutica{% endblock %}
 {% block description %}{{ boat.title }}{% if boat.city_location %} en {{ boat.city_location }}{% endif %}. US$ {{ '{:,}'.format(boat.price_usd) }}.{% endblock %}
+{% block og_image %}{% if boat.photos %}{{ request.host_url ~ boat.photos[0].url[1:] }}{% else %}{{ url_for('static', filename='site/hero-ocean.jpg', _external=True) }}{% endif %}{% endblock %}
+{% block og_image_alt %}{{ boat.title }}{% endblock %}
 
 {% block content %}
 <div class="container" style="padding-top:1.5rem; padding-bottom:3rem;">

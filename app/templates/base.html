@@ -5,6 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}MG Náutica — Su broker y gestor naval{% endblock %}</title>
     <meta name="description" content="{% block description %}Broker y gestor naval en Argentina y Uruguay. Compra, venta, trámites, traslados y mantenimiento de embarcaciones.{% endblock %}">
+
+    <!-- Open Graph / WhatsApp / Social preview -->
+    <meta property="og:type"             content="website">
+    <meta property="og:site_name"        content="MG Náutica">
+    <meta property="og:locale"           content="es_AR">
+    <meta property="og:url"              content="{{ request.url }}">
+    <meta property="og:title"            content="{{ self.title() }}">
+    <meta property="og:description"      content="{{ self.description() }}">
+    <meta property="og:image"            content="{% block og_image %}{{ url_for('static', filename='site/hero-ocean.jpg', _external=True) }}{% endblock %}">
+    <meta property="og:image:secure_url" content="{{ self.og_image() }}">
+    <meta property="og:image:type"       content="{% block og_image_type %}image/jpeg{% endblock %}">
+    <meta property="og:image:width"      content="{% block og_image_width %}2000{% endblock %}">
+    <meta property="og:image:height"     content="{% block og_image_height %}1333{% endblock %}">
+    <meta property="og:image:alt"        content="{% block og_image_alt %}MG Náutica — Broker y gestor naval{% endblock %}">
+    <!-- Twitter Card -->
+    <meta name="twitter:card"            content="summary_large_image">
+    <meta name="twitter:title"           content="{{ self.title() }}">
+    <meta name="twitter:description"     content="{{ self.description() }}">
+    <meta name="twitter:image"           content="{{ self.og_image() }}">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
