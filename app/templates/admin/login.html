@@ -1,0 +1,18 @@
+{% extends "admin/base.html" %}
+{% block title %}Ingresar - MG Náutica Admin{% endblock %}
+{% block content %}
+<section class="admin-login">
+    <h1>MG Náutica · Admin</h1>
+    <form method="post" class="form">
+        <label>
+            Email
+            <input type="email" name="email" required autofocus>
+        </label>
+        <label>
+            Contraseña
+            <input type="password" name="password" required>
+        </label>
+        <button type="submit" class="btn btn-primary">Ingresar</button>
+    </form>
+</section>
+{% endblock %}

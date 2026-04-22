@@ -1,0 +1,68 @@
+services:
+  web:
+    build: .
+    container_name: mg-nautica-web
+    restart: unless-stopped
+    ports:
+      - "7010:7010"
+    environment:
+      DATABASE_URL: postgresql://nautica:${POSTGRES_PASSWORD}@db:5432/nautica
+      UPLOAD_FOLDER: /app/uploads
+      SECRET_KEY: ${SECRET_KEY}
+      FLASK_APP: run.py
+      FLASK_DEBUG: "0"
+      VIRTUAL_HOST: mgnautica.nexttech.com.ar
+      VIRTUAL_PORT: "7010"
+      LETSENCRYPT_HOST: mgnautica.nexttech.com.ar
+      LETSENCRYPT_EMAIL: admin@nexttech.com.ar
+    labels:
+      com.github.nginx-proxy.nginx_proxy: "true"
+      com.github.nginx-proxy.startup_wait: "30"
+    volumes:
+      - uploads:/app/uploads
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - proxy
+      - internal
+
+  db:
+    image: postgres:16-alpine
+    container_name: mg-nautica-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: nautica
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: nautica
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U nautica"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - internal
+
+  postgres-exporter:
+    image: prometheuscommunity/postgres-exporter:latest
+    container_name: mg-nautica-postgres-exporter
+    restart: unless-stopped
+    environment:
+      DATA_SOURCE_NAME: "postgresql://nautica:${POSTGRES_PASSWORD}@db:5432/nautica?sslmode=disable"
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - internal
+
+volumes:
+  postgres_data:
+  uploads:
+
+networks:
+  proxy:
+    external: true
+  internal:
+    driver: bridge

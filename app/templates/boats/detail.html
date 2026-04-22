@@ -1,0 +1,249 @@
+{% extends "base.html" %}
+{% block title %}{{ boat.title }} — MG Náutica{% endblock %}
+{% block description %}{{ boat.title }}{% if boat.city_location %} en {{ boat.city_location }}{% endif %}. US$ {{ '{:,}'.format(boat.price_usd) }}.{% endblock %}
+
+{% block content %}
+<div class="container" style="padding-top:1.5rem; padding-bottom:3rem;">
+
+    <nav class="breadcrumb" aria-label="Ubicación">
+        <a href="{{ url_for('home') }}">Inicio</a>
+        <span class="breadcrumb-sep">/</span>
+        <a href="{{ url_for('boats_list') }}">Embarcaciones</a>
+        <span class="breadcrumb-sep">/</span>
+        <span>{{ boat.title }}</span>
+    </nav>
+
+    <div class="detail-layout">
+        {# ── Main column ── #}
+        <div class="detail-main">
+            <h1 class="detail-title">{{ boat.title }}</h1>
+
+            <div class="detail-meta">
+                <span class="detail-chip">{{ boat_type_label[boat.boat_type.value] }}</span>
+                <span class="detail-chip">🏳️ {{ flag_label[boat.flag.value] }}</span>
+                {% if boat.city_location %}<span class="detail-chip">📍 {{ boat.city_location }}</span>{% endif %}
+                {% if boat.year %}<span class="detail-chip">📅 {{ boat.year }}</span>{% endif %}
+                {% if boat.length_m %}<span class="detail-chip">📏 {{ boat.length_m }} m</span>{% endif %}
+            </div>
+
+            {# Gallery #}
+            {% if boat.photos %}
+            <div class="gallery">
+                <div class="gallery-main" id="gallery-main">
+                    <img id="gallery-main-img" src="{{ boat.photos[0].url }}" alt="{{ boat.photos[0].alt or boat.title }}">
+                </div>
+                {% if boat.photos|length > 1 %}
+                <div class="gallery-thumbs">
+                    {% for photo in boat.photos %}
+                    <div class="gallery-thumb {% if loop.first %}active{% endif %}" onclick="switchPhoto('{{ photo.url }}', this)">
+                        <img src="{{ photo.url }}" alt="{{ photo.alt or '' }}" loading="lazy">
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+            {% endif %}
+
+            {# Description #}
+            {% if boat.description %}
+            <section style="margin: 2rem 0;">
+                <h2 style="margin-bottom:.75rem;">Descripción</h2>
+                <div style="color: var(--muted); line-height:1.8; white-space:pre-line; font-size:.95rem;">{{ boat.description }}</div>
+            </section>
+            {% endif %}
+
+            {# General data #}
+            <div class="spec-sections">
+                <div class="spec-block">
+                    <div class="spec-block-header">
+                        <span class="spec-icon">📐</span> Medidas y datos generales
+                    </div>
+                    <div class="spec-block-body">
+                        <ul class="spec-grid">
+                            {% if boat.shipyard %}<li><strong>Astillero</strong> {{ boat.shipyard }}</li>{% endif %}
+                            {% if boat.model_name %}<li><strong>Modelo</strong> {{ boat.model_name }}</li>{% endif %}
+                            {% if boat.year %}<li><strong>Año</strong> {{ boat.year }}</li>{% endif %}
+                            {% if boat.hull_material %}<li><strong>Material</strong> {{ hull_material_label[boat.hull_material.value] }}</li>{% endif %}
+                            {% if boat.length_m %}<li><strong>Eslora</strong> {{ boat.length_m }} m</li>{% endif %}
+                            {% if boat.beam_m %}<li><strong>Manga</strong> {{ boat.beam_m }} m</li>{% endif %}
+                            {% if boat.draft_m %}<li><strong>Calado</strong> {{ boat.draft_m }} m</li>{% endif %}
+                            {% if boat.displacement_t %}<li><strong>Desplazamiento</strong> {{ boat.displacement_t }} t</li>{% endif %}
+                            {% if boat.last_refit %}<li><strong>Último refit</strong> {{ boat.last_refit }}</li>{% endif %}
+                            {% if boat.last_careening %}<li><strong>Último carenado</strong> {{ boat.last_careening }}</li>{% endif %}
+                        </ul>
+                    </div>
+                </div>
+
+                {% if boat.specs %}
+                {% set s = boat.specs %}
+
+                {% if s.engine_brand or s.engine_hp %}
+                <div class="spec-block">
+                    <div class="spec-block-header"><span class="spec-icon">⚙️</span> Motor</div>
+                    <div class="spec-block-body">
+                        <ul class="spec-grid">
+                            {% if s.engine_brand %}<li><strong>Marca/modelo</strong> {{ s.engine_brand }}</li>{% endif %}
+                            {% if s.engine_hp %}<li><strong>Potencia</strong> {{ s.engine_hp }} HP</li>{% endif %}
+                            {% if s.engine_hours %}<li><strong>Horas</strong> {{ s.engine_hours }}</li>{% endif %}
+                            {% if s.propeller %}<li><strong>Hélice</strong> {{ s.propeller }}</li>{% endif %}
+                            {% if s.bow_thruster %}<li><strong>Hélice de proa</strong> Sí</li>{% endif %}
+                            {% if s.fuel_liters %}<li><strong>Combustible</strong> {{ s.fuel_liters }} L</li>{% endif %}
+                            {% if s.fresh_water_liters %}<li><strong>Agua dulce</strong> {{ s.fresh_water_liters }} L</li>{% endif %}
+                        </ul>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if s.sails or s.mast_rig %}
+                <div class="spec-block">
+                    <div class="spec-block-header"><span class="spec-icon">⛵</span> Velas y aparejo</div>
+                    <div class="spec-block-body">
+                        <ul class="spec-grid">
+                            {% if s.sails %}<li><strong>Velas</strong> {{ s.sails }}</li>{% endif %}
+                            {% if s.furlers %}<li><strong>Enrolladores</strong> {{ s.furlers }}</li>{% endif %}
+                            {% if s.poles %}<li><strong>Tangones</strong> {{ s.poles }}</li>{% endif %}
+                            {% if s.bowsprit %}<li><strong>Botalón</strong> {{ s.bowsprit }}</li>{% endif %}
+                            {% if s.mast_rig %}<li><strong>Mástil y jarcia</strong> {{ s.mast_rig }}</li>{% endif %}
+                        </ul>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if s.electronics_plotter or s.electronics_starlink %}
+                <div class="spec-block">
+                    <div class="spec-block-header"><span class="spec-icon">📡</span> Electrónica</div>
+                    <div class="spec-block-body">
+                        <ul class="spec-grid">
+                            {% if s.electronics_plotter %}<li><strong>Plotter</strong> {{ s.electronics_plotter }}</li>{% endif %}
+                            {% if s.electronics_ais %}<li><strong>AIS</strong> {{ s.electronics_ais }}</li>{% endif %}
+                            {% if s.electronics_radar %}<li><strong>Radar</strong> {{ s.electronics_radar }}</li>{% endif %}
+                            {% if s.electronics_wind %}<li><strong>Viento</strong> {{ s.electronics_wind }}</li>{% endif %}
+                            {% if s.electronics_autopilot %}<li><strong>Piloto auto</strong> {{ s.electronics_autopilot }}</li>{% endif %}
+                            {% if s.electronics_charts %}<li><strong>Cartografía</strong> {{ s.electronics_charts }}</li>{% endif %}
+                            {% if s.electronics_vhf %}<li><strong>VHF</strong> {{ s.electronics_vhf }}</li>{% endif %}
+                            {% if s.electronics_satellite %}<li><strong>Satelital</strong> {{ s.electronics_satellite }}</li>{% endif %}
+                            {% if s.electronics_starlink %}<li><strong>Starlink</strong> Sí ✓</li>{% endif %}
+                        </ul>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if s.batteries_config or s.solar_watts %}
+                <div class="spec-block">
+                    <div class="spec-block-header"><span class="spec-icon">🔋</span> Energía</div>
+                    <div class="spec-block-body">
+                        <ul class="spec-grid">
+                            {% if s.batteries_config %}<li><strong>Baterías</strong> {{ s.batteries_config }}</li>{% endif %}
+                            {% if s.solar_watts %}<li><strong>Paneles solares</strong> {{ s.solar_watts }} W</li>{% endif %}
+                            {% if s.inverter_watts %}<li><strong>Inverter</strong> {{ s.inverter_watts }} W</li>{% endif %}
+                            {% if s.chargers %}<li><strong>Cargadores</strong> {{ s.chargers }}</li>{% endif %}
+                            {% if s.generator %}<li><strong>Generador</strong> {{ s.generator }}</li>{% endif %}
+                        </ul>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if s.cabins_qty or s.galley %}
+                <div class="spec-block">
+                    <div class="spec-block-header"><span class="spec-icon">🏠</span> Habitabilidad</div>
+                    <div class="spec-block-body">
+                        <ul class="spec-grid">
+                            {% if s.cabins_qty %}<li><strong>Camarotes</strong> {{ s.cabins_qty }}</li>{% endif %}
+                            {% if s.bathrooms_qty %}<li><strong>Baños</strong> {{ s.bathrooms_qty }}</li>{% endif %}
+                            {% if s.saloon %}<li><strong>Saloon</strong> {{ s.saloon }}</li>{% endif %}
+                            {% if s.galley %}<li><strong>Cocina</strong> {{ s.galley }}</li>{% endif %}
+                            {% if s.fridge %}<li><strong>Nevera</strong> {{ s.fridge }}</li>{% endif %}
+                            {% if s.tv %}<li><strong>TV</strong> {{ s.tv }}</li>{% endif %}
+                            {% if s.air_conditioning %}<li><strong>Aire acond.</strong> {{ s.air_conditioning }}</li>{% endif %}
+                            {% if s.water_heater %}<li><strong>Termotanque</strong> {{ s.water_heater }}</li>{% endif %}
+                        </ul>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if s.ground_tackle %}
+                <div class="spec-block">
+                    <div class="spec-block-header"><span class="spec-icon">⚓</span> Fondeo</div>
+                    <div class="spec-block-body">
+                        <ul class="spec-grid">
+                            {% if s.ground_tackle %}<li><strong>Anclas</strong> {{ s.ground_tackle }}</li>{% endif %}
+                            {% if s.chain_meters %}<li><strong>Cadena</strong> {{ s.chain_meters }} m · {{ s.chain_mm }} mm</li>{% endif %}
+                        </ul>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if s.extra_inventory %}
+                <div class="spec-block">
+                    <div class="spec-block-header"><span class="spec-icon">📦</span> Inventario adicional</div>
+                    <div class="spec-block-body">
+                        <p style="font-size:.9rem; color:var(--muted); line-height:1.7;">{{ s.extra_inventory }}</p>
+                    </div>
+                </div>
+                {% endif %}
+                {% endif %}
+            </div>
+        </div>
+
+        {# ── Sidebar ── #}
+        <aside class="detail-sidebar">
+            <div class="sidebar-box">
+                <div class="sidebar-price">
+                    US$ {{ '{:,}'.format(boat.price_usd) }}
+                    {% if boat.on_sale and boat.previous_price_usd %}
+                    <span class="badge-save">— US$ {{ '{:,}'.format(boat.previous_price_usd - boat.price_usd) }}</span>
+                    {% endif %}
+                </div>
+                {% if boat.on_sale and boat.previous_price_usd %}
+                <div class="sidebar-price-old">Antes: US$ {{ '{:,}'.format(boat.previous_price_usd) }}</div>
+                {% endif %}
+
+                <div class="sidebar-actions">
+                    <a class="btn btn-primary btn-lg"
+                       href="https://wa.me/5491126949628?text={{ ('Hola! Me interesa: ' + boat.title + '. ¿Podemos coordinar una visita?') | urlencode }}"
+                       target="_blank" rel="noopener">
+                        💬 Contactar por WhatsApp
+                    </a>
+                    <form method="post" action="{{ url_for('favorite_toggle', slug=boat.slug) }}">
+                        <button type="submit" class="btn {% if is_favorite %}btn-navy{% else %}btn-ghost{% endif %}" style="width:100%; justify-content:center;">
+                            {% if is_favorite %}❤️ En favoritos{% else %}🤍 Agregar a favoritos{% endif %}
+                        </button>
+                    </form>
+                </div>
+
+                {% if boat.commission_pct or boat.commission_flat_usd %}
+                <div class="commission-note">
+                    Comisión:
+                    {% if boat.commission_pct %}{{ boat.commission_pct }}% sobre el valor de venta.{% endif %}
+                    {% if boat.commission_flat_usd %}Flat US$ {{ '{:,}'.format(boat.commission_flat_usd) }}.{% endif %}
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="sidebar-box">
+                <h3 style="margin-bottom:.75rem; font-size:1rem;">Agendar una visita</h3>
+                <form class="inquiry-form" method="post" action="{{ url_for('boat_inquire', slug=boat.slug) }}">
+                    <input type="text" name="name" placeholder="Tu nombre" required>
+                    <input type="email" name="email" placeholder="Email" required>
+                    <input type="tel" name="phone" placeholder="Teléfono">
+                    <textarea name="message" placeholder="Mensaje"></textarea>
+                    <button type="submit" class="btn btn-outline" style="width:100%; justify-content:center;">Enviar consulta</button>
+                </form>
+                {% if request.args.get('inquiry') == 'ok' %}
+                <p class="success" style="margin-top:.75rem;">✓ Consulta enviada. Te contactamos a la brevedad.</p>
+                {% endif %}
+            </div>
+        </aside>
+    </div>
+</div>
+{% endblock %}
+
+{% block head %}
+<script>
+function switchPhoto(url, el) {
+    document.getElementById('gallery-main-img').src = url;
+    document.querySelectorAll('.gallery-thumb').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+}
+</script>
+{% endblock %}

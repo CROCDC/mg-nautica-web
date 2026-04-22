@@ -1,0 +1,34 @@
+{% extends "admin/base.html" %}
+{% block title %}Publicaciones - Admin{% endblock %}
+{% block content %}
+<div class="admin-toolbar">
+    <h1>Publicaciones (publicar gratis)</h1>
+    <form method="get" class="inline-form">
+        <label>
+            Estado
+            <select name="status" onchange="this.form.submit()">
+                {% for s in statuses %}
+                <option value="{{ s.value }}" {% if selected_status and selected_status.value == s.value %}selected{% endif %}>{{ s.value }}</option>
+                {% endfor %}
+            </select>
+        </label>
+    </form>
+</div>
+<table class="admin-table">
+    <thead><tr><th>ID</th><th>Solicitante</th><th>Estado</th><th>Precio</th><th>Creado</th><th></th></tr></thead>
+    <tbody>
+        {% for l in listings %}
+        <tr>
+            <td>{{ l.id }}</td>
+            <td>{{ l.first_name }} {{ l.last_name }}<br><small>{{ l.email }}</small></td>
+            <td>{{ condition_label[l.condition.value] }}</td>
+            <td>{% if l.asked_price_usd %}US$ {{ '{:,}'.format(l.asked_price_usd) }}{% else %}—{% endif %}</td>
+            <td>{{ l.created_at.strftime('%Y-%m-%d') }}</td>
+            <td><a href="{{ url_for('admin.listings_detail', listing_id=l.id) }}" class="btn btn-sm">Ver</a></td>
+        </tr>
+        {% else %}
+        <tr><td colspan="6" class="empty">No hay publicaciones en este estado.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

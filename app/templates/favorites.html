@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Mis favoritos — MG Náutica{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-title">
+        <h1>Mis favoritos</h1>
+        <p>{{ favorites|length }} embarcacion{{ 'es' if favorites|length != 1 else '' }} guardada{{ 's' if favorites|length != 1 else '' }}</p>
+    </div>
+
+    {% if favorites %}
+    <div class="boat-grid">
+        {% for fav in favorites %}
+        {% set item = fav.listed_object %}
+        <a class="boat-card" href="{{ url_for('boat_detail', slug=item.slug) }}">
+            <div class="boat-card-img">
+                {% if item.primary_photo_url %}
+                <img src="{{ item.primary_photo_url }}" alt="{{ item.title }}" loading="lazy">
+                {% endif %}
+                {% if item.boat_type is defined %}
+                <span class="badge-type">{{ boat_type_label[item.boat_type.value] }}</span>
+                {% endif %}
+            </div>
+            <div class="boat-card-body">
+                <div class="boat-card-title">{{ item.title }}</div>
+                {% if item.city_location or item.country_location %}
+                <div class="boat-card-location">{{ item.city_location or item.country_location }}</div>
+                {% endif %}
+                <div class="boat-card-meta">
+                    <div>
+                        {% if item.on_sale and item.previous_price_usd %}
+                        <div class="boat-card-price-old">US$ {{ '{:,}'.format(item.previous_price_usd) }}</div>
+                        {% endif %}
+                        <div class="boat-card-price">US$ {{ '{:,}'.format(item.price_usd) }}</div>
+                    </div>
+                    {% if item.length_m %}
+                    <span class="boat-card-price-old" style="margin-left:auto;">{{ item.length_m }}m</span>
+                    {% endif %}
+                </div>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+    <div style="text-align:center;margin-top:2rem;">
+        <a class="btn btn-outline" href="{{ url_for('boats_list') }}">Ver todas las embarcaciones</a>
+    </div>
+    {% else %}
+    <div class="empty" style="padding:5rem 0;">
+        <p style="font-size:3rem;margin-bottom:1rem;">🤍</p>
+        <p>Todavía no guardaste ninguna embarcación.</p>
+        <a class="btn btn-navy" href="{{ url_for('boats_list') }}" style="margin-top:1.25rem;">Explorar catálogo</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

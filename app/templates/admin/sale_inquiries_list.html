@@ -1,0 +1,34 @@
+{% extends "admin/base.html" %}
+{% block title %}Consultas de venta - Admin{% endblock %}
+{% block content %}
+<div class="admin-toolbar">
+    <h1>Consultas "Vendé tu embarcación"</h1>
+    <form method="get" class="inline-form">
+        <label>Estado
+            <select name="status" onchange="this.form.submit()">
+                <option value="">Todos</option>
+                {% for s in statuses %}
+                <option value="{{ s.value }}" {% if selected_status and selected_status.value == s.value %}selected{% endif %}>{{ s.value }}</option>
+                {% endfor %}
+            </select>
+        </label>
+    </form>
+</div>
+<table class="admin-table">
+    <thead><tr><th>ID</th><th>Solicitante</th><th>Email</th><th>Tipo</th><th>Estado</th><th>Creado</th></tr></thead>
+    <tbody>
+        {% for i in inquiries %}
+        <tr>
+            <td>{{ i.id }}</td>
+            <td>{{ i.first_name }} {{ i.last_name }}{% if i.phone %}<br><small>{{ i.phone }}</small>{% endif %}</td>
+            <td>{{ i.email }}</td>
+            <td>{{ boat_type_label[i.boat_type.value] }}</td>
+            <td>{{ i.status.value }}</td>
+            <td>{{ i.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="6" class="empty">No hay consultas.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+{% block title %}MG Náutica — Su broker y gestor naval{% endblock %}
+
+{% block content %}
+
+{# ── Hero ── #}
+<section class="hero">
+    <div class="hero-inner">
+        <div class="hero-text">
+            <span class="hero-eyebrow">Argentina · Uruguay · El mundo</span>
+            <h1>Su broker y gestor <em>naval</em></h1>
+            <p class="hero-lead">Más que barcos, conectamos personas con su próxima gran aventura en el océano. Corretaje, trámites y gestión integral en manos expertas.</p>
+            <div class="hero-ctas">
+                <a class="btn btn-primary btn-lg" href="{{ url_for('boats_list') }}">Explorar embarcaciones</a>
+                <a class="btn btn-outline-white btn-lg" href="https://wa.me/5491126949628" target="_blank" rel="noopener">Hablar con nosotros</a>
+            </div>
+            {% if total_available %}
+            <div class="hero-stats">
+                <div>
+                    <div class="hero-stat-num">{{ total_available }}</div>
+                    <div class="hero-stat-label">Embarcaciones disponibles</div>
+                </div>
+                <div>
+                    <div class="hero-stat-num">AR · UY · 🌎</div>
+                    <div class="hero-stat-label">Argentina, Uruguay y el mundo</div>
+                </div>
+                <div>
+                    <div class="hero-stat-num">10+</div>
+                    <div class="hero-stat-label">Años de experiencia</div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        <div class="hero-visual" aria-hidden="true">
+            <div class="hero-visual-img hero-visual-main">
+                <img src="{{ url_for('static', filename='site/hero-ocean.jpg') }}" alt="Navegando con MG Náutica">
+            </div>
+            <div class="hero-visual-img">
+                <img src="{{ url_for('static', filename='site/founders-3.jpg') }}" alt="Vida a bordo" loading="lazy">
+            </div>
+            <div class="hero-visual-img">
+                <img src="{{ url_for('static', filename='site/thalia.jpg') }}" alt="Motovelero Thalia" loading="lazy">
+            </div>
+        </div>
+    </div>
+</section>
+
+{# ── Featured boats ── #}
+{% if featured_boats %}
+<section class="section">
+    <div class="container">
+        <div class="section-head">
+            <span class="section-eyebrow">Catálogo</span>
+            <h2>Últimos ingresos</h2>
+            <p>Embarcaciones seleccionadas disponibles en Argentina, Uruguay y el exterior.</p>
+        </div>
+        <div class="boat-grid">
+            {% for boat in featured_boats %}
+            <a class="boat-card" href="{{ url_for('boat_detail', slug=boat.slug) }}">
+                <div class="boat-card-img">
+                    {% if boat.primary_photo_url %}
+                    <img src="{{ boat.primary_photo_url }}" alt="{{ boat.title }}" loading="lazy">
+                    {% endif %}
+                    <span class="badge-type">{{ boat_type_label[boat.boat_type.value] }}</span>
+                </div>
+                <div class="boat-card-body">
+                    <div class="boat-card-title">{{ boat.title }}</div>
+                    {% if boat.city_location or boat.country_location %}
+                    <div class="boat-card-location">{{ boat.city_location or boat.country_location }} · {{ flag_label[boat.flag.value] }}</div>
+                    {% endif %}
+                    <div class="boat-card-meta">
+                        <div>
+                            {% if boat.on_sale and boat.previous_price_usd %}
+                            <div class="boat-card-price-old">US$ {{ '{:,}'.format(boat.previous_price_usd) }}</div>
+                            {% endif %}
+                            <div class="boat-card-price">US$ {{ '{:,}'.format(boat.price_usd) }}</div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+        <div style="text-align:center; margin-top:2rem;">
+            <a class="btn btn-navy btn-lg" href="{{ url_for('boats_list') }}">Ver todas las embarcaciones</a>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{# ── Services ── #}
+<section class="section section-surface">
+    <div class="container">
+        <div class="section-head">
+            <span class="section-eyebrow">Lo que hacemos</span>
+            <h2>Nuestros servicios</h2>
+            <p>Gestión integral para que disfrutes de una navegación profesional y libre de preocupaciones.</p>
+        </div>
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-icon">⚓</div>
+                <h3>Gestión de corretaje</h3>
+                <p>Compra y venta con asesoramiento experto y brokers especializados en cada región.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">🔧</div>
+                <h3>Mantenimiento técnico</h3>
+                <p>Cuidado artesanal y mantenimiento periódico para mantener tu embarcación en condiciones óptimas.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">🗺️</div>
+                <h3>Traslados y logística</h3>
+                <p>Traslados nacionales e internacionales con capitanes certificados.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">📋</div>
+                <h3>Asesoría integral</h3>
+                <p>Trámites, seguros, matrículas y gestión administrativa desde el primer día.</p>
+            </div>
+        </div>
+        <div style="text-align:center; margin-top:2rem;">
+            <a class="btn btn-outline" href="{{ url_for('services') }}">Ver todos los servicios</a>
+        </div>
+    </div>
+</section>
+
+{# ── CTA band ── #}
+<section class="cta-band">
+    <h2>¿Querés vender tu embarcación?</h2>
+    <p>Te acompañamos en cada paso: desde la valuación hasta la transferencia definitiva.</p>
+    <div class="cta-row">
+        <a class="btn btn-primary btn-lg" href="{{ url_for('publish') }}">Publicar gratis</a>
+        <a class="btn btn-outline-white btn-lg" href="{{ url_for('sell_your_boat') }}">Gestión integral</a>
+    </div>
+</section>
+
+{% endblock %}

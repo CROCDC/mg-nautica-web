@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}Servicios — MG Náutica{% endblock %}
+{% block description %}Gestión de corretaje, mantenimiento técnico, traslados y asesoría integral en Argentina y Uruguay.{% endblock %}
+
+{% block content %}
+
+<section class="section">
+    <div class="container">
+        <div class="section-head">
+            <span class="section-eyebrow">Lo que hacemos</span>
+            <h1>Nuestros servicios</h1>
+            <p>Gestión integral para que disfrutes de una navegación profesional y libre de preocupaciones.</p>
+        </div>
+
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-icon">⚓</div>
+                <h3>Gestión de corretaje</h3>
+                <p>Compra y venta con asesoramiento experto y brokers especializados en cada región. Valuación precisa y acompañamiento durante todo el proceso.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">🔧</div>
+                <h3>Mantenimiento técnico</h3>
+                <p>Cuidado artesanal y mantenimiento periódico para mantener tu embarcación en condiciones óptimas. Trabajamos con talleres y técnicos de confianza.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">🗺️</div>
+                <h3>Traslados y logística</h3>
+                <p>Traslados nacionales e internacionales con capitanes certificados. Coordinación completa de ruta, puertos y documentación.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">📋</div>
+                <h3>Trámites y gestión</h3>
+                <p>Gestión de matrículas, seguros y habilitaciones ante PNA, ARBA y AGIP. Asesoramiento desde el primer día hasta la transferencia definitiva.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">🌊</div>
+                <h3>Asesoría de fondeo y amarre</h3>
+                <p>Recomendaciones de puertos, marinas y fondeaderos en Argentina, Uruguay y el exterior. Gestión de arañas y lugares de guarda.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">📸</div>
+                <h3>Marketing y publicación</h3>
+                <p>Fotografía profesional, descripción técnica y publicación en canales de mayor alcance náutico para maximizar la exposición de tu embarcación.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="cta-band">
+    <h2>¿Necesitás más información?</h2>
+    <p>Hablá con nosotros y te asesoramos sin compromiso.</p>
+    <div class="cta-row">
+        <a class="btn btn-primary btn-lg" href="https://wa.me/5491126949628" target="_blank" rel="noopener">💬 WhatsApp</a>
+        <a class="btn btn-outline-white btn-lg" href="{{ url_for('contact') }}">Formulario de contacto</a>
+    </div>
+</section>
+
+{% endblock %}

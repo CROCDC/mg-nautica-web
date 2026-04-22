@@ -1,0 +1,27 @@
+{% extends "admin/base.html" %}
+{% block title %}Panel - MG Náutica Admin{% endblock %}
+{% block content %}
+<h1>Panel</h1>
+<div class="admin-stats">
+    <a class="admin-stat" href="{{ url_for('admin.boats_list') }}">
+        <span class="stat-value">{{ stats.boats_total }}</span>
+        <span class="stat-label">Embarcaciones ({{ stats.boats_available }} disponibles)</span>
+    </a>
+    <a class="admin-stat" href="{{ url_for('admin.accessories_list') }}">
+        <span class="stat-value">{{ stats.accessories_total }}</span>
+        <span class="stat-label">Accesorios</span>
+    </a>
+    <a class="admin-stat" href="{{ url_for('admin.listings_list') }}">
+        <span class="stat-value">{{ stats.pending_listings }}</span>
+        <span class="stat-label">Publicaciones pendientes</span>
+    </a>
+    <a class="admin-stat" href="{{ url_for('admin.sale_inquiries_list') }}">
+        <span class="stat-value">{{ stats.sale_inquiries }}</span>
+        <span class="stat-label">Consultas "Vendé tu embarcación"</span>
+    </a>
+    <a class="admin-stat" href="{{ url_for('admin.boat_inquiries_list') }}">
+        <span class="stat-value">{{ stats.boat_inquiries }}</span>
+        <span class="stat-label">Consultas por embarcación</span>
+    </a>
+</div>
+{% endblock %}

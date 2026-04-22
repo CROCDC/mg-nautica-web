@@ -1,0 +1,178 @@
+{% extends "admin/base.html" %}
+{% block title %}{{ 'Nueva embarcación' if not boat else boat.title }} - Admin{% endblock %}
+{% macro field(name, label, type='text', value=None, required=False) %}
+<label>
+    {{ label }}{% if required %} *{% endif %}
+    <input type="{{ type }}" name="{{ name }}" value="{{ value if value is not none else '' }}" {% if required %}required{% endif %}>
+</label>
+{% endmacro %}
+{% block content %}
+<h1>{{ 'Nueva embarcación' if not boat else ('Editar: ' ~ boat.title) }}</h1>
+
+<form method="post" class="form admin-form">
+    <h2>Datos principales</h2>
+    {% set b = boat %}
+    {{ field('slug', 'Slug', required=True, value=(form.get('slug') if form.get('slug') else (b.slug if b else ''))) }}
+    {{ field('title', 'Título', required=True, value=(form.get('title') if form.get('title') else (b.title if b else ''))) }}
+    <label>
+        Descripción
+        <textarea name="description" rows="8">{{ form.get('description') if form.get('description') else (b.description if b else '') }}</textarea>
+    </label>
+    <label>
+        Tipo *
+        <select name="boat_type" required>
+            {% set selected = form.get('boat_type') if form.get('boat_type') else (b.boat_type.value if b else '') %}
+            {% for t in boat_types %}
+            <option value="{{ t.value }}" {% if selected == t.value %}selected{% endif %}>{{ boat_type_label[t.value] }}</option>
+            {% endfor %}
+        </select>
+    </label>
+    <label>
+        Bandera *
+        <select name="flag" required>
+            {% set selected = form.get('flag') if form.get('flag') else (b.flag.value if b else '') %}
+            {% for f in flags %}
+            <option value="{{ f.value }}" {% if selected == f.value %}selected{% endif %}>{{ flag_label[f.value] }}</option>
+            {% endfor %}
+        </select>
+    </label>
+    {{ field('country_location', 'País', value=(form.get('country_location') if form.get('country_location') else (b.country_location if b else ''))) }}
+    {{ field('city_location', 'Ciudad', value=(form.get('city_location') if form.get('city_location') else (b.city_location if b else ''))) }}
+    {{ field('zone', 'Zona', value=(form.get('zone') if form.get('zone') else (b.zone if b else ''))) }}
+
+    <h2>Identidad</h2>
+    {{ field('year', 'Año', type='number', value=(form.get('year') if form.get('year') else (b.year if b else ''))) }}
+    {{ field('shipyard', 'Astillero', value=(form.get('shipyard') if form.get('shipyard') else (b.shipyard if b else ''))) }}
+    {{ field('model_name', 'Modelo', value=(form.get('model_name') if form.get('model_name') else (b.model_name if b else ''))) }}
+    <label>
+        Material
+        <select name="hull_material">
+            {% set selected = form.get('hull_material') if form.get('hull_material') else ((b.hull_material.value if (b and b.hull_material) else '')) %}
+            <option value="">(sin especificar)</option>
+            {% for h in hull_materials %}
+            <option value="{{ h.value }}" {% if selected == h.value %}selected{% endif %}>{{ hull_material_label[h.value] }}</option>
+            {% endfor %}
+        </select>
+    </label>
+
+    <h2>Medidas</h2>
+    {{ field('length_m', 'Eslora (m)', type='text', value=(form.get('length_m') if form.get('length_m') else (b.length_m if b else ''))) }}
+    {{ field('beam_m', 'Manga (m)', type='text', value=(form.get('beam_m') if form.get('beam_m') else (b.beam_m if b else ''))) }}
+    {{ field('draft_m', 'Calado (m)', type='text', value=(form.get('draft_m') if form.get('draft_m') else (b.draft_m if b else ''))) }}
+    {{ field('displacement_t', 'Desplazamiento (t)', type='text', value=(form.get('displacement_t') if form.get('displacement_t') else (b.displacement_t if b else ''))) }}
+
+    <h2>Comercial</h2>
+    {{ field('price_usd', 'Precio (USD)', type='number', required=True, value=(form.get('price_usd') if form.get('price_usd') else (b.price_usd if b else ''))) }}
+    {{ field('previous_price_usd', 'Precio anterior (USD)', type='number', value=(form.get('previous_price_usd') if form.get('previous_price_usd') else (b.previous_price_usd if b else ''))) }}
+    <label>
+        <input type="checkbox" name="on_sale" {% if (form.get('on_sale') == 'on') or (b and b.on_sale) %}checked{% endif %}>
+        Oferta / precio tachado
+    </label>
+    {{ field('commission_pct', 'Comisión (%)', type='text', value=(form.get('commission_pct') if form.get('commission_pct') else (b.commission_pct if b else ''))) }}
+    {{ field('commission_flat_usd', 'Comisión flat (USD)', type='number', value=(form.get('commission_flat_usd') if form.get('commission_flat_usd') else (b.commission_flat_usd if b else ''))) }}
+    <label>
+        Estado
+        <select name="status">
+            {% set selected = form.get('status') if form.get('status') else ((b.status.value if b else 'available')) %}
+            {% for s in statuses %}
+            <option value="{{ s.value }}" {% if selected == s.value %}selected{% endif %}>{{ s.value }}</option>
+            {% endfor %}
+        </select>
+    </label>
+    <label>
+        <input type="checkbox" name="featured" {% if (form.get('featured') == 'on') or (b and b.featured) %}checked{% endif %}>
+        Destacada en Home
+    </label>
+    {{ field('last_refit', 'Último refit', value=(form.get('last_refit') if form.get('last_refit') else (b.last_refit if b else ''))) }}
+    {{ field('last_careening', 'Último carenado', value=(form.get('last_careening') if form.get('last_careening') else (b.last_careening if b else ''))) }}
+
+    {% if not boat %}
+    <h2>Foto principal</h2>
+    {{ field('photo_url', 'URL de foto', type='url') }}
+    {% endif %}
+
+    <button type="submit" class="btn btn-primary">Guardar</button>
+</form>
+
+{% if boat %}
+<section class="admin-section">
+    <h2>Fotos ({{ boat.photos|length }})</h2>
+    <div class="admin-photos">
+        {% for photo in boat.photos %}
+        <div class="admin-photo">
+            <img src="{{ photo.url }}" alt="{{ photo.alt or '' }}">
+            <small>pos {{ photo.position }}{% if photo.is_primary %} · principal{% endif %}</small>
+            <form method="post" action="{{ url_for('admin.boats_photo_delete', boat_id=boat.id, photo_id=photo.id) }}" onsubmit="return confirm('¿Borrar foto?');">
+                <button type="submit" class="btn btn-danger btn-sm">Borrar</button>
+            </form>
+        </div>
+        {% endfor %}
+    </div>
+    <form method="post" action="{{ url_for('admin.boats_photo_add', boat_id=boat.id) }}" class="inline-form">
+        <input type="url" name="url" placeholder="URL de nueva foto" required>
+        <input type="text" name="alt" placeholder="Texto alternativo">
+        <button type="submit" class="btn">Agregar foto</button>
+    </form>
+</section>
+
+<section class="admin-section">
+    <h2>Ficha técnica</h2>
+    <form method="post" action="{{ url_for('admin.boats_specs_save', boat_id=boat.id) }}" class="form admin-form">
+        {% set s = boat.specs %}
+        <h3>Motor</h3>
+        {{ field('engine_brand', 'Marca/modelo', value=(s.engine_brand if s else '')) }}
+        {{ field('engine_hp', 'HP', type='number', value=(s.engine_hp if s else '')) }}
+        {{ field('engine_hours', 'Horas', type='number', value=(s.engine_hours if s else '')) }}
+        {{ field('propeller', 'Hélice', value=(s.propeller if s else '')) }}
+        <label><input type="checkbox" name="bow_thruster" {% if s and s.bow_thruster %}checked{% endif %}> Hélice de proa</label>
+        {{ field('fuel_liters', 'Combustible (L)', type='number', value=(s.fuel_liters if s else '')) }}
+        {{ field('fresh_water_liters', 'Agua dulce (L)', type='number', value=(s.fresh_water_liters if s else '')) }}
+
+        <h3>Velas y aparejo</h3>
+        <label>Velas<textarea name="sails" rows="3">{{ s.sails if s else '' }}</textarea></label>
+        {{ field('furlers', 'Enrolladores', value=(s.furlers if s else '')) }}
+        {{ field('poles', 'Tangones', value=(s.poles if s else '')) }}
+        {{ field('bowsprit', 'Botalón', value=(s.bowsprit if s else '')) }}
+        {{ field('mast_rig', 'Mástil/jarcia', value=(s.mast_rig if s else '')) }}
+
+        <h3>Electrónica</h3>
+        {{ field('electronics_plotter', 'Plotter(s)', value=(s.electronics_plotter if s else '')) }}
+        {{ field('electronics_ais', 'AIS', value=(s.electronics_ais if s else '')) }}
+        {{ field('electronics_radar', 'Radar', value=(s.electronics_radar if s else '')) }}
+        {{ field('electronics_wind', 'Wind/Tridata', value=(s.electronics_wind if s else '')) }}
+        {{ field('electronics_autopilot', 'Piloto automático', value=(s.electronics_autopilot if s else '')) }}
+        {{ field('electronics_charts', 'Cartografía', value=(s.electronics_charts if s else '')) }}
+        {{ field('electronics_vhf', 'VHF', value=(s.electronics_vhf if s else '')) }}
+        {{ field('electronics_satellite', 'Satelital', value=(s.electronics_satellite if s else '')) }}
+        <label><input type="checkbox" name="electronics_starlink" {% if s and s.electronics_starlink %}checked{% endif %}> Starlink</label>
+
+        <h3>Energía</h3>
+        <label>Baterías<textarea name="batteries_config" rows="2">{{ s.batteries_config if s else '' }}</textarea></label>
+        {{ field('solar_watts', 'Paneles solares (W)', type='number', value=(s.solar_watts if s else '')) }}
+        {{ field('inverter_watts', 'Inverter (W)', type='number', value=(s.inverter_watts if s else '')) }}
+        {{ field('chargers', 'Cargadores', value=(s.chargers if s else '')) }}
+        {{ field('generator', 'Generador', value=(s.generator if s else '')) }}
+
+        <h3>Habitabilidad</h3>
+        {{ field('cabins_qty', 'Camarotes', type='number', value=(s.cabins_qty if s else '')) }}
+        {{ field('bathrooms_qty', 'Baños', type='number', value=(s.bathrooms_qty if s else '')) }}
+        {{ field('saloon', 'Saloon', value=(s.saloon if s else '')) }}
+        {{ field('galley', 'Cocina', value=(s.galley if s else '')) }}
+        {{ field('fridge', 'Nevera', value=(s.fridge if s else '')) }}
+        {{ field('tv', 'TV', value=(s.tv if s else '')) }}
+        {{ field('air_conditioning', 'Aire acondicionado', value=(s.air_conditioning if s else '')) }}
+        {{ field('water_heater', 'Termotanque', value=(s.water_heater if s else '')) }}
+
+        <h3>Fondeo</h3>
+        <label>Descripción<textarea name="ground_tackle" rows="3">{{ s.ground_tackle if s else '' }}</textarea></label>
+        {{ field('chain_meters', 'Cadena (m)', type='number', value=(s.chain_meters if s else '')) }}
+        {{ field('chain_mm', 'Cadena (mm)', type='number', value=(s.chain_mm if s else '')) }}
+
+        <h3>Inventario extra</h3>
+        <label><textarea name="extra_inventory" rows="3">{{ s.extra_inventory if s else '' }}</textarea></label>
+
+        <button type="submit" class="btn btn-primary">Guardar ficha técnica</button>
+    </form>
+</section>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends "admin/base.html" %}
+{% block title %}{{ 'Nuevo accesorio' if not accessory else accessory.title }} - Admin{% endblock %}
+{% block content %}
+<h1>{{ 'Nuevo accesorio' if not accessory else ('Editar: ' ~ accessory.title) }}</h1>
+<form method="post" class="form admin-form">
+    {% set a = accessory %}
+    <label>Slug *<input name="slug" required value="{{ form.get('slug') if form.get('slug') else (a.slug if a else '') }}"></label>
+    <label>Título *<input name="title" required value="{{ form.get('title') if form.get('title') else (a.title if a else '') }}"></label>
+    <label>Descripción<textarea name="description" rows="5">{{ form.get('description') if form.get('description') else (a.description if a else '') }}</textarea></label>
+    <label>Categoría *
+        <select name="category" required>
+            {% set selected = form.get('category') if form.get('category') else (a.category.value if a else '') %}
+            {% for c in categories %}
+            <option value="{{ c.value }}" {% if selected == c.value %}selected{% endif %}>{{ accessory_category_label[c.value] }}</option>
+            {% endfor %}
+        </select>
+    </label>
+    <label>Precio (USD) *<input name="price_usd" type="number" required value="{{ form.get('price_usd') if form.get('price_usd') else (a.price_usd if a else '') }}"></label>
+    <label>Precio anterior (USD)<input name="previous_price_usd" type="number" value="{{ form.get('previous_price_usd') if form.get('previous_price_usd') else (a.previous_price_usd if a else '') }}"></label>
+    <label>Stock<input name="stock" type="number" value="{{ form.get('stock') if form.get('stock') else (a.stock if a else 0) }}"></label>
+    <label>URL de foto<input name="photo_url" type="url" value="{{ form.get('photo_url') if form.get('photo_url') else (a.photo_url if a else '') }}"></label>
+    <label><input type="checkbox" name="active" {% if (form.get('active') == 'on') or (a and a.active) or not a %}checked{% endif %}> Activo</label>
+    <button type="submit" class="btn btn-primary">Guardar</button>
+</form>
+{% endblock %}

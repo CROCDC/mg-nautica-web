@@ -1,0 +1,538 @@
+[
+  {
+    "slug": "catamaran-nautitech-46-open-piriapolis-en-venta",
+    "title": "CATAMARAN NAUTITECH 46 OPEN | 📍Piriapolis 🇺🇾 | En Venta",
+    "description": "MG NAUTICA",
+    "price_usd": 850000,
+    "previous_price_usd": null,
+    "primary_photo_url": "https://static.wixstatic.com/media/fac5f8_36becb395041473dbf28e196ba26ecf1~mv2.png/fac5f8_36becb395041473dbf28e196ba26ecf1~mv2.png"
+  },
+  {
+    "slug": "jeanneau-sun-odyssey-452-impecable",
+    "title": "JEANNEAU SUN ODYSSEY 45.2 | IMPECABLE",
+    "description": "MG NAUTICA",
+    "price_usd": 165000,
+    "previous_price_usd": 185000,
+    "primary_photo_url": "https://static.wixstatic.com/media/fac5f8_b958e42296024aaeb4e5d453ed04a868~mv2.jpg/fac5f8_b958e42296024aaeb4e5d453ed04a868~mv2.jpg"
+  },
+  {
+    "slug": "crucero-sea-ray-48-uruguay-piriapolis",
+    "title": "Crucero SEA RAY 48 | 📍Uruguay Piriapolis",
+    "description": "MG NAUTICA",
+    "price_usd": 160000,
+    "previous_price_usd": 180000,
+    "primary_photo_url": "https://static.wixstatic.com/media/fac5f8_ed11805aed8e4e248e1f6fd148281b54~mv2.png/fac5f8_ed11805aed8e4e248e1f6fd148281b54~mv2.png"
+  },
+  {
+    "slug": "velero-bavaria-42-cruiser",
+    "title": "Velero Bavaria 42 Cruiser 🇺🇾",
+    "description": "MG NAUTICA",
+    "price_usd": 160000,
+    "previous_price_usd": null,
+    "primary_photo_url": "https://static.wixstatic.com/media/ce0b96_932837094b5144ada06c1d186ee468f6~mv2.png/ce0b96_932837094b5144ada06c1d186ee468f6~mv2.png"
+  },
+  {
+    "slug": "velero-jeanneau-sun-odyssey-39-ds",
+    "title": "VELERO JEANNEAU SUN ODYSSEY 39 DS",
+    "description": "MG NAUTICA",
+    "price_usd": 150000,
+    "previous_price_usd": 160000,
+    "primary_photo_url": "https://static.wixstatic.com/media/fac5f8_4eb11e78e67949b1a4a58a70946726ff~mv2.jpg/fac5f8_4eb11e78e67949b1a4a58a70946726ff~mv2.jpg"
+  },
+  {
+    "slug": "dufour-425-grand-large-2008-en-venta",
+    "title": "DUFOUR 425 GRAND LARGE | 2008 | EN VENTA🇺🇾",
+    "description": "MG NAUTICA",
+    "price_usd": 147000,
+    "previous_price_usd": 155000,
+    "primary_photo_url": "https://static.wixstatic.com/media/fac5f8_a0577086a88e4dd59939825f0eec7f7a~mv2.png/fac5f8_a0577086a88e4dd59939825f0eec7f7a~mv2.png"
+  },
+  {
+    "slug": "velero-pandora-34",
+    "title": "VELERO PANDORA 34",
+    "description": "MG NAUTICA",
+    "price_usd": 105000,
+    "previous_price_usd": 125000,
+    "primary_photo_url": "https://static.wixstatic.com/media/fac5f8_c7e2e04621b3484881afd55ef9d48396~mv2.jpg/fac5f8_c7e2e04621b3484881afd55ef9d48396~mv2.jpg"
+  },
+  {
+    "slug": "velero-corum-340",
+    "title": "VELERO CORUM 340",
+    "description": "MG NAUTICA",
+    "price_usd": 87000,
+    "previous_price_usd": null,
+    "primary_photo_url": "https://static.wixstatic.com/media/fac5f8_2a608fabbba34949b0425c2ebe50284c~mv2.jpg/fac5f8_2a608fabbba34949b0425c2ebe50284c~mv2.jpg"
+  },
+  {
+    "slug": "velero-bramador-34-concepción-del-uruguay",
+    "title": "VELERO BRAMADOR 34 | CONCEPCIÓN DEL URUGUAY",
+    "description": "MG NAUTICA",
+    "price_usd": 85000,
+    "previous_price_usd": null,
+    "primary_photo_url": "https://static.wixstatic.com/media/fac5f8_00415490096d4411b35708d197b287aa~mv2.jpg/fac5f8_00415490096d4411b35708d197b287aa~mv2.jpg"
+  },
+  {
+    "slug": "jeanneau-sun-odyssey-40-panama",
+    "title": "⛵ JEANNEAU SUN ODYSSEY 40 | 📍Panama",
+    "description": "MG NAUTICA",
+    "price_usd": 80000,
+    "previous_price_usd": null,
+    "primary_photo_url": "https://static.wixstatic.com/media/fac5f8_6986ed0fc1a24236bd477342d3f2becd~mv2.png/fac5f8_6986ed0fc1a24236bd477342d3f2becd~mv2.png"
+  },
+  {
+    "slug": "catamaran-astillero-pagliettini",
+    "title": "CATAMARAN ASTILLERO PAGLIETTINI",
+    "description": "MG NAUTICA",
+    "price_usd": 70000,
+    "previous_price_usd": 89000,
+    "primary_photo_url": "https://static.wixstatic.com/media/fac5f8_8b3bf81f0a9640b1917b4a48967a7119~mv2.png/fac5f8_8b3bf81f0a9640b1917b4a48967a7119~mv2.png"
+  },
+  {
+    "slug": "velero-irwin-44-panamá-san-blas",
+    "title": "VELERO IRWIN 44 | 📍Panamá San Blas",
+    "description": "MG NAUTICA",
+    "price_usd": 69000,
+    "previous_price_usd": null,
+    "primary_photo_url": "https://static.wixstatic.com/media/fac5f8_4994063eae06429c838f390d3eeb432e~mv2.jpg/fac5f8_4994063eae06429c838f390d3eeb432e~mv2.jpg"
+  },
+  {
+    "slug": "velero-s2-36-pies-en-venta",
+    "title": "🇺🇾VELERO S2 36 PIES | EN VENTA",
+    "description": "MG NAUTICA",
+    "price_usd": 57000,
+    "previous_price_usd": null,
+    "primary_photo_url": "https://static.wixstatic.com/media/fac5f8_736d608c453345bb8655e4ae2a189f58~mv2.jpg/fac5f8_736d608c453345bb8655e4ae2a189f58~mv2.jpg"
+  },
+  {
+    "slug": "velero-del-plata-31-motor-nuevo",
+    "title": "VELERO DEL PLATA 31 | ✨️MOTOR NUEVO",
+    "description": "MG NAUTICA",
+    "price_usd": 50000,
+    "previous_price_usd": null,
+    "primary_photo_url": "https://static.wixstatic.com/media/fac5f8_4dc433852e0b484f9830128f2412006f~mv2.jpg/fac5f8_4dc433852e0b484f9830128f2412006f~mv2.jpg"
+  },
+  {
+    "slug": "velero-bramador-nova",
+    "title": "VELERO BRAMADOR NOVA",
+    "description": "MG NAUTICA",
+    "price_usd": 49500,
+    "previous_price_usd": null,
+    "primary_photo_url": "https://static.wixstatic.com/media/fac5f8_0eacfa634122407aa29d6772100c3814~mv2.jpg/fac5f8_0eacfa634122407aa29d6772100c3814~mv2.jpg"
+  },
+  {
+    "slug": "velero-plenamar-36",
+    "title": "VELERO PLENAMAR 36",
+    "description": "MG NAUTICA",
+    "price_usd": 49000,
+    "previous_price_usd": null,
+    "primary_photo_url": "https://static.wixstatic.com/media/fac5f8_f469f670a77d4b33a0017b8516d64843~mv2.jpg/fac5f8_f469f670a77d4b33a0017b8516d64843~mv2.jpg"
+  },
+  {
+    "slug": "velero-aluminio-oceánico",
+    "title": "Velero Aluminio Oceánico",
+    "description": "MG NAUTICA",
+    "price_usd": 47000,
+    "previous_price_usd": null,
+    "primary_photo_url": "https://static.wixstatic.com/media/ce0b96_3052e7e2a2b04e40809067a295487f14~mv2.png/ce0b96_3052e7e2a2b04e40809067a295487f14~mv2.png"
+  },
+  {
+    "slug": "velero-clipper-32",
+    "title": "Velero Clipper 32",
+    "description": "MG NAUTICA",
+    "price_usd": 46000,
+    "previous_price_usd": null,
+    "primary_photo_url": "https://static.wixstatic.com/media/fac5f8_1b70ae03c1854a8ebfdd9a4e7923c1c0~mv2.jpg/fac5f8_1b70ae03c1854a8ebfdd9a4e7923c1c0~mv2.jpg"
+  },
+  {
+    "slug": "velero-navegante-35",
+    "title": "VELERO NAVEGANTE 35",
+    "description": "MG NAUTICA",
+    "price_usd": 45000,
+    "previous_price_usd": 50000,
+    "primary_photo_url": "https://static.wixstatic.com/media/fac5f8_409f7279314b4ab5a268cba81ee8ddcd~mv2.jpg/fac5f8_409f7279314b4ab5a268cba81ee8ddcd~mv2.jpg"
+  },
+  {
+    "slug": "velero-clásico-ferrocemento-con-orza-bandera",
+    "title": "VELERO CLÁSICO FERROCEMENTO | CON ORZA | BANDERA 🇦🇷",
+    "description": "MG NAUTICA",
+    "price_usd": 45000,
+    "previous_price_usd": null,
+    "primary_photo_url": "https://static.wixstatic.com/media/fac5f8_61d4974e6e5b47cea5d6d9b8036a9bfc~mv2.png/fac5f8_61d4974e6e5b47cea5d6d9b8036a9bfc~mv2.png"
+  },
+  {
+    "slug": "velero-peterson-34-caribe-bandera",
+    "title": "VELERO PETERSON 34 | 📍CARIBE  | BANDERA 🇦🇷",
+    "description": "MG NAUTICA",
+    "price_usd": 45000,
+    "previous_price_usd": null,
+    "primary_photo_url": "https://static.wixstatic.com/media/fac5f8_b01988860ce846bd9fda3f525ff55fed~mv2.jpg/fac5f8_b01988860ce846bd9fda3f525ff55fed~mv2.jpg"
+  },
+  {
+    "slug": "velero-zabra-980",
+    "title": "VELERO ZABRA 980",
+    "description": "MG NAUTICA",
+    "price_usd": 42900,
+    "previous_price_usd": 49000,
+    "primary_photo_url": "https://static.wixstatic.com/media/fac5f8_6c0d64b97ed24a10927f00ba99faa2ed~mv2.jpg/fac5f8_6c0d64b97ed24a10927f00ba99faa2ed~mv2.jpg"
+  },
+  {
+    "slug": "custon-special-28-pies",
+    "title": "CUSTON SPECIAL 28 PIES",
+    "description": "MG NAUTICA",
+    "price_usd": 41000,
+    "previous_price_usd": 45000,
+    "primary_photo_url": "https://static.wixstatic.com/media/fac5f8_38777432ebf6446083f94f5de7e7d4d4~mv2.jpg/fac5f8_38777432ebf6446083f94f5de7e7d4d4~mv2.jpg"
+  },
+  {
+    "slug": "velero-pampa-1040",
+    "title": "VELERO PAMPA 10.40",
+    "description": "MG NAUTICA",
+    "price_usd": 40000,
+    "previous_price_usd": 49000,
+    "primary_photo_url": "https://static.wixstatic.com/media/fac5f8_505f9a8ffae94ba190bc35b37df32e53~mv2.jpg/fac5f8_505f9a8ffae94ba190bc35b37df32e53~mv2.jpg"
+  },
+  {
+    "slug": "velero-drakkar-32",
+    "title": "VELERO DRAKKAR 32",
+    "description": "MG NAUTICA",
+    "price_usd": 40000,
+    "previous_price_usd": 45000,
+    "primary_photo_url": "https://static.wixstatic.com/media/fac5f8_c452d99919d4464d932926c270838b1b~mv2.jpg/fac5f8_c452d99919d4464d932926c270838b1b~mv2.jpg"
+  },
+  {
+    "slug": "velero-sailor-1000-a-mejorar",
+    "title": "Velero Sailor 1000 (a Mejorar)",
+    "description": "MG NAUTICA",
+    "price_usd": 37000,
+    "previous_price_usd": null,
+    "primary_photo_url": "https://static.wixstatic.com/media/ce0b96_0358ba8dac134fb892b13dba1d5c3fbb~mv2.png/ce0b96_0358ba8dac134fb892b13dba1d5c3fbb~mv2.png"
+  },
+  {
+    "slug": "velero-dangelo-30",
+    "title": "VELERO DANGELO 30",
+    "description": "MG NAUTICA",
+    "price_usd": 35000,
+    "previous_price_usd": null,
+    "primary_photo_url": "https://static.wixstatic.com/media/fac5f8_34ad0ec4803045259b648b197e101655~mv2.jpg/fac5f8_34ad0ec4803045259b648b197e101655~mv2.jpg"
+  },
+  {
+    "slug": "velero-dufour-4800-panama",
+    "title": "VELERO DUFOUR 4800 | 📍PANAMA",
+    "description": "MG NAUTICA",
+    "price_usd": 35000,
+    "previous_price_usd": 38000,
+    "primary_photo_url": "https://static.wixstatic.com/media/fac5f8_bc2ed42da4cc4e44b2c57f27df413030~mv2.jpg/fac5f8_bc2ed42da4cc4e44b2c57f27df413030~mv2.jpg"
+  },
+  {
+    "slug": "velero-seildelmann-34-1984-panama",
+    "title": "VELERO SEILDELMANN 34 | 1984 | 📍PANAMA",
+    "description": "MG NAUTICA",
+    "price_usd": 33000,
+    "previous_price_usd": null,
+    "primary_photo_url": "https://static.wixstatic.com/media/fac5f8_46219923f3954f9380a7ecf84bcbedfc~mv2.png/fac5f8_46219923f3954f9380a7ecf84bcbedfc~mv2.png"
+  },
+  {
+    "slug": "velero-regge-30",
+    "title": "VELERO REGGE 30",
+    "description": "MG NAUTICA",
+    "price_usd": 30000,
+    "previous_price_usd": null,
+    "primary_photo_url": "https://static.wixstatic.com/media/fac5f8_e4199bf880034fc48bc42cda16cd2f93~mv2.jpg/fac5f8_e4199bf880034fc48bc42cda16cd2f93~mv2.jpg"
+  },
+  {
+    "slug": "velero-bramador-24-2010-en-venta",
+    "title": "VELERO BRAMADOR 24 | 2010 | EN VENTA",
+    "description": "MG NAUTICA",
+    "price_usd": 27500,
+    "previous_price_usd": null,
+    "primary_photo_url": "https://static.wixstatic.com/media/fac5f8_d798f06ae6ce42f7af4fa104a86a882d~mv2.png/fac5f8_d798f06ae6ce42f7af4fa104a86a882d~mv2.png"
+  },
+  {
+    "slug": "velero-hr26",
+    "title": "VELERO HR26",
+    "description": "MG NAUTICA",
+    "price_usd": 27000,
+    "previous_price_usd": 30000,
+    "primary_photo_url": "https://static.wixstatic.com/media/fac5f8_1641ac6c12be41b69473fbf02c101805~mv2.jpg/fac5f8_1641ac6c12be41b69473fbf02c101805~mv2.jpg"
+  },
+  {
+    "slug": "velero-bora-bora-268",
+    "title": "VELERO BORA BORA 26.8",
+    "description": "MG NAUTICA",
+    "price_usd": 26000,
+    "previous_price_usd": null,
+    "primary_photo_url": "https://static.wixstatic.com/media/fac5f8_46b8a500c5ab412591007b5f6fa37a58~mv2.jpg/fac5f8_46b8a500c5ab412591007b5f6fa37a58~mv2.jpg"
+  },
+  {
+    "slug": "velero-mastracchio-245",
+    "title": "VELERO MASTRACCHIO 24.5",
+    "description": "MG NAUTICA",
+    "price_usd": 25500,
+    "previous_price_usd": null,
+    "primary_photo_url": "https://static.wixstatic.com/media/fac5f8_40695a6f144c45fcb2beb54a20385d31~mv2.jpg/fac5f8_40695a6f144c45fcb2beb54a20385d31~mv2.jpg"
+  },
+  {
+    "slug": "velero-chaparron-28",
+    "title": "VELERO CHAPARRON 28",
+    "description": "MG NAUTICA",
+    "price_usd": 25000,
+    "previous_price_usd": null,
+    "primary_photo_url": "https://static.wixstatic.com/media/fac5f8_c2b6338c39834a839744bb1bc548a81a~mv2.jpg/fac5f8_c2b6338c39834a839744bb1bc548a81a~mv2.jpg"
+  },
+  {
+    "slug": "velero-conte-24",
+    "title": "VELERO CONTE 24",
+    "description": "MG NAUTICA",
+    "price_usd": 24000,
+    "previous_price_usd": null,
+    "primary_photo_url": "https://static.wixstatic.com/media/fac5f8_8ae31dc9ebdf4efeb7e0ea4a6f38e426~mv2.jpg/fac5f8_8ae31dc9ebdf4efeb7e0ea4a6f38e426~mv2.jpg"
+  },
+  {
+    "slug": "ballenera-clásica-de-madera-1949",
+    "title": "BALLENERA CLÁSICA DE MADERA🇦🇷 | 1949",
+    "description": "MG NAUTICA",
+    "price_usd": 22000,
+    "previous_price_usd": null,
+    "primary_photo_url": "https://static.wixstatic.com/media/fac5f8_6786205fc0964892b1f0d2e782293b72~mv2.png/fac5f8_6786205fc0964892b1f0d2e782293b72~mv2.png"
+  },
+  {
+    "slug": "velero-pandora-23",
+    "title": "VELERO PANDORA 23",
+    "description": "MG NAUTICA",
+    "price_usd": 21000,
+    "previous_price_usd": 22000,
+    "primary_photo_url": "https://static.wixstatic.com/media/fac5f8_bc2d764ae6da4ad4a79bd4f91e8ec6c8~mv2.jpg/fac5f8_bc2d764ae6da4ad4a79bd4f91e8ec6c8~mv2.jpg"
+  },
+  {
+    "slug": "velero-cp-26-crucero",
+    "title": "VELERO CP 26 (CRUCERO)",
+    "description": "MG NAUTICA",
+    "price_usd": 20000,
+    "previous_price_usd": null,
+    "primary_photo_url": "https://static.wixstatic.com/media/fac5f8_e0d877d150684d26af089196ab27d240~mv2.jpg/fac5f8_e0d877d150684d26af089196ab27d240~mv2.jpg"
+  },
+  {
+    "slug": "crucero-clásico-a-reparar",
+    "title": "CRUCERO CLÁSICO A REPARAR",
+    "description": "MG NAUTICA",
+    "price_usd": 20000,
+    "previous_price_usd": 30000,
+    "primary_photo_url": "https://static.wixstatic.com/media/fac5f8_c5aba52dcc564eda9820ae5ba9aebbce~mv2.jpg/fac5f8_c5aba52dcc564eda9820ae5ba9aebbce~mv2.jpg"
+  },
+  {
+    "slug": "velero-bries-27-bandera",
+    "title": "VELERO BRIES 27 | BANDERA 🇺🇾",
+    "description": "MG NAUTICA",
+    "price_usd": 19000,
+    "previous_price_usd": null,
+    "primary_photo_url": "https://static.wixstatic.com/media/fac5f8_7011aee8b17e49c9a5c22251402692fc~mv2.jpg/fac5f8_7011aee8b17e49c9a5c22251402692fc~mv2.jpg"
+  },
+  {
+    "slug": "velero-bries-27",
+    "title": "VELERO BRIES 27",
+    "description": "MG NAUTICA",
+    "price_usd": 19000,
+    "previous_price_usd": 20500,
+    "primary_photo_url": "https://static.wixstatic.com/media/fac5f8_057db0b1df4043b8a487bd581bdc4eb7~mv2.jpg/fac5f8_057db0b1df4043b8a487bd581bdc4eb7~mv2.jpg"
+  },
+  {
+    "slug": "velero-colibri-24",
+    "title": "VELERO COLIBRI 24",
+    "description": "MG NAUTICA",
+    "price_usd": 18500,
+    "previous_price_usd": 19500,
+    "primary_photo_url": "https://static.wixstatic.com/media/fac5f8_3ce5fcb3a69d4d1886724dabf23b0353~mv2.jpg/fac5f8_3ce5fcb3a69d4d1886724dabf23b0353~mv2.jpg"
+  },
+  {
+    "slug": "crucero-trento-250",
+    "title": "CRUCERO TRENTO 250",
+    "description": "MG NAUTICA",
+    "price_usd": 17000,
+    "previous_price_usd": 19000,
+    "primary_photo_url": "https://static.wixstatic.com/media/fac5f8_82595eeac43d47a6962b7d44796c9bc5~mv2.jpg/fac5f8_82595eeac43d47a6962b7d44796c9bc5~mv2.jpg"
+  },
+  {
+    "slug": "lancha-quicksilver-1800-impecable",
+    "title": "LANCHA QUICKSILVER 1800 | IMPECABLE",
+    "description": "MG NAUTICA",
+    "price_usd": 16500,
+    "previous_price_usd": null,
+    "primary_photo_url": "https://static.wixstatic.com/media/fac5f8_31658b2521d048379b807e71f62aef5d~mv2.jpg/fac5f8_31658b2521d048379b807e71f62aef5d~mv2.jpg"
+  },
+  {
+    "slug": "velero-clásico-hermosa-ballenera",
+    "title": "VELERO CLÁSICO | HERMOSA BALLENERA",
+    "description": "MG NAUTICA",
+    "price_usd": 16000,
+    "previous_price_usd": null,
+    "primary_photo_url": "https://static.wixstatic.com/media/fac5f8_dfc91fbb54054ac58fd0f1540d7876b4~mv2.png/fac5f8_dfc91fbb54054ac58fd0f1540d7876b4~mv2.png"
+  },
+  {
+    "slug": "velero-clásico-1er-dorado-frers",
+    "title": "VELERO CLÁSICO | 1ER DORADO FRERS",
+    "description": "MG NAUTICA",
+    "price_usd": 15000,
+    "previous_price_usd": 20000,
+    "primary_photo_url": "https://static.wixstatic.com/media/fac5f8_1ad7e936c662441083d3c0dfda192be0~mv2.jpg/fac5f8_1ad7e936c662441083d3c0dfda192be0~mv2.jpg"
+  },
+  {
+    "slug": "velero-clásico-1er-dorado-de-frers",
+    "title": "VELERO CLÁSICO | 1ER DORADO DE FRERS",
+    "description": "MG NAUTICA",
+    "price_usd": 15000,
+    "previous_price_usd": 20000,
+    "primary_photo_url": "https://static.wixstatic.com/media/fac5f8_f8cd268cef5440c394a9c4535ddc3c37~mv2.jpg/fac5f8_f8cd268cef5440c394a9c4535ddc3c37~mv2.jpg"
+  },
+  {
+    "slug": "velero-pk-22",
+    "title": "VELERO PK 22",
+    "description": "MG NAUTICA",
+    "price_usd": 15000,
+    "previous_price_usd": null,
+    "primary_photo_url": "https://static.wixstatic.com/media/fac5f8_058209d758e84d20af99c7ece5c07c23~mv2.jpg/fac5f8_058209d758e84d20af99c7ece5c07c23~mv2.jpg"
+  },
+  {
+    "slug": "velero-limbo-21-impecable",
+    "title": "VELERO LIMBO 21 | Impecable",
+    "description": "MG NAUTICA",
+    "price_usd": 13000,
+    "previous_price_usd": 13500,
+    "primary_photo_url": "https://static.wixstatic.com/media/fac5f8_7bf79cff04204311b1cd863606bce9d6~mv2.jpg/fac5f8_7bf79cff04204311b1cd863606bce9d6~mv2.jpg"
+  },
+  {
+    "slug": "velero-alpha-25-en-venta",
+    "title": "VELERO ALPHA 25 | EN VENTA",
+    "description": "MG NAUTICA",
+    "price_usd": 12000,
+    "previous_price_usd": 12500,
+    "primary_photo_url": "https://static.wixstatic.com/media/fac5f8_09d6e242baf64f58be82a923b912a83e~mv2.png/fac5f8_09d6e242baf64f58be82a923b912a83e~mv2.png"
+  },
+  {
+    "slug": "velero-laminado-con-trabajo-finalizado",
+    "title": "VELERO LAMINADO | CUBIERTA NUEVA",
+    "description": "MG NAUTICA",
+    "price_usd": 11900,
+    "previous_price_usd": 12900,
+    "primary_photo_url": "https://static.wixstatic.com/media/fac5f8_e5a3c39dcdf94607bbfcafcf354abdcb~mv2.jpg/fac5f8_e5a3c39dcdf94607bbfcafcf354abdcb~mv2.jpg"
+  },
+  {
+    "slug": "velero-eitin-25",
+    "title": "VELERO EITIN 25",
+    "description": "MG NAUTICA",
+    "price_usd": 11500,
+    "previous_price_usd": 12500,
+    "primary_photo_url": "https://static.wixstatic.com/media/fac5f8_28430552ac9f493294d5cf84939a27f9~mv2.jpg/fac5f8_28430552ac9f493294d5cf84939a27f9~mv2.jpg"
+  },
+  {
+    "slug": "lancha-505",
+    "title": "LANCHA 505",
+    "description": "MG NAUTICA",
+    "price_usd": 11000,
+    "previous_price_usd": null,
+    "primary_photo_url": "https://static.wixstatic.com/media/fac5f8_2f1d67452bbb4c69ae5196fb7c5b3fde~mv2.jpg/fac5f8_2f1d67452bbb4c69ae5196fb7c5b3fde~mv2.jpg"
+  },
+  {
+    "slug": "velero-limbo-23",
+    "title": "VELERO LIMBO 23",
+    "description": "MG NAUTICA",
+    "price_usd": 11000,
+    "previous_price_usd": 12000,
+    "primary_photo_url": "https://static.wixstatic.com/media/fac5f8_da25a86ef41a433fbe795bf8a6692207~mv2.jpg/fac5f8_da25a86ef41a433fbe795bf8a6692207~mv2.jpg"
+  },
+  {
+    "slug": "velero-clásico-doble-proa",
+    "title": "VELERO CLÁSICO DOBLE PROA",
+    "description": "MG NAUTICA",
+    "price_usd": 11000,
+    "previous_price_usd": 11500,
+    "primary_photo_url": "https://static.wixstatic.com/media/fac5f8_2e8015c7dd6a47e48e4560ec06b22386~mv2.png/fac5f8_2e8015c7dd6a47e48e4560ec06b22386~mv2.png"
+  },
+  {
+    "slug": "velero-plenamar-23",
+    "title": "●RESERVADO | VELERO PLENAMAR 23",
+    "description": "MG NAUTICA",
+    "price_usd": 10500,
+    "previous_price_usd": null,
+    "primary_photo_url": "https://static.wixstatic.com/media/fac5f8_f3661b5967f54d28959d83721560d37e~mv2.jpg/fac5f8_f3661b5967f54d28959d83721560d37e~mv2.jpg"
+  },
+  {
+    "slug": "cojín-asiento-impermeable",
+    "title": "Velero Super 22 – Nuevo Precio – Oportunidad",
+    "description": "MG NAUTICA",
+    "price_usd": 9700,
+    "previous_price_usd": 10700,
+    "primary_photo_url": "https://static.wixstatic.com/media/fac5f8_ded4eb7750da4a3f886cd83f5616a978~mv2.png/fac5f8_ded4eb7750da4a3f886cd83f5616a978~mv2.png"
+  },
+  {
+    "slug": "velero-super-22-nuevo-precio-oportunidad",
+    "title": "Velero Super 22 – Nuevo Precio – Oportunidad",
+    "description": "MG NAUTICA",
+    "price_usd": 9500,
+    "previous_price_usd": 10000,
+    "primary_photo_url": "https://static.wixstatic.com/media/fac5f8_a4a95203149c41a1b44c4b465bc118ab~mv2.jpg/fac5f8_a4a95203149c41a1b44c4b465bc118ab~mv2.jpg"
+  },
+  {
+    "slug": "velero-clásico-ithurbide-oportunidad",
+    "title": "VELERO CLÁSICO | ●ITHURBIDE | ●OPORTUNIDAD",
+    "description": "MG NAUTICA",
+    "price_usd": 9000,
+    "previous_price_usd": null,
+    "primary_photo_url": "https://static.wixstatic.com/media/fac5f8_bf39449036ab44198fd25f4b31c53c5d~mv2.jpg/fac5f8_bf39449036ab44198fd25f4b31c53c5d~mv2.jpg"
+  },
+  {
+    "slug": "velero-maxi-20",
+    "title": "VELERO MAXI 20",
+    "description": "MG NAUTICA",
+    "price_usd": 8500,
+    "previous_price_usd": 9000,
+    "primary_photo_url": "https://static.wixstatic.com/media/fac5f8_f0b0f6b6adb24dc5b2894792a2726bfd~mv2.jpg/fac5f8_f0b0f6b6adb24dc5b2894792a2726bfd~mv2.jpg"
+  },
+  {
+    "slug": "velero-holland-23",
+    "title": "VELERO HOLLAND 23",
+    "description": "MG NAUTICA",
+    "price_usd": 8500,
+    "previous_price_usd": null,
+    "primary_photo_url": "https://static.wixstatic.com/media/fac5f8_9253da11bd0d49c589533e5ce2ca9ee3~mv2.jpg/fac5f8_9253da11bd0d49c589533e5ce2ca9ee3~mv2.jpg"
+  },
+  {
+    "slug": "velero-miura-25-dominante-ii",
+    "title": "VELERO MIURA 25 DOMINANTE II",
+    "description": "MG NAUTICA",
+    "price_usd": 8500,
+    "previous_price_usd": 9000,
+    "primary_photo_url": "https://static.wixstatic.com/media/fac5f8_9e9aac15ee00425eb4f175b84e3de570~mv2.jpg/fac5f8_9e9aac15ee00425eb4f175b84e3de570~mv2.jpg"
+  },
+  {
+    "slug": "veero-miura-25-a-mejorar",
+    "title": "VELERO MIURA 25 - A MEJORAR",
+    "description": "MG NAUTICA",
+    "price_usd": 8000,
+    "previous_price_usd": 9000,
+    "primary_photo_url": "https://static.wixstatic.com/media/fac5f8_f4146290398c4d768aa5d12d45f977ec~mv2.jpg/fac5f8_f4146290398c4d768aa5d12d45f977ec~mv2.jpg"
+  },
+  {
+    "slug": "termo-acero-inoxidable",
+    "title": "Velero Krypton 20 – Oportunidad",
+    "description": "MG NAUTICA",
+    "price_usd": 7900,
+    "previous_price_usd": null,
+    "primary_photo_url": "https://static.wixstatic.com/media/fac5f8_34ea4a5088884d809b005960070a61e1~mv2.jpg/fac5f8_34ea4a5088884d809b005960070a61e1~mv2.jpg"
+  },
+  {
+    "slug": "lancha-marine-sur-1500",
+    "title": "LANCHA MARINE SUR 1500",
+    "description": "MG NAUTICA",
+    "price_usd": 7000,
+    "previous_price_usd": null,
+    "primary_photo_url": "https://static.wixstatic.com/media/fac5f8_01e2366c2d144d28afdbb4d02324ccf7~mv2.jpg/fac5f8_01e2366c2d144d28afdbb4d02324ccf7~mv2.jpg"
+  },
+  {
+    "slug": "velero-jb-23-ideal-primer-barco",
+    "title": "VELERO JB 23 | IDEAL PRIMER BARCO",
+    "description": "MG NAUTICA",
+    "price_usd": 6000,
+    "previous_price_usd": 8500,
+    "primary_photo_url": "https://static.wixstatic.com/media/fac5f8_fc1b64c515ee4eb789ece88186d13aa8~mv2.jpg/fac5f8_fc1b64c515ee4eb789ece88186d13aa8~mv2.jpg"
+  }
+]

@@ -1,0 +1,9 @@
+{% extends "admin/base.html" %}
+{% block title %}Sin permisos - Admin{% endblock %}
+{% block content %}
+<section class="admin-section">
+    <h1>403</h1>
+    <p>Tu usuario no tiene permisos para ver esta sección.</p>
+    <a class="btn" href="{{ url_for('admin.dashboard') }}">Volver al panel</a>
+</section>
+{% endblock %}

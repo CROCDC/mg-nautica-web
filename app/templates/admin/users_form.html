@@ -1,0 +1,25 @@
+{% extends "admin/base.html" %}
+{% block title %}{{ 'Nuevo usuario' if not user else user.email }} - Admin{% endblock %}
+{% block content %}
+<h1>{{ 'Nuevo usuario' if not user else ('Editar: ' ~ user.email) }}</h1>
+<form method="post" class="form admin-form">
+    {% set u = user %}
+    <label>Email *<input type="email" name="email" required value="{{ form.get('email') if form.get('email') else (u.email if u else '') }}"></label>
+    <label>Nombre<input name="name" value="{{ form.get('name') if form.get('name') else (u.name if u else '') }}"></label>
+    <label>Rol
+        <select name="role">
+            {% set selected = form.get('role') if form.get('role') else (u.role.value if u else 'editor') %}
+            {% for r in roles %}
+            <option value="{{ r.value }}" {% if selected == r.value %}selected{% endif %}>{{ r.value }}</option>
+            {% endfor %}
+        </select>
+    </label>
+    {% if u %}
+    <label>Nueva contraseña (dejar vacío para no cambiar)<input type="password" name="password" minlength="8"></label>
+    <label><input type="checkbox" name="active" {% if u.active %}checked{% endif %}> Activo</label>
+    {% else %}
+    <label>Contraseña *<input type="password" name="password" required minlength="8"></label>
+    {% endif %}
+    <button type="submit" class="btn btn-primary">Guardar</button>
+</form>
+{% endblock %}

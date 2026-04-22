@@ -1,0 +1,39 @@
+{% extends "admin/base.html" %}
+{% block title %}Publicación #{{ listing.id }} - Admin{% endblock %}
+{% block content %}
+<h1>Publicación #{{ listing.id }}</h1>
+<dl class="admin-dl">
+    <dt>Solicitante</dt><dd>{{ listing.first_name }} {{ listing.last_name }}</dd>
+    <dt>Email</dt><dd>{{ listing.email }}</dd>
+    <dt>Teléfono</dt><dd>{{ listing.phone or '—' }}</dd>
+    <dt>Estado producto</dt><dd>{{ condition_label[listing.condition.value] }}</dd>
+    <dt>Precio sugerido</dt><dd>{% if listing.asked_price_usd %}US$ {{ '{:,}'.format(listing.asked_price_usd) }}{% else %}—{% endif %}</dd>
+    <dt>Estado moderación</dt><dd>{{ listing.moderation_status.value }}</dd>
+    <dt>Creado</dt><dd>{{ listing.created_at.strftime('%Y-%m-%d %H:%M') }}</dd>
+    {% if listing.reviewed_at %}
+    <dt>Revisado</dt><dd>{{ listing.reviewed_at.strftime('%Y-%m-%d %H:%M') }} por {{ listing.reviewed_by or '—' }}</dd>
+    {% endif %}
+</dl>
+
+<h2>Descripción</h2>
+<pre class="admin-pre">{{ listing.description }}</pre>
+
+{% if listing.file_urls %}
+<h2>Archivos adjuntos</h2>
+<ul>
+    {% for url in listing.file_urls %}
+    <li><a href="{{ url }}" target="_blank" rel="noopener">{{ url }}</a></li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+<h2>Moderar</h2>
+<form method="post" action="{{ url_for('admin.listings_moderate', listing_id=listing.id) }}" class="form admin-form">
+    <label>Notas internas<textarea name="internal_notes" rows="3">{{ listing.internal_notes or '' }}</textarea></label>
+    <div class="admin-actions">
+        <button type="submit" name="action" value="approve" class="btn btn-primary">Aprobar</button>
+        <button type="submit" name="action" value="reject" class="btn btn-danger">Rechazar</button>
+        <button type="submit" name="action" value="mark_published" class="btn">Marcar como publicada</button>
+    </div>
+</form>
+{% endblock %}

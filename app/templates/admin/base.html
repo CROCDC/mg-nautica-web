@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Admin - MG Náutica{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+<body class="admin">
+    {% if current_user.is_authenticated %}
+    <header class="admin-header">
+        <div class="admin-header-inner">
+            <a class="admin-brand" href="{{ url_for('admin.dashboard') }}">MG Náutica · Admin</a>
+            <nav class="admin-nav">
+                <a href="{{ url_for('admin.boats_list') }}">Embarcaciones</a>
+                <a href="{{ url_for('admin.accessories_list') }}">Accesorios</a>
+                <a href="{{ url_for('admin.listings_list') }}">Publicaciones</a>
+                <a href="{{ url_for('admin.sale_inquiries_list') }}">Consultas venta</a>
+                <a href="{{ url_for('admin.boat_inquiries_list') }}">Consultas barco</a>
+                {% if current_user.is_admin %}
+                <a href="{{ url_for('admin.users_list') }}">Usuarios</a>
+                {% endif %}
+            </nav>
+            <div class="admin-user">
+                <span>{{ current_user.email }} · {{ current_user.role.value }}</span>
+                <form method="post" action="{{ url_for('admin.logout') }}" style="display:inline;">
+                    <button type="submit" class="btn btn-link">Salir</button>
+                </form>
+            </div>
+        </div>
+    </header>
+    {% endif %}
+
+    <main class="admin-main">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <ul class="flash-list">
+                    {% for category, message in messages %}
+                    <li class="flash flash-{{ category }}">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>

@@ -1,0 +1,45 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Virtual envs
+.venv/
+venv/
+env/
+
+# Flask / SQLite
+instance/
+*.db
+*.sqlite3
+
+# Env files
+.env
+.env.local
+
+# Uploads
+uploads/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Coverage / testing
+.coverage
+.pytest_cache/
+htmlcov/
+
+# Playwright
+tests/screenshots/*.png
+!tests/screenshots/.gitkeep

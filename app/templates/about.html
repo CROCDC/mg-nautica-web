@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+{% block title %}Quiénes somos — MG Náutica{% endblock %}
+{% block description %}Conocé la historia de Gaby y Nacho, fundadores de MG Náutica y creadores de @abordodelthalia.{% endblock %}
+
+{% block content %}
+
+<div class="page-banner">
+    <div class="container">
+        <span class="section-eyebrow">Nuestra historia</span>
+        <h1>Quiénes somos</h1>
+        <p>Más que un broker: somos navegantes que eligieron vivir en el mar y hoy acompañamos a otros a hacer lo mismo.</p>
+    </div>
+</div>
+
+<section class="section">
+    <div class="container">
+        <div class="content-2col">
+            <div>
+                <span class="section-eyebrow" style="text-align:left;display:block;margin-bottom:1rem;">La historia</span>
+                <p class="about-story">
+                    <strong>Gaby y Nacho</strong> son los fundadores de MG Náutica y creadores de <strong>@abordodelthalia</strong>.
+                    Su transformación comenzó hace más de diez años cuando encontraron un cartel de venta de un velero llamado Ibicuy.
+                    Sin presupuesto pero con mucha entrega, vendieron lo que tenían para firmar los papeles.
+                </p>
+                <p class="about-story" style="margin-top:1rem;">
+                    Desde hace más de cinco años viven a bordo del <strong>Thalia</strong>, un motovelero clásico de lapacho,
+                    año 1930, diseño Parodi. <strong>Nacho</strong> es instructor de timonel y kitesurf.
+                    <strong>Gaby</strong> es gestora náutica de tradición familiar.
+                </p>
+                <p class="about-story" style="margin-top:1rem;">
+                    Hoy, MG Náutica es una <strong>gestoría y brokería profesional</strong> con presencia en ambos
+                    márgenes del Río de la Plata, ofreciendo un servicio integral desde la valuación hasta la transferencia.
+                </p>
+            </div>
+            <div class="photo-collage">
+                <div class="photo-collage-main">
+                    <img src="{{ url_for('static', filename='site/founders-1.jpg') }}" alt="Gaby y Nacho" loading="lazy">
+                </div>
+                <div class="photo-collage-sub">
+                    <img src="{{ url_for('static', filename='site/story-main.jpg') }}" alt="Navegando un sueño" loading="lazy">
+                </div>
+                <div class="photo-collage-sub">
+                    <img src="{{ url_for('static', filename='site/thalia.jpg') }}" alt="Motovelero Thalia" loading="lazy">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section section-surface">
+    <div class="container">
+        <div class="section-head">
+            <span class="section-eyebrow">Cobertura</span>
+            <h2>Dónde estamos</h2>
+            <p>Presencia en ambos márgenes del Río de la Plata.</p>
+        </div>
+        <div class="coverage-grid" style="max-width:720px;margin:0 auto;">
+            <div class="coverage-card">
+                <h3>🇦🇷 Argentina</h3>
+                <ul>
+                    <li>CABA</li>
+                    <li>Buenos Aires Zona Norte</li>
+                    <li>Buenos Aires Zona Sur</li>
+                    <li>Quilmes · La Plata</li>
+                    <li>Rosario</li>
+                </ul>
+            </div>
+            <div class="coverage-card">
+                <h3>🇺🇾 Uruguay</h3>
+                <ul>
+                    <li>Montevideo</li>
+                    <li>Punta del Este</li>
+                    <li>Piriápolis</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section section-surface">
+    <div class="container">
+        <div class="section-head">
+            <span class="section-eyebrow">El equipo</span>
+            <h2>Contactos regionales</h2>
+        </div>
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-icon">⚓</div>
+                <h3>Sergio Ricci</h3>
+                <p>Buenos Aires Zona Norte y CABA</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">⚓</div>
+                <h3>Neil Skellorn</h3>
+                <p>Buenos Aires Zona Sur</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">⚓</div>
+                <h3>Rodrigo</h3>
+                <p>Montevideo y Punta del Este</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">⚓</div>
+                <h3>Víctor</h3>
+                <p>Piriápolis</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="cta-band">
+    <h2>¿Querés trabajar con nosotros?</h2>
+    <p>Contactanos por WhatsApp y te contamos cómo sumarte al equipo.</p>
+    <div class="cta-row">
+        <a class="btn btn-primary btn-lg" href="https://wa.me/5491126949628" target="_blank" rel="noopener">💬 WhatsApp</a>
+        <a class="btn btn-outline-white btn-lg" href="{{ url_for('contact') }}">Ver todos los contactos</a>
+    </div>
+</section>
+
+{% endblock %}

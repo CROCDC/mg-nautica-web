@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% block title %}Embarcaciones en venta — MG Náutica{% endblock %}
+{% block description %}Catálogo de embarcaciones en venta en Argentina, Uruguay y el exterior. Veleros, lanchas, catamaranes.{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-title">
+        <h1>Embarcaciones</h1>
+        <p>{{ boats|length }} embarcacion{{ 'es' if boats|length != 1 else '' }} disponible{{ 's' if boats|length != 1 else '' }}</p>
+    </div>
+
+    <form class="filter-bar" method="get">
+        <div class="filter-group filter-search">
+            <label for="q">Buscar</label>
+            <input id="q" type="text" name="q" placeholder="Título, astillero, ciudad..." value="{{ search or '' }}">
+        </div>
+        <div class="filter-group">
+            <label for="type">Tipo</label>
+            <select id="type" name="type">
+                <option value="">Todos</option>
+                {% for t in boat_types %}
+                <option value="{{ t.value }}" {% if selected_type and selected_type.value == t.value %}selected{% endif %}>{{ boat_type_label[t.value] }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="filter-group">
+            <label for="flag">Bandera</label>
+            <select id="flag" name="flag">
+                <option value="">Todas</option>
+                {% for f in flags %}
+                <option value="{{ f.value }}" {% if selected_flag and selected_flag.value == f.value %}selected{% endif %}>{{ flag_label[f.value] }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="filter-group">
+            <label for="min_price">Precio mín. (USD)</label>
+            <input id="min_price" type="number" name="min_price" placeholder="0" value="{{ request.args.get('min_price', '') }}">
+        </div>
+        <div class="filter-group">
+            <label for="max_price">Precio máx. (USD)</label>
+            <input id="max_price" type="number" name="max_price" placeholder="Sin límite" value="{{ request.args.get('max_price', '') }}">
+        </div>
+        <div class="filter-group">
+            <label for="sort">Ordenar</label>
+            <select id="sort" name="sort">
+                {% for key, label in sort_label.items() %}
+                <option value="{{ key }}" {% if sort == key %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="filter-actions">
+            <button type="submit" class="btn btn-navy">Aplicar</button>
+            <a href="{{ url_for('boats_list') }}" class="btn btn-ghost">Limpiar</a>
+        </div>
+    </form>
+
+    {% if boats %}
+    <div class="boat-grid">
+        {% for boat in boats %}
+        <a class="boat-card" href="{{ url_for('boat_detail', slug=boat.slug) }}">
+            <div class="boat-card-img">
+                {% if boat.primary_photo_url %}
+                <img src="{{ boat.primary_photo_url }}" alt="{{ boat.title }}" loading="lazy">
+                {% else %}
+                <img src="https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?w=500&q=70" alt="{{ boat.title }}" loading="lazy">
+                {% endif %}
+                <span class="badge-type">{{ boat_type_label[boat.boat_type.value] }}</span>
+            </div>
+            <div class="boat-card-body">
+                <div class="boat-card-title">{{ boat.title }}</div>
+                <div class="boat-card-location">{{ boat.city_location or boat.country_location or '—' }} · {{ flag_label[boat.flag.value] }}</div>
+                <div class="boat-card-meta">
+                    <div>
+                        {% if boat.on_sale and boat.previous_price_usd %}
+                        <div class="boat-card-price-old">US$ {{ '{:,}'.format(boat.previous_price_usd) }}</div>
+                        {% endif %}
+                        <div class="boat-card-price">US$ {{ '{:,}'.format(boat.price_usd) }}</div>
+                    </div>
+                    {% if boat.length_m %}
+                    <span class="boat-card-price-old" style="margin-left:auto;">{{ boat.length_m }}m</span>
+                    {% endif %}
+                </div>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty">
+        <p>No hay embarcaciones que coincidan con los filtros.</p>
+        <a class="btn btn-outline" href="{{ url_for('boats_list') }}" style="margin-top:1rem;">Ver todas</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

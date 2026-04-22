@@ -1,0 +1,22 @@
+{% extends "admin/base.html" %}
+{% block title %}Consultas por embarcación - Admin{% endblock %}
+{% block content %}
+<h1>Consultas por embarcación</h1>
+<table class="admin-table">
+    <thead><tr><th>ID</th><th>Embarcación</th><th>Nombre</th><th>Email</th><th>Canal</th><th>Creado</th></tr></thead>
+    <tbody>
+        {% for i in inquiries %}
+        <tr>
+            <td>{{ i.id }}</td>
+            <td>{% if i.boat %}<a href="{{ url_for('admin.boats_edit', boat_id=i.boat.id) }}">{{ i.boat.title }}</a>{% else %}—{% endif %}</td>
+            <td>{{ i.name }}{% if i.phone %}<br><small>{{ i.phone }}</small>{% endif %}</td>
+            <td>{{ i.email }}</td>
+            <td>{{ i.channel.value }}</td>
+            <td>{{ i.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="6" class="empty">No hay consultas.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

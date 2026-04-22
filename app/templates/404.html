@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Página no encontrada — MG Náutica{% endblock %}
+
+{% block content %}
+<div class="not-found">
+    <div class="container">
+        <h1>404</h1>
+        <p>La página que buscás no existe o fue movida.</p>
+        <div style="display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap;">
+            <a class="btn btn-primary btn-lg" href="{{ url_for('home') }}">Volver al inicio</a>
+            <a class="btn btn-outline btn-lg" href="{{ url_for('boats_list') }}">Ver embarcaciones</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

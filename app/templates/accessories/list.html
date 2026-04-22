@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block title %}Accesorios náuticos — MG Náutica{% endblock %}
+{% block description %}Accesorios y equipamiento náutico en venta. Indumentaria, accesorios a bordo y más.{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-title">
+        <h1>Accesorios náuticos</h1>
+        <p>{{ accessories|length }} accesorio{{ 's' if accessories|length != 1 else '' }} disponible{{ 's' if accessories|length != 1 else '' }}</p>
+    </div>
+
+    <form class="filter-bar" method="get">
+        <div class="filter-group">
+            <label for="category">Categoría</label>
+            <select id="category" name="category">
+                <option value="">Todas</option>
+                {% for c in categories %}
+                <option value="{{ c.value }}" {% if selected_category and selected_category.value == c.value %}selected{% endif %}>{{ accessory_category_label[c.value] }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="filter-actions">
+            <button type="submit" class="btn btn-navy">Filtrar</button>
+            <a href="{{ url_for('accessories_list') }}" class="btn btn-ghost">Limpiar</a>
+        </div>
+    </form>
+
+    {% if accessories %}
+    <div class="boat-grid">
+        {% for acc in accessories %}
+        <a class="boat-card" href="{{ url_for('accessory_detail', slug=acc.slug) }}">
+            <div class="boat-card-img">
+                {% if acc.photo_url %}
+                <img src="{{ acc.photo_url }}" alt="{{ acc.title }}" loading="lazy">
+                {% else %}
+                <div style="width:100%;height:100%;background:var(--surface);display:flex;align-items:center;justify-content:center;font-size:2rem;">⚓</div>
+                {% endif %}
+                <span class="badge-type">{{ accessory_category_label[acc.category.value] }}</span>
+            </div>
+            <div class="boat-card-body">
+                <div class="boat-card-title">{{ acc.title }}</div>
+                <div class="boat-card-meta">
+                    <div>
+                        {% if acc.previous_price_usd %}
+                        <div class="boat-card-price-old">US$ {{ '{:,}'.format(acc.previous_price_usd) }}</div>
+                        {% endif %}
+                        <div class="boat-card-price">US$ {{ '{:,}'.format(acc.price_usd) }}</div>
+                    </div>
+                    {% if acc.stock %}
+                    <span class="boat-card-price-old" style="margin-left:auto;">Stock: {{ acc.stock }}</span>
+                    {% endif %}
+                </div>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty">
+        <p>No hay accesorios disponibles en este momento.</p>
+        <a class="btn btn-outline" href="{{ url_for('accessories_list') }}" style="margin-top:1rem;">Ver todos</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

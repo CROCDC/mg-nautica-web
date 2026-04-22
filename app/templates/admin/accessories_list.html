@@ -1,0 +1,32 @@
+{% extends "admin/base.html" %}
+{% block title %}Accesorios - Admin{% endblock %}
+{% block content %}
+<div class="admin-toolbar">
+    <h1>Accesorios</h1>
+    <a class="btn btn-primary" href="{{ url_for('admin.accessories_new') }}">Nuevo accesorio</a>
+</div>
+<table class="admin-table">
+    <thead>
+        <tr><th>ID</th><th>Título</th><th>Categoría</th><th>Precio</th><th>Stock</th><th>Activo</th><th></th></tr>
+    </thead>
+    <tbody>
+        {% for a in accessories %}
+        <tr>
+            <td>{{ a.id }}</td>
+            <td><a href="{{ url_for('admin.accessories_edit', accessory_id=a.id) }}">{{ a.title }}</a><br><small>{{ a.slug }}</small></td>
+            <td>{{ accessory_category_label[a.category.value] }}</td>
+            <td>US$ {{ '{:,}'.format(a.price_usd) }}</td>
+            <td>{{ a.stock }}</td>
+            <td>{{ 'Sí' if a.active else 'No' }}</td>
+            <td>
+                <form method="post" action="{{ url_for('admin.accessories_delete', accessory_id=a.id) }}" onsubmit="return confirm('¿Borrar accesorio?');" style="display:inline;">
+                    <button type="submit" class="btn btn-danger btn-sm">Borrar</button>
+                </form>
+            </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="7" class="empty">No hay accesorios.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

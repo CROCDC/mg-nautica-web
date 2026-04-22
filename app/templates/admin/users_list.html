@@ -1,0 +1,30 @@
+{% extends "admin/base.html" %}
+{% block title %}Usuarios - Admin{% endblock %}
+{% block content %}
+<div class="admin-toolbar">
+    <h1>Usuarios</h1>
+    <a class="btn btn-primary" href="{{ url_for('admin.users_new') }}">Nuevo usuario</a>
+</div>
+<table class="admin-table">
+    <thead><tr><th>ID</th><th>Email</th><th>Nombre</th><th>Rol</th><th>Activo</th><th>Último login</th><th></th></tr></thead>
+    <tbody>
+        {% for u in users %}
+        <tr>
+            <td>{{ u.id }}</td>
+            <td><a href="{{ url_for('admin.users_edit', user_id=u.id) }}">{{ u.email }}</a></td>
+            <td>{{ u.name or '—' }}</td>
+            <td>{{ u.role.value }}</td>
+            <td>{{ 'Sí' if u.active else 'No' }}</td>
+            <td>{{ u.last_login_at.strftime('%Y-%m-%d %H:%M') if u.last_login_at else '—' }}</td>
+            <td>
+                {% if u.id != current_user.id %}
+                <form method="post" action="{{ url_for('admin.users_delete', user_id=u.id) }}" onsubmit="return confirm('¿Borrar usuario?');" style="display:inline;">
+                    <button type="submit" class="btn btn-danger btn-sm">Borrar</button>
+                </form>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

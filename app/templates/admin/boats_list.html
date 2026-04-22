@@ -1,0 +1,52 @@
+{% extends "admin/base.html" %}
+{% block title %}Embarcaciones - Admin{% endblock %}
+{% block content %}
+<div class="admin-toolbar">
+    <h1>Embarcaciones</h1>
+    <div>
+        <form method="get" class="inline-form">
+            <input type="search" name="q" value="{{ q or '' }}" placeholder="Buscar por título...">
+            <button type="submit" class="btn">Buscar</button>
+        </form>
+        <a class="btn btn-primary" href="{{ url_for('admin.boats_new') }}">Nueva embarcación</a>
+    </div>
+</div>
+
+<table class="admin-table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Título</th>
+            <th>Tipo</th>
+            <th>Bandera</th>
+            <th>Precio</th>
+            <th>Estado</th>
+            <th>Destacada</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for b in boats %}
+        <tr>
+            <td>{{ b.id }}</td>
+            <td>
+                <a href="{{ url_for('admin.boats_edit', boat_id=b.id) }}">{{ b.title }}</a>
+                <br><small>{{ b.slug }}</small>
+            </td>
+            <td>{{ boat_type_label[b.boat_type.value] }}</td>
+            <td>{{ flag_label[b.flag.value] }}</td>
+            <td>US$ {{ '{:,}'.format(b.price_usd) }}{% if b.on_sale %} <small>(oferta)</small>{% endif %}</td>
+            <td>{{ b.status.value }}</td>
+            <td>{{ 'Sí' if b.featured else '—' }}</td>
+            <td>
+                <form method="post" action="{{ url_for('admin.boats_delete', boat_id=b.id) }}" onsubmit="return confirm('¿Borrar esta embarcación?');" style="display:inline;">
+                    <button type="submit" class="btn btn-danger btn-sm">Borrar</button>
+                </form>
+            </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="8" class="empty">No hay embarcaciones.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

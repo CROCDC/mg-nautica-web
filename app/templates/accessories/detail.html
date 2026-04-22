@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}{{ accessory.title }} — MG Náutica{% endblock %}
+{% block description %}{{ accessory.title }}. US$ {{ '{:,}'.format(accessory.price_usd) }}.{% endblock %}
+
+{% block content %}
+<div class="container" style="padding-top:1.5rem; padding-bottom:3rem;">
+
+    <nav class="breadcrumb" aria-label="Ubicación">
+        <a href="{{ url_for('home') }}">Inicio</a>
+        <span class="breadcrumb-sep">/</span>
+        <a href="{{ url_for('accessories_list') }}">Accesorios</a>
+        <span class="breadcrumb-sep">/</span>
+        <span>{{ accessory.title }}</span>
+    </nav>
+
+    <div class="detail-layout">
+        <div class="detail-main">
+            <h1 class="detail-title">{{ accessory.title }}</h1>
+
+            <div class="detail-meta">
+                <span class="detail-chip">{{ accessory_category_label[accessory.category.value] }}</span>
+                {% if accessory.stock %}<span class="detail-chip">📦 Stock: {{ accessory.stock }}</span>{% endif %}
+            </div>
+
+            {% if accessory.photo_url %}
+            <div class="gallery">
+                <div class="gallery-main">
+                    <img src="{{ accessory.photo_url }}" alt="{{ accessory.title }}">
+                </div>
+            </div>
+            {% endif %}
+
+            {% if accessory.description %}
+            <section style="margin:2rem 0;">
+                <h2 style="margin-bottom:.75rem;">Descripción</h2>
+                <div style="color:var(--muted); line-height:1.8; white-space:pre-line; font-size:.95rem;">{{ accessory.description }}</div>
+            </section>
+            {% endif %}
+        </div>
+
+        <aside class="detail-sidebar">
+            <div class="sidebar-box">
+                <div class="sidebar-price">
+                    US$ {{ '{:,}'.format(accessory.price_usd) }}
+                    {% if accessory.previous_price_usd %}
+                    <span class="badge-save">— US$ {{ '{:,}'.format(accessory.previous_price_usd - accessory.price_usd) }}</span>
+                    {% endif %}
+                </div>
+                {% if accessory.previous_price_usd %}
+                <div class="sidebar-price-old">Antes: US$ {{ '{:,}'.format(accessory.previous_price_usd) }}</div>
+                {% endif %}
+                <div class="sidebar-actions">
+                    <a class="btn btn-primary btn-lg"
+                       href="https://wa.me/5491126949628?text={{ ('Hola! Me interesa: ' + accessory.title + '. ¿Podés darme más info?') | urlencode }}"
+                       target="_blank" rel="noopener">
+                        💬 Consultar por WhatsApp
+                    </a>
+                </div>
+            </div>
+        </aside>
+    </div>
+</div>
+{% endblock %}

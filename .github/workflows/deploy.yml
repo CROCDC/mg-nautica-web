@@ -1,0 +1,49 @@
+name: Deploy to Pantech
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  JENKINS_URL: https://jenkins.nexttech.com.ar
+  JOB_NAME: mg-nautica-web-prod
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Jenkins job
+        env:
+          JENKINS_USER: ${{ secrets.JENKINS_USER }}
+          JENKINS_PASSWORD: ${{ secrets.JENKINS_PASSWORD }}
+          JENKINS_API_TOKEN: ${{ secrets.JENKINS_API_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          echo "Authenticating to Jenkins..."
+          COOKIE_JAR=$(mktemp)
+          CRUMB=$(curl -s --cookie-jar "$COOKIE_JAR" \
+            --user "$JENKINS_USER:$JENKINS_PASSWORD" \
+            "$JENKINS_URL/crumbIssuer/api/xml?xpath=concat(//crumbRequestField,%22:%22,//crumb)")
+
+          if [ -z "$CRUMB" ]; then
+            echo "Failed to get Jenkins crumb"
+            exit 1
+          fi
+
+          echo "Triggering job $JOB_NAME..."
+          HTTP_CODE=$(curl -s -o /tmp/jenkins_resp -w "%{http_code}" \
+            --cookie "$COOKIE_JAR" \
+            -H "$CRUMB" \
+            -X POST \
+            "$JENKINS_URL/job/$JOB_NAME/build?token=$JENKINS_API_TOKEN")
+
+          if [ "$HTTP_CODE" != "201" ] && [ "$HTTP_CODE" != "200" ]; then
+            echo "Jenkins returned HTTP $HTTP_CODE"
+            cat /tmp/jenkins_resp
+            exit 1
+          fi
+
+          echo "Deploy triggered successfully (HTTP $HTTP_CODE)"
