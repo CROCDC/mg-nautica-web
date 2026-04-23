@@ -41,9 +41,25 @@ pipeline {
           sh buildCmd
         }
         script {
-          if (env.INFISICAL_PROJECT_ID?.trim() && env.INFISICAL_TOKEN?.trim()) {
-            def envFlag = env.INFISICAL_ENV?.trim() ?: 'prod'
-            sh "INFISICAL_API_URL=https://infisical.nexttech.com.ar/api infisical run --env ${envFlag} --projectId ${env.INFISICAL_PROJECT_ID} -- docker compose -f ${COMPOSE_FILE} up -d"
+          def projectId = params.INFISICAL_PROJECT_ID?.trim()
+          if (projectId) {
+            withCredentials([
+              string(credentialsId: 'infisical-client-id',     variable: 'INFISICAL_CLIENT_ID'),
+              string(credentialsId: 'infisical-client-secret', variable: 'INFISICAL_CLIENT_SECRET')
+            ]) {
+              sh """
+                INFISICAL_TOKEN=\$(INFISICAL_DISABLE_UPDATE_CHECK=true \
+                  infisical login --method=universal-auth \
+                    --client-id="\$INFISICAL_CLIENT_ID" \
+                    --client-secret="\$INFISICAL_CLIENT_SECRET" \
+                    --plain --silent)
+                INFISICAL_API_URL=https://infisical.nexttech.com.ar/api \
+                INFISICAL_TOKEN="\$INFISICAL_TOKEN" \
+                INFISICAL_DISABLE_UPDATE_CHECK=true \
+                infisical run --env prod --projectId ${projectId} \
+                  -- docker compose -f ${COMPOSE_FILE} up -d
+              """
+            }
           } else {
             sh "docker compose -f ${COMPOSE_FILE} up -d"
           }
