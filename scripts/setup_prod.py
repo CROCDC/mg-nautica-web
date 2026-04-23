@@ -9,15 +9,13 @@ import sys
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from flask_migrate import upgrade
-
 from app import app
 from app.factory import db
 from app.models import Boat, Accessory, User
 
 with app.app_context():
-    print("==> Running DB migrations...")
-    upgrade()
+    print("==> Creating tables...")
+    db.create_all()
 
     print("==> Seeding data...")
     from scripts.seed import seed
