@@ -49,15 +49,15 @@ pipeline {
             ]) {
               sh """
                 INFISICAL_TOKEN=\$(INFISICAL_DISABLE_UPDATE_CHECK=true \
-                  INFISICAL_API_URL=https://infisical.nexttech.com.ar/api \
                   infisical login --method=universal-auth \
                     --client-id="\$INFISICAL_CLIENT_ID" \
                     --client-secret="\$INFISICAL_CLIENT_SECRET" \
+                    --domain=https://infisical.nexttech.com.ar \
                     --plain --silent)
-                INFISICAL_API_URL=https://infisical.nexttech.com.ar/api \
-                INFISICAL_TOKEN="\$INFISICAL_TOKEN" \
                 INFISICAL_DISABLE_UPDATE_CHECK=true \
+                INFISICAL_TOKEN="\$INFISICAL_TOKEN" \
                 infisical run --env prod --projectId ${projectId} \
+                  --domain=https://infisical.nexttech.com.ar \
                   -- docker compose -f ${COMPOSE_FILE} up -d
               """
             }
