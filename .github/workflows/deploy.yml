@@ -33,5 +33,5 @@ jobs:
           CRUMB_HEADER=$(python3 -c "import json; d=json.load(open('crumb.json')); print(d['crumbRequestField'] + ': ' + d['crumb'])")
           echo "Crumb OK, triggering $JOB_NAME..."
           curl -b cookie.txt -X POST -H "$CRUMB_HEADER" -H "Content-Type: application/x-www-form-urlencoded" \
-            --data "" "https://jenkins.nexttech.com.ar/job/$JOB_NAME/build?token=$JENKINS_API_TOKEN" \
+            --data "" "https://jenkins.nexttech.com.ar/job/$JOB_NAME/buildWithParameters?token=$JENKINS_API_TOKEN" \
             --user "$JENKINS_USER:$JENKINS_PASSWORD"
