@@ -25,6 +25,8 @@
     <meta name="twitter:description"     content="{{ self.description() }}">
     <meta name="twitter:image"           content="{{ self.og_image() }}">
 
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon-32.png') }}" sizes="32x32">
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='favicon-180.png') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">

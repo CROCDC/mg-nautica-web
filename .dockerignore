@@ -15,6 +15,5 @@ env
 .DS_Store
 *.sqlite3
 *.db
-uploads/
 tests/
 docs/
