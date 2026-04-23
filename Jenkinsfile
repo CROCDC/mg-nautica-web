@@ -49,6 +49,7 @@ pipeline {
             ]) {
               sh """
                 INFISICAL_TOKEN=\$(INFISICAL_DISABLE_UPDATE_CHECK=true \
+                  INFISICAL_API_URL=https://infisical.nexttech.com.ar/api \
                   infisical login --method=universal-auth \
                     --client-id="\$INFISICAL_CLIENT_ID" \
                     --client-secret="\$INFISICAL_CLIENT_SECRET" \
