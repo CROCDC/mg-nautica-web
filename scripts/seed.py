@@ -164,7 +164,7 @@ FLAGSHIP_SPECS: dict[str, Any] = {
 def _get_or_create_boat(
     boat_data: dict[str, Any],
     specs_data: Optional[dict[str, Any]] = None,
-    photo_url: Optional[str] = None,
+    photos: Optional[list[str]] = None,
 ) -> Boat:
     existing: Optional[Boat] = (
         db.session.query(Boat).filter_by(slug=boat_data["slug"]).one_or_none()
@@ -177,8 +177,8 @@ def _get_or_create_boat(
     if specs_data:
         specs = BoatSpecs(boat_id=boat.id, **specs_data)
         db.session.add(specs)
-    if photo_url:
-        photo = BoatPhoto(boat_id=boat.id, url=photo_url, position=0, is_primary=True)
+    for i, url in enumerate(photos or []):
+        photo = BoatPhoto(boat_id=boat.id, url=url, position=i, is_primary=(i == 0))
         db.session.add(photo)
     db.session.flush()
     return boat
@@ -263,7 +263,7 @@ def seed() -> tuple[int, int, bool]:
         price = int(p["price_usd"] or 0)
         prev_price = p["previous_price_usd"]
         on_sale = prev_price is not None
-        photo_url = p["primary_photo_url"]
+        photos = p.get("photos") or ([p["primary_photo_url"]] if p.get("primary_photo_url") else [])
 
         boat_type = _classify_boat_type(slug, title)
         flag = _classify_flag(slug, title, description)
@@ -316,7 +316,7 @@ def seed() -> tuple[int, int, bool]:
             }
 
         before = db.session.query(Boat).filter_by(slug=slug).count()
-        _get_or_create_boat(boat_data, specs_data=specs_data, photo_url=photo_url)
+        _get_or_create_boat(boat_data, specs_data=specs_data, photos=photos)
         after = db.session.query(Boat).filter_by(slug=slug).count()
         if before == 0 and after == 1:
             boats_created += 1
