@@ -143,6 +143,51 @@ def mobile_page(browser, live_server_url):
     context.close()
 
 
+# ── Boat detail fixture ───────────────────────────────────────────────────────
+
+@pytest.fixture
+def boat_detail(browser, live_server_url):
+    """Desktop page already navigated to the first boat's detail page.
+
+    Yields (page, live_server_url, slug) so tests can build sub-URLs if needed.
+    """
+    context = browser.new_context(
+        viewport={"width": 1280, "height": 800},
+        locale="es-AR",
+    )
+    page = context.new_page()
+    page.goto(live_server_url + "/boats")
+    page.wait_for_load_state("networkidle")
+    href = page.locator(".boat-card a").first.get_attribute("href")
+    slug = href.rstrip("/").split("/")[-1]
+    page.goto(live_server_url + href)
+    page.wait_for_load_state("networkidle")
+    yield page, live_server_url, slug
+    context.close()
+
+
+@pytest.fixture(params=VIEWPORTS)
+def boat_detail_vp(request, browser, live_server_url):
+    """Boat detail page parametrizado × 3 viewports.
+
+    Yields (page, live_server_url, slug, viewport_name).
+    """
+    info = request.param
+    context = browser.new_context(
+        viewport={"width": info["width"], "height": info["height"]},
+        locale="es-AR",
+    )
+    page = context.new_page()
+    page.goto(live_server_url + "/boats")
+    page.wait_for_load_state("networkidle")
+    href = page.locator(".boat-card a").first.get_attribute("href")
+    slug = href.rstrip("/").split("/")[-1]
+    page.goto(live_server_url + href)
+    page.wait_for_load_state("networkidle")
+    yield page, live_server_url, slug, info["name"]
+    context.close()
+
+
 # ── Helper ────────────────────────────────────────────────────────────────────
 
 def shot(page, name: str) -> None:
