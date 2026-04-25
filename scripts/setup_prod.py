@@ -23,8 +23,4 @@ with app.app_context():
     print(f"    {boats} new boats ({db.session.query(Boat).count()} total), "
           f"{accessories} new accessories ({db.session.query(Accessory).count()} total)")
 
-    print("==> Downloading images...")
-    import scripts.download_images as dl
-    dl.main()
-
     print("==> All done.")

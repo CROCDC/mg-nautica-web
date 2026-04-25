@@ -62,6 +62,8 @@ def _ext_from_content_type(ctype: str, url: str) -> str:
 
 def _download(url: str) -> str | None:
     """Download url to UPLOAD_DIR. Returns local path like /uploads/boats/xxx.jpg or None."""
+    if url.startswith("/uploads/"):
+        return url  # already local
     UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
     try:
         req = urllib.request.Request(url, headers=HEADERS)
@@ -127,15 +129,12 @@ def scrape_and_download() -> None:
 
             # 1. Scrape gallery URLs
             try:
-                page.goto(f"{BASE_URL}/{slug}", wait_until="networkidle", timeout=30000)
-                page.wait_for_selector(
-                    "wow-image[data-image-info], img[src*='wixstatic.com/media']",
-                    timeout=10000,
-                )
+                page.goto(f"{BASE_URL}/{slug}", wait_until="domcontentloaded", timeout=30000)
+                time.sleep(2)
                 page.evaluate("window.scrollTo(0, document.body.scrollHeight / 2)")
-                time.sleep(0.8)
+                time.sleep(1)
                 page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
-                time.sleep(0.8)
+                time.sleep(1)
                 wix_urls = _extract_photos_from_page(page)
             except Exception as e:
                 print(f"  scrape ERROR: {e}")

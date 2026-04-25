@@ -31,18 +31,30 @@
             {# Gallery #}
             {% if boat.photos %}
             <div class="gallery">
-                <div class="gallery-main" id="gallery-main">
+                <div class="gallery-main" id="gallery-main" onclick="openLightbox(currentIdx)">
                     <img id="gallery-main-img" src="{{ boat.photos[0].url }}" alt="{{ boat.photos[0].alt or boat.title }}">
+                    {% if boat.photos|length > 1 %}
+                    <button class="gallery-nav prev" onclick="galleryNav(-1,event)">&#8249;</button>
+                    <button class="gallery-nav next" onclick="galleryNav(1,event)">&#8250;</button>
+                    {% endif %}
                 </div>
                 {% if boat.photos|length > 1 %}
-                <div class="gallery-thumbs">
+                <div class="gallery-thumbs" id="gallery-thumbs">
                     {% for photo in boat.photos %}
-                    <div class="gallery-thumb {% if loop.first %}active{% endif %}" onclick="switchPhoto('{{ photo.url }}', this)">
+                    <div class="gallery-thumb {% if loop.first %}active{% endif %}" onclick="switchPhoto({{ loop.index0 }})">
                         <img src="{{ photo.url }}" alt="{{ photo.alt or '' }}" loading="lazy">
                     </div>
                     {% endfor %}
                 </div>
                 {% endif %}
+            </div>
+            {# Lightbox #}
+            <div class="lightbox" id="lightbox">
+                <button class="lb-close" onclick="closeLightbox()">&#x2715;</button>
+                <button class="lb-arrow prev" onclick="lbNav(-1)">&#8249;</button>
+                <img class="lb-img" id="lb-img" src="" alt="">
+                <button class="lb-arrow next" onclick="lbNav(1)">&#8250;</button>
+                <div class="lb-counter" id="lb-counter"></div>
             </div>
             {% endif %}
 
@@ -242,10 +254,51 @@
 
 {% block head %}
 <script>
-function switchPhoto(url, el) {
-    document.getElementById('gallery-main-img').src = url;
-    document.querySelectorAll('.gallery-thumb').forEach(t => t.classList.remove('active'));
-    el.classList.add('active');
+const photos = [{% for p in boat.photos %}"{{ p.url }}"{% if not loop.last %},{% endif %}{% endfor %}];
+let currentIdx = 0;
+
+function switchPhoto(idx) {
+    currentIdx = idx;
+    document.getElementById('gallery-main-img').src = photos[idx];
+    const thumbs = document.querySelectorAll('.gallery-thumb');
+    thumbs.forEach((t, i) => t.classList.toggle('active', i === idx));
+    if (thumbs[idx]) thumbs[idx].scrollIntoView({behavior:'smooth', block:'nearest', inline:'center'});
 }
+
+function galleryNav(dir, e) {
+    e.stopPropagation();
+    switchPhoto((currentIdx + dir + photos.length) % photos.length);
+}
+
+function openLightbox(idx) {
+    currentIdx = idx;
+    document.getElementById('lb-img').src = photos[idx];
+    document.getElementById('lb-counter').textContent = (idx + 1) + ' / ' + photos.length;
+    document.getElementById('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+}
+
+function lbNav(dir) {
+    currentIdx = (currentIdx + dir + photos.length) % photos.length;
+    document.getElementById('lb-img').src = photos[currentIdx];
+    document.getElementById('lb-counter').textContent = (currentIdx + 1) + ' / ' + photos.length;
+    switchPhoto(currentIdx);
+}
+
+document.addEventListener('keydown', e => {
+    if (!document.getElementById('lightbox').classList.contains('open')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowRight') lbNav(1);
+    if (e.key === 'ArrowLeft') lbNav(-1);
+});
+
+document.getElementById('lightbox').addEventListener('click', function(e) {
+    if (e.target === this) closeLightbox();
+});
 </script>
 {% endblock %}

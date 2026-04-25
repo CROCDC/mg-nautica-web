@@ -23,8 +23,6 @@ instance/
 .env
 .env.local
 
-# Uploads
-uploads/
 
 # IDE
 .vscode/
@@ -43,3 +41,4 @@ htmlcov/
 # Playwright
 tests/screenshots/*.png
 !tests/screenshots/.gitkeep
+.claude/scheduled_tasks.lock

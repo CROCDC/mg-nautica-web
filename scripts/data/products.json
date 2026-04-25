@@ -5,7 +5,24 @@
     "description": "MG NAUTICA",
     "price_usd": 850000,
     "previous_price_usd": null,
-    "primary_photo_url": "/uploads/boats/28f73236b8beba35.png"
+    "primary_photo_url": "/uploads/boats/28f73236b8beba35.png",
+    "photos": [
+      "/uploads/boats/28f73236b8beba35.png",
+      "/uploads/boats/aeab920e4bba3949.jpg",
+      "/uploads/boats/d3ed082cbdd187f9.jpg",
+      "/uploads/boats/c8c84dc0af2cecd2.jpg",
+      "/uploads/boats/6a07260f33e706b5.jpg",
+      "/uploads/boats/e2fd8524ca244a00.jpg",
+      "/uploads/boats/68e43db9d98f8e71.jpg",
+      "/uploads/boats/a3c09d178eb5866c.jpg",
+      "/uploads/boats/41863fd56f16a849.jpg",
+      "/uploads/boats/5f9629b7187d8f64.jpg",
+      "/uploads/boats/c5753898976c7fff.jpg",
+      "/uploads/boats/af2ee1f61873478f.jpg",
+      "/uploads/boats/479f3d5b78005cca.jpg",
+      "/uploads/boats/ce889fb0d88dd535.jpg",
+      "/uploads/boats/a3bba82b2d16fae1.jpg"
+    ]
   },
   {
     "slug": "jeanneau-sun-odyssey-452-impecable",
@@ -13,7 +30,19 @@
     "description": "MG NAUTICA",
     "price_usd": 165000,
     "previous_price_usd": 185000,
-    "primary_photo_url": "/uploads/boats/1442d54de011916a.jpg"
+    "primary_photo_url": "/uploads/boats/1442d54de011916a.jpg",
+    "photos": [
+      "/uploads/boats/1442d54de011916a.jpg",
+      "/uploads/boats/0c2f1d036e35e62f.jpg",
+      "/uploads/boats/02d292c91139cac1.jpg",
+      "/uploads/boats/351b2381fe452341.jpg",
+      "/uploads/boats/d3bceda854c7da84.jpg",
+      "/uploads/boats/f1c7962f8cd935a8.jpg",
+      "/uploads/boats/4051c64ee182d8d9.jpg",
+      "/uploads/boats/d389026b4baeb51d.jpg",
+      "/uploads/boats/7f6fd1afdf50af87.jpg",
+      "/uploads/boats/b8af819d6bd6e245.jpg"
+    ]
   },
   {
     "slug": "crucero-sea-ray-48-uruguay-piriapolis",
@@ -21,7 +50,24 @@
     "description": "MG NAUTICA",
     "price_usd": 160000,
     "previous_price_usd": 180000,
-    "primary_photo_url": "/uploads/boats/617ec8c09843687d.png"
+    "primary_photo_url": "/uploads/boats/617ec8c09843687d.png",
+    "photos": [
+      "/uploads/boats/617ec8c09843687d.png",
+      "/uploads/boats/ed5528b1285a47dc.jpg",
+      "/uploads/boats/889f0b4f107b1052.jpg",
+      "/uploads/boats/afe73ff3d4468bcc.jpg",
+      "/uploads/boats/1ee5f0077081a83a.jpg",
+      "/uploads/boats/973f08e6e07e70ad.jpg",
+      "/uploads/boats/66192dfc1d3d6168.jpg",
+      "/uploads/boats/407fb4974b3b5764.jpg",
+      "/uploads/boats/b5f208b59d609e98.jpg",
+      "/uploads/boats/5e253a4b1238ddbd.jpg",
+      "/uploads/boats/210fb1e046282fc0.jpg",
+      "/uploads/boats/998ebd7647ece294.jpg",
+      "/uploads/boats/4954263205261b9b.jpg",
+      "/uploads/boats/30b58433ebffb8bf.jpg",
+      "/uploads/boats/d3e37d06c3683996.jpg"
+    ]
   },
   {
     "slug": "velero-bavaria-42-cruiser",
@@ -29,7 +75,19 @@
     "description": "MG NAUTICA",
     "price_usd": 160000,
     "previous_price_usd": null,
-    "primary_photo_url": "/uploads/boats/37359fb03a9fed2e.png"
+    "primary_photo_url": "/uploads/boats/37359fb03a9fed2e.png",
+    "photos": [
+      "/uploads/boats/37359fb03a9fed2e.png",
+      "/uploads/boats/e8a188e70ac78228.png",
+      "/uploads/boats/588861a3c03aeac9.png",
+      "/uploads/boats/7495debd1ed10111.png",
+      "/uploads/boats/07ed0dcbfffc5067.png",
+      "/uploads/boats/de6178884fc30bf1.png",
+      "/uploads/boats/c4bc8f5039b73e15.png",
+      "/uploads/boats/0552320161f84c96.png",
+      "/uploads/boats/05f7f3a8214ee3c3.png",
+      "/uploads/boats/0d1e9d2ed00c528d.png"
+    ]
   },
   {
     "slug": "velero-jeanneau-sun-odyssey-39-ds",
@@ -37,7 +95,17 @@
     "description": "MG NAUTICA",
     "price_usd": 150000,
     "previous_price_usd": 160000,
-    "primary_photo_url": "/uploads/boats/9a46dcf32e77c7c9.jpg"
+    "primary_photo_url": "/uploads/boats/9a46dcf32e77c7c9.jpg",
+    "photos": [
+      "/uploads/boats/9a46dcf32e77c7c9.jpg",
+      "/uploads/boats/e452d8f9d3d891f9.jpg",
+      "/uploads/boats/e08db2c68584eec4.jpg",
+      "/uploads/boats/f37946a8aeefd9e4.jpg",
+      "/uploads/boats/e1f3c41eaeb59c28.jpg",
+      "/uploads/boats/a1264a000c9b680a.jpg",
+      "/uploads/boats/fc0b03ceb9b1e131.jpg",
+      "/uploads/boats/f35712d731864214.jpg"
+    ]
   },
   {
     "slug": "dufour-425-grand-large-2008-en-venta",
@@ -45,7 +113,24 @@
     "description": "MG NAUTICA",
     "price_usd": 147000,
     "previous_price_usd": 155000,
-    "primary_photo_url": "/uploads/boats/e756bdcfd64caeec.png"
+    "primary_photo_url": "/uploads/boats/e756bdcfd64caeec.png",
+    "photos": [
+      "/uploads/boats/e756bdcfd64caeec.png",
+      "/uploads/boats/30f6f6a5842b571e.jpg",
+      "/uploads/boats/c3e0eca9ced1c156.jpg",
+      "/uploads/boats/1e188cc00de29250.jpg",
+      "/uploads/boats/247a2cde592e3fda.jpg",
+      "/uploads/boats/71cb068fe239afc5.jpg",
+      "/uploads/boats/e0ba4f91900fa913.jpg",
+      "/uploads/boats/ba9ec1f161036722.jpg",
+      "/uploads/boats/7d9c5bd0437dcd17.jpg",
+      "/uploads/boats/9f40422de0bd942b.jpg",
+      "/uploads/boats/c67a2e0c68faca00.jpg",
+      "/uploads/boats/c037ac01452918ec.jpg",
+      "/uploads/boats/f0cf5aac10eba165.jpg",
+      "/uploads/boats/df0dea68acccb786.jpg",
+      "/uploads/boats/6c0dd1b74db25a04.jpg"
+    ]
   },
   {
     "slug": "velero-pandora-34",
@@ -53,7 +138,19 @@
     "description": "MG NAUTICA",
     "price_usd": 105000,
     "previous_price_usd": 125000,
-    "primary_photo_url": "/uploads/boats/517573e002b13644.jpg"
+    "primary_photo_url": "/uploads/boats/517573e002b13644.jpg",
+    "photos": [
+      "/uploads/boats/517573e002b13644.jpg",
+      "/uploads/boats/c53f7939b974fdc8.jpg",
+      "/uploads/boats/0c1c7cd3603a5aab.jpg",
+      "/uploads/boats/aefe69048fb63276.jpg",
+      "/uploads/boats/42b7c9156b2f2031.jpg",
+      "/uploads/boats/09519ed157cf7a4d.jpg",
+      "/uploads/boats/1019d9fc69279c72.jpg",
+      "/uploads/boats/aa880bebf7e216bc.jpg",
+      "/uploads/boats/1054401bd2b98eef.jpg",
+      "/uploads/boats/4204947d73d0b198.jpg"
+    ]
   },
   {
     "slug": "velero-corum-340",
@@ -61,7 +158,20 @@
     "description": "MG NAUTICA",
     "price_usd": 87000,
     "previous_price_usd": null,
-    "primary_photo_url": "/uploads/boats/26f721807cacc354.jpg"
+    "primary_photo_url": "/uploads/boats/26f721807cacc354.jpg",
+    "photos": [
+      "/uploads/boats/26f721807cacc354.jpg",
+      "/uploads/boats/83278041514f208a.jpg",
+      "/uploads/boats/0f46d8d53a9ef563.jpg",
+      "/uploads/boats/a547e27abf077e43.jpg",
+      "/uploads/boats/e0793accb9f5a65b.jpg",
+      "/uploads/boats/8e8031778f0b7402.jpg",
+      "/uploads/boats/c91661f802f4aa02.jpg",
+      "/uploads/boats/f93c7054d4dfbe7d.jpg",
+      "/uploads/boats/63d68fc3f11d3155.jpg",
+      "/uploads/boats/27c56910c8293fe0.jpg",
+      "/uploads/boats/edb349b766dc2e26.jpg"
+    ]
   },
   {
     "slug": "velero-bramador-34-concepción-del-uruguay",
@@ -69,7 +179,10 @@
     "description": "MG NAUTICA",
     "price_usd": 85000,
     "previous_price_usd": null,
-    "primary_photo_url": "/uploads/boats/7a3f4a81fea632ac.jpg"
+    "primary_photo_url": "/uploads/boats/7a3f4a81fea632ac.jpg",
+    "photos": [
+      "/uploads/boats/7a3f4a81fea632ac.jpg"
+    ]
   },
   {
     "slug": "jeanneau-sun-odyssey-40-panama",
@@ -77,7 +190,23 @@
     "description": "MG NAUTICA",
     "price_usd": 80000,
     "previous_price_usd": null,
-    "primary_photo_url": "/uploads/boats/6cfb97598d75210d.png"
+    "primary_photo_url": "/uploads/boats/6cfb97598d75210d.png",
+    "photos": [
+      "/uploads/boats/6cfb97598d75210d.png",
+      "/uploads/boats/f2bfa785eebe19ab.jpg",
+      "/uploads/boats/d7f37643210f39ce.jpg",
+      "/uploads/boats/861648aa1fd069be.jpg",
+      "/uploads/boats/673f2eb32136cda4.jpg",
+      "/uploads/boats/f4e2b79072b17cec.jpg",
+      "/uploads/boats/7448f5b496f5452a.jpg",
+      "/uploads/boats/dd3cb9db6931e659.jpg",
+      "/uploads/boats/8601480d7298a2a5.jpg",
+      "/uploads/boats/4c0015e4e7c16d34.jpg",
+      "/uploads/boats/3672d6dc06a9369e.jpg",
+      "/uploads/boats/59e935fda4756d99.jpg",
+      "/uploads/boats/eacbb177606c51f4.jpg",
+      "/uploads/boats/44e86c71f3180b99.jpg"
+    ]
   },
   {
     "slug": "catamaran-astillero-pagliettini",
@@ -85,7 +214,18 @@
     "description": "MG NAUTICA",
     "price_usd": 70000,
     "previous_price_usd": 89000,
-    "primary_photo_url": "/uploads/boats/cd4a5d9ac456153e.png"
+    "primary_photo_url": "/uploads/boats/cd4a5d9ac456153e.png",
+    "photos": [
+      "/uploads/boats/cd4a5d9ac456153e.png",
+      "/uploads/boats/ed47f26d1415fb60.jpg",
+      "/uploads/boats/a0dd61cf125ccd75.jpg",
+      "/uploads/boats/95c1a74d7b104e6a.jpg",
+      "/uploads/boats/e6f18bc929ae38ae.jpg",
+      "/uploads/boats/321096540d78cb8a.jpg",
+      "/uploads/boats/2400e23722657e42.jpg",
+      "/uploads/boats/6e295089ca838813.jpg",
+      "/uploads/boats/d9a67679232bf6dc.jpg"
+    ]
   },
   {
     "slug": "velero-irwin-44-panamá-san-blas",
@@ -93,7 +233,24 @@
     "description": "MG NAUTICA",
     "price_usd": 69000,
     "previous_price_usd": null,
-    "primary_photo_url": "/uploads/boats/d6c22bd9c79d0cb4.jpg"
+    "primary_photo_url": "/uploads/boats/d6c22bd9c79d0cb4.jpg",
+    "photos": [
+      "/uploads/boats/d6c22bd9c79d0cb4.jpg",
+      "/uploads/boats/9fb54111e1b1eb61.jpg",
+      "/uploads/boats/cc6855a479e96234.jpg",
+      "/uploads/boats/ace61329111776dd.jpg",
+      "/uploads/boats/a21306be59365a39.jpg",
+      "/uploads/boats/4eecae35541b96c7.jpg",
+      "/uploads/boats/db09570b76556ed6.jpg",
+      "/uploads/boats/36e1ee38214a84e5.jpg",
+      "/uploads/boats/4e0bf841786d6cad.jpg",
+      "/uploads/boats/1245a394cababb34.jpg",
+      "/uploads/boats/8561a903b1bef46e.jpg",
+      "/uploads/boats/05a634fd03f02c14.jpg",
+      "/uploads/boats/5ff0e6ed3838356f.jpg",
+      "/uploads/boats/89f5477035208d19.jpg",
+      "/uploads/boats/450872c21a6012d1.jpg"
+    ]
   },
   {
     "slug": "velero-s2-36-pies-en-venta",
@@ -101,7 +258,16 @@
     "description": "MG NAUTICA",
     "price_usd": 57000,
     "previous_price_usd": null,
-    "primary_photo_url": "/uploads/boats/20992abab7535330.jpg"
+    "primary_photo_url": "/uploads/boats/20992abab7535330.jpg",
+    "photos": [
+      "/uploads/boats/20992abab7535330.jpg",
+      "/uploads/boats/5764c4bd83c76e51.jpg",
+      "/uploads/boats/7359d428572f8075.jpg",
+      "/uploads/boats/25367f2addefc6e9.jpg",
+      "/uploads/boats/4be8d3ef07128c46.jpg",
+      "/uploads/boats/678dcda06b897a63.jpg",
+      "/uploads/boats/e811c06041d37188.jpg"
+    ]
   },
   {
     "slug": "velero-del-plata-31-motor-nuevo",
@@ -109,7 +275,19 @@
     "description": "MG NAUTICA",
     "price_usd": 50000,
     "previous_price_usd": null,
-    "primary_photo_url": "/uploads/boats/ac30db2e001d2dd1.jpg"
+    "primary_photo_url": "/uploads/boats/ac30db2e001d2dd1.jpg",
+    "photos": [
+      "/uploads/boats/ac30db2e001d2dd1.jpg",
+      "/uploads/boats/1da0c7524deb0b11.jpg",
+      "/uploads/boats/f884611d6d65947e.jpg",
+      "/uploads/boats/6829e6d8a72509ac.jpg",
+      "/uploads/boats/22c4fc9b2064f0b7.jpg",
+      "/uploads/boats/e075f06b585eb066.jpg",
+      "/uploads/boats/26ae10bf49e3edae.jpg",
+      "/uploads/boats/e6512b5582ba261a.jpg",
+      "/uploads/boats/94a72a324637cc00.jpg",
+      "/uploads/boats/dadcb36052b7c656.jpg"
+    ]
   },
   {
     "slug": "velero-bramador-nova",
@@ -117,7 +295,16 @@
     "description": "MG NAUTICA",
     "price_usd": 49500,
     "previous_price_usd": null,
-    "primary_photo_url": "/uploads/boats/b03b73ef71c6ffb5.jpg"
+    "primary_photo_url": "/uploads/boats/b03b73ef71c6ffb5.jpg",
+    "photos": [
+      "/uploads/boats/b03b73ef71c6ffb5.jpg",
+      "/uploads/boats/67a565fb8cd400b2.jpg",
+      "/uploads/boats/93410313dd4d0adf.jpg",
+      "/uploads/boats/1eb239d925580b18.jpg",
+      "/uploads/boats/5e8c1b9e07958c9a.jpg",
+      "/uploads/boats/f81d9fb9c81193fe.jpg",
+      "/uploads/boats/f4b89df4efb1d3d0.jpg"
+    ]
   },
   {
     "slug": "velero-plenamar-36",
@@ -125,7 +312,24 @@
     "description": "MG NAUTICA",
     "price_usd": 49000,
     "previous_price_usd": null,
-    "primary_photo_url": "/uploads/boats/67954d1c0a8cc2a2.jpg"
+    "primary_photo_url": "/uploads/boats/67954d1c0a8cc2a2.jpg",
+    "photos": [
+      "/uploads/boats/67954d1c0a8cc2a2.jpg",
+      "/uploads/boats/93eba94ae7c2156c.jpg",
+      "/uploads/boats/4b04afa7b8b78b65.jpg",
+      "/uploads/boats/296b9b96125d6355.jpg",
+      "/uploads/boats/9a3f91842c5740c5.jpg",
+      "/uploads/boats/0515e044aa34833c.jpg",
+      "/uploads/boats/b3daece42c3f6a1a.jpg",
+      "/uploads/boats/3cc6c0e3b2c4688f.jpg",
+      "/uploads/boats/4e5e2202294ee427.jpg",
+      "/uploads/boats/41f8b2abecd8c8ea.jpg",
+      "/uploads/boats/7abc80519384149f.jpg",
+      "/uploads/boats/cd285cd260287393.jpg",
+      "/uploads/boats/0d98163fdfbd7632.jpg",
+      "/uploads/boats/f2e73ebd0224b8da.jpg",
+      "/uploads/boats/715affce926b887c.jpg"
+    ]
   },
   {
     "slug": "velero-aluminio-oceánico",
@@ -133,7 +337,19 @@
     "description": "MG NAUTICA",
     "price_usd": 47000,
     "previous_price_usd": null,
-    "primary_photo_url": "/uploads/boats/8be924d1e9f61211.png"
+    "primary_photo_url": "/uploads/boats/8be924d1e9f61211.png",
+    "photos": [
+      "/uploads/boats/8be924d1e9f61211.png",
+      "/uploads/boats/f6ef66026a39b746.png",
+      "/uploads/boats/5f359a0371e16879.png",
+      "/uploads/boats/d7e1be0b2c2091e3.png",
+      "/uploads/boats/347841737225ae61.png",
+      "/uploads/boats/b258acaeb06d90ab.png",
+      "/uploads/boats/725ea24d930ca247.png",
+      "/uploads/boats/78a0c040bada251b.png",
+      "/uploads/boats/aa6edf2431758111.png",
+      "/uploads/boats/7ab1beb96ddcd0e8.png"
+    ]
   },
   {
     "slug": "velero-clipper-32",
@@ -141,7 +357,19 @@
     "description": "MG NAUTICA",
     "price_usd": 46000,
     "previous_price_usd": null,
-    "primary_photo_url": "/uploads/boats/f2937edce205490d.jpg"
+    "primary_photo_url": "/uploads/boats/f2937edce205490d.jpg",
+    "photos": [
+      "/uploads/boats/f2937edce205490d.jpg",
+      "/uploads/boats/8531ec438c982755.png",
+      "/uploads/boats/2c0a9023683106e7.png",
+      "/uploads/boats/bcdd103c3db76e61.png",
+      "/uploads/boats/3329968ea4f05db4.png",
+      "/uploads/boats/9d1ab98d268feddb.png",
+      "/uploads/boats/bc0857a3106faeb2.png",
+      "/uploads/boats/888e538c17e93f16.png",
+      "/uploads/boats/a143e5f4c548cdfd.png",
+      "/uploads/boats/74225e2a24bdf78c.png"
+    ]
   },
   {
     "slug": "velero-navegante-35",
@@ -149,7 +377,19 @@
     "description": "MG NAUTICA",
     "price_usd": 45000,
     "previous_price_usd": 50000,
-    "primary_photo_url": "/uploads/boats/8a74313c0b4b1fdb.jpg"
+    "primary_photo_url": "/uploads/boats/8a74313c0b4b1fdb.jpg",
+    "photos": [
+      "/uploads/boats/8a74313c0b4b1fdb.jpg",
+      "/uploads/boats/c55a9598ad8b9a6b.jpg",
+      "/uploads/boats/84c69ab8bde24af1.jpg",
+      "/uploads/boats/f76fd8fbfb7d9279.jpg",
+      "/uploads/boats/8c19e4f76df66d05.jpg",
+      "/uploads/boats/fb758fd0559064f7.jpg",
+      "/uploads/boats/9d39129a64951360.jpg",
+      "/uploads/boats/362c519bf78a4cf1.jpg",
+      "/uploads/boats/6f04aec05e6b3582.jpg",
+      "/uploads/boats/59d6ced8b608cfc7.jpg"
+    ]
   },
   {
     "slug": "velero-clásico-ferrocemento-con-orza-bandera",
@@ -157,7 +397,24 @@
     "description": "MG NAUTICA",
     "price_usd": 45000,
     "previous_price_usd": null,
-    "primary_photo_url": "/uploads/boats/680ff875821264c3.png"
+    "primary_photo_url": "/uploads/boats/680ff875821264c3.png",
+    "photos": [
+      "/uploads/boats/680ff875821264c3.png",
+      "/uploads/boats/f587286f61f86e97.jpg",
+      "/uploads/boats/8d6df38c5d550aa7.jpg",
+      "/uploads/boats/fc03efa31a540a76.jpg",
+      "/uploads/boats/a9a5722624b2a1db.jpg",
+      "/uploads/boats/a9cc717b5349ba9c.jpg",
+      "/uploads/boats/0a6c279aaabf3f71.jpg",
+      "/uploads/boats/16e000f47a1dd77f.jpg",
+      "/uploads/boats/8b24f11549719693.jpg",
+      "/uploads/boats/d27167b27d26aad7.jpg",
+      "/uploads/boats/df5613aef4d70236.jpg",
+      "/uploads/boats/4a0b2fa929cfbbd2.jpg",
+      "/uploads/boats/1b502a67a3d163be.jpg",
+      "/uploads/boats/e4ebea1c6d9b45ee.jpg",
+      "/uploads/boats/423ff330b4428780.jpg"
+    ]
   },
   {
     "slug": "velero-peterson-34-caribe-bandera",
@@ -165,7 +422,19 @@
     "description": "MG NAUTICA",
     "price_usd": 45000,
     "previous_price_usd": null,
-    "primary_photo_url": "/uploads/boats/9b2b7d9b22cf958a.jpg"
+    "primary_photo_url": "/uploads/boats/9b2b7d9b22cf958a.jpg",
+    "photos": [
+      "/uploads/boats/9b2b7d9b22cf958a.jpg",
+      "/uploads/boats/01475fad5def2b75.jpg",
+      "/uploads/boats/24b108d664b58e81.jpg",
+      "/uploads/boats/bb3ac28265a3777e.jpg",
+      "/uploads/boats/ac8f134e1bf56bfc.jpg",
+      "/uploads/boats/f382182c8a7396a1.jpg",
+      "/uploads/boats/21c44bc1748cb143.jpg",
+      "/uploads/boats/aa052aab6bd44518.jpg",
+      "/uploads/boats/a4999666da950c10.jpg",
+      "/uploads/boats/c6340382de58d6e5.jpg"
+    ]
   },
   {
     "slug": "velero-zabra-980",
@@ -173,7 +442,19 @@
     "description": "MG NAUTICA",
     "price_usd": 42900,
     "previous_price_usd": 49000,
-    "primary_photo_url": "/uploads/boats/597be2d27e9cac9a.jpg"
+    "primary_photo_url": "/uploads/boats/597be2d27e9cac9a.jpg",
+    "photos": [
+      "/uploads/boats/597be2d27e9cac9a.jpg",
+      "/uploads/boats/274fefef5b1a18a0.jpg",
+      "/uploads/boats/886606617a75f96c.jpg",
+      "/uploads/boats/f38a4d6817e9f999.jpg",
+      "/uploads/boats/68cb76e6f2c8626c.jpg",
+      "/uploads/boats/68898d80ffa25b90.jpg",
+      "/uploads/boats/2572fc7f22520046.jpg",
+      "/uploads/boats/3f51e4f0caedd640.jpg",
+      "/uploads/boats/d4f9e200e36c9832.jpg",
+      "/uploads/boats/5ced958688591665.jpg"
+    ]
   },
   {
     "slug": "custon-special-28-pies",
@@ -181,7 +462,19 @@
     "description": "MG NAUTICA",
     "price_usd": 41000,
     "previous_price_usd": 45000,
-    "primary_photo_url": "/uploads/boats/4e10f2d03a5092e6.jpg"
+    "primary_photo_url": "/uploads/boats/4e10f2d03a5092e6.jpg",
+    "photos": [
+      "/uploads/boats/4e10f2d03a5092e6.jpg",
+      "/uploads/boats/b643889bd422cd33.jpg",
+      "/uploads/boats/2bba2d03070f745e.jpg",
+      "/uploads/boats/7c7a673d79e7c7ec.jpg",
+      "/uploads/boats/5a66efb545291e02.jpg",
+      "/uploads/boats/08bf0509f30da2d3.jpg",
+      "/uploads/boats/b7070ed2bd935a09.jpg",
+      "/uploads/boats/2f93639e9ce87406.jpg",
+      "/uploads/boats/bd355deb7476032b.jpg",
+      "/uploads/boats/d65932dfbbf6d769.jpg"
+    ]
   },
   {
     "slug": "velero-pampa-1040",
@@ -189,7 +482,19 @@
     "description": "MG NAUTICA",
     "price_usd": 40000,
     "previous_price_usd": 49000,
-    "primary_photo_url": "/uploads/boats/c628144d29439dda.jpg"
+    "primary_photo_url": "/uploads/boats/c628144d29439dda.jpg",
+    "photos": [
+      "/uploads/boats/c628144d29439dda.jpg",
+      "/uploads/boats/ed9d550826f209f7.jpg",
+      "/uploads/boats/466d3d440af5b624.jpg",
+      "/uploads/boats/d09a536443bc4abc.jpg",
+      "/uploads/boats/03d37eeca0d2044e.jpg",
+      "/uploads/boats/7255c0c1c3245583.jpg",
+      "/uploads/boats/0b892009416efde8.jpg",
+      "/uploads/boats/aab04901f92015a4.jpg",
+      "/uploads/boats/2a6e41953c098605.jpg",
+      "/uploads/boats/eda66ee0382eda5e.jpg"
+    ]
   },
   {
     "slug": "velero-drakkar-32",
@@ -197,7 +502,18 @@
     "description": "MG NAUTICA",
     "price_usd": 40000,
     "previous_price_usd": 45000,
-    "primary_photo_url": "/uploads/boats/fc1f312c175484a9.jpg"
+    "primary_photo_url": "/uploads/boats/fc1f312c175484a9.jpg",
+    "photos": [
+      "/uploads/boats/fc1f312c175484a9.jpg",
+      "/uploads/boats/d86cb383b85d5b11.jpg",
+      "/uploads/boats/cf2199edca4f2e58.jpg",
+      "/uploads/boats/cc98442952c3e792.jpg",
+      "/uploads/boats/767bfe244c094e5f.jpg",
+      "/uploads/boats/091060773cfdde3d.jpg",
+      "/uploads/boats/d7c8c0046145cb1f.jpg",
+      "/uploads/boats/e0b49ba162b81785.jpg",
+      "/uploads/boats/cf381e628c76be05.jpg"
+    ]
   },
   {
     "slug": "velero-sailor-1000-a-mejorar",
@@ -205,7 +521,17 @@
     "description": "MG NAUTICA",
     "price_usd": 37000,
     "previous_price_usd": null,
-    "primary_photo_url": "/uploads/boats/66fe195168aaaad2.png"
+    "primary_photo_url": "/uploads/boats/66fe195168aaaad2.png",
+    "photos": [
+      "/uploads/boats/66fe195168aaaad2.png",
+      "/uploads/boats/599835531c9b19d5.png",
+      "/uploads/boats/1b408cc4ca6b63cc.png",
+      "/uploads/boats/77382caaf0a9670c.png",
+      "/uploads/boats/db60b7ff1840ab20.png",
+      "/uploads/boats/91b373412d5b13c8.png",
+      "/uploads/boats/d9659f6b8605493e.png",
+      "/uploads/boats/62cedc300ebc4113.png"
+    ]
   },
   {
     "slug": "velero-dangelo-30",
@@ -213,7 +539,19 @@
     "description": "MG NAUTICA",
     "price_usd": 35000,
     "previous_price_usd": null,
-    "primary_photo_url": "/uploads/boats/99cb7c8a5e172e74.jpg"
+    "primary_photo_url": "/uploads/boats/99cb7c8a5e172e74.jpg",
+    "photos": [
+      "/uploads/boats/99cb7c8a5e172e74.jpg",
+      "/uploads/boats/cadd732b60591329.png",
+      "/uploads/boats/9f1b88067612fd4a.png",
+      "/uploads/boats/4aad6e42b175e7c4.png",
+      "/uploads/boats/d0333287c98d1336.png",
+      "/uploads/boats/3c89b6f29c2d7583.png",
+      "/uploads/boats/2652f32b2ae354a6.png",
+      "/uploads/boats/cea6030f61da4bb4.png",
+      "/uploads/boats/1f85c1b6e050f503.png",
+      "/uploads/boats/c6e0c02a567c866a.png"
+    ]
   },
   {
     "slug": "velero-dufour-4800-panama",
@@ -221,7 +559,23 @@
     "description": "MG NAUTICA",
     "price_usd": 35000,
     "previous_price_usd": 38000,
-    "primary_photo_url": "/uploads/boats/5662d5911bf3f5ab.jpg"
+    "primary_photo_url": "/uploads/boats/5662d5911bf3f5ab.jpg",
+    "photos": [
+      "/uploads/boats/5662d5911bf3f5ab.jpg",
+      "/uploads/boats/4fea25248dedf013.jpg",
+      "/uploads/boats/2de472eef7ad6fc1.jpg",
+      "/uploads/boats/c0eb8cf3a3b0fd13.jpg",
+      "/uploads/boats/5060b6e8b4a75137.jpg",
+      "/uploads/boats/080528a30f9c632a.jpg",
+      "/uploads/boats/5c3764f90ba54b1c.jpg",
+      "/uploads/boats/bb1e9ed2169abbc6.jpg",
+      "/uploads/boats/b37a9decd1829b30.jpg",
+      "/uploads/boats/98dfb014a1544797.jpg",
+      "/uploads/boats/1f0221c0ca02a5d4.jpg",
+      "/uploads/boats/ae2d91a37c5a546b.jpg",
+      "/uploads/boats/91162bc0abe69e56.jpg",
+      "/uploads/boats/76cb6c329f020d6c.jpg"
+    ]
   },
   {
     "slug": "velero-seildelmann-34-1984-panama",
@@ -229,7 +583,19 @@
     "description": "MG NAUTICA",
     "price_usd": 33000,
     "previous_price_usd": null,
-    "primary_photo_url": "/uploads/boats/29fefbe0097be8af.png"
+    "primary_photo_url": "/uploads/boats/29fefbe0097be8af.png",
+    "photos": [
+      "/uploads/boats/29fefbe0097be8af.png",
+      "/uploads/boats/b8484497d145a079.jpg",
+      "/uploads/boats/af486297cc848846.jpg",
+      "/uploads/boats/63e09d480cf43c38.jpg",
+      "/uploads/boats/4b703b8411c50612.jpg",
+      "/uploads/boats/ebb4e7e5be26ecde.jpg",
+      "/uploads/boats/aad3bd2d2ca17516.jpg",
+      "/uploads/boats/b3a97e63b50af485.jpg",
+      "/uploads/boats/4c7e72c1636763f6.jpg",
+      "/uploads/boats/139010038bedfe26.jpg"
+    ]
   },
   {
     "slug": "velero-regge-30",
@@ -237,7 +603,17 @@
     "description": "MG NAUTICA",
     "price_usd": 30000,
     "previous_price_usd": null,
-    "primary_photo_url": "/uploads/boats/bf6e2509a9053b96.jpg"
+    "primary_photo_url": "/uploads/boats/bf6e2509a9053b96.jpg",
+    "photos": [
+      "/uploads/boats/bf6e2509a9053b96.jpg",
+      "/uploads/boats/c37e073c132b02fb.jpg",
+      "/uploads/boats/9432f7269a893670.jpg",
+      "/uploads/boats/2795bc88fb7512db.jpg",
+      "/uploads/boats/8ae960923cd1b901.jpg",
+      "/uploads/boats/b90c8755489e61ba.jpg",
+      "/uploads/boats/27beff9b80c125e7.jpg",
+      "/uploads/boats/0cde2905f1c4dd79.jpg"
+    ]
   },
   {
     "slug": "velero-bramador-24-2010-en-venta",
@@ -245,7 +621,24 @@
     "description": "MG NAUTICA",
     "price_usd": 27500,
     "previous_price_usd": null,
-    "primary_photo_url": "/uploads/boats/bb78101265591400.png"
+    "primary_photo_url": "/uploads/boats/bb78101265591400.png",
+    "photos": [
+      "/uploads/boats/bb78101265591400.png",
+      "/uploads/boats/0899d29d77559965.jpg",
+      "/uploads/boats/e488f796d091e08c.jpg",
+      "/uploads/boats/cc268dcf06d5c6fb.jpg",
+      "/uploads/boats/dae7ab1a743ba37e.jpg",
+      "/uploads/boats/4bb84ab587b8a750.jpg",
+      "/uploads/boats/6cf53a0c8316d23e.jpg",
+      "/uploads/boats/979eebf7c2fb48cc.jpg",
+      "/uploads/boats/91df388f5f41bbd2.jpg",
+      "/uploads/boats/af9899e91b8a0b8a.jpg",
+      "/uploads/boats/839b5ddd9d9d637d.jpg",
+      "/uploads/boats/134b4cf2524f4a1b.jpg",
+      "/uploads/boats/b4bfd58ca0c056ae.jpg",
+      "/uploads/boats/33f44cbf5ddc40f1.jpg",
+      "/uploads/boats/314f11c99e519fad.jpg"
+    ]
   },
   {
     "slug": "velero-hr26",
@@ -253,7 +646,19 @@
     "description": "MG NAUTICA",
     "price_usd": 27000,
     "previous_price_usd": 30000,
-    "primary_photo_url": "/uploads/boats/fa0c8dbf6e1eabac.jpg"
+    "primary_photo_url": "/uploads/boats/fa0c8dbf6e1eabac.jpg",
+    "photos": [
+      "/uploads/boats/fa0c8dbf6e1eabac.jpg",
+      "/uploads/boats/29748ab2523fb18f.jpg",
+      "/uploads/boats/cd1e62d4d688accb.jpg",
+      "/uploads/boats/a498a0215fe03d5c.jpg",
+      "/uploads/boats/257f607f93288d5c.jpg",
+      "/uploads/boats/58124d6cfee3ebf1.jpg",
+      "/uploads/boats/bb47afad9f8c1f69.jpg",
+      "/uploads/boats/5d6bfdfe50249889.jpg",
+      "/uploads/boats/06ce448ac7ad33a6.jpg",
+      "/uploads/boats/aedfb7673074305b.jpg"
+    ]
   },
   {
     "slug": "velero-bora-bora-268",
@@ -261,7 +666,19 @@
     "description": "MG NAUTICA",
     "price_usd": 26000,
     "previous_price_usd": null,
-    "primary_photo_url": "/uploads/boats/bf00d72a08fe6c7c.jpg"
+    "primary_photo_url": "/uploads/boats/bf00d72a08fe6c7c.jpg",
+    "photos": [
+      "/uploads/boats/bf00d72a08fe6c7c.jpg",
+      "/uploads/boats/1cd31e6e32751c41.jpg",
+      "/uploads/boats/129a26832f76eb98.jpg",
+      "/uploads/boats/f1df4270b3bb118c.jpg",
+      "/uploads/boats/623d40d631d96579.jpg",
+      "/uploads/boats/ca57791b1929594b.jpg",
+      "/uploads/boats/3d951ed1099b4eec.jpg",
+      "/uploads/boats/648323dea451eaa0.jpg",
+      "/uploads/boats/43f8b4646766987d.jpg",
+      "/uploads/boats/50d10268070200ef.jpg"
+    ]
   },
   {
     "slug": "velero-mastracchio-245",
@@ -269,7 +686,19 @@
     "description": "MG NAUTICA",
     "price_usd": 25500,
     "previous_price_usd": null,
-    "primary_photo_url": "/uploads/boats/02dae029aba88cb5.jpg"
+    "primary_photo_url": "/uploads/boats/02dae029aba88cb5.jpg",
+    "photos": [
+      "/uploads/boats/02dae029aba88cb5.jpg",
+      "/uploads/boats/79bfb3f5e49cfda2.jpg",
+      "/uploads/boats/b37351c85c8e928a.jpg",
+      "/uploads/boats/a80d8ea89c2cccf2.jpg",
+      "/uploads/boats/1a90c6abaa1637c9.jpg",
+      "/uploads/boats/f44085d305cc6fbc.jpg",
+      "/uploads/boats/d862dff2a18ec1fe.jpg",
+      "/uploads/boats/3bef3d92558b15a8.jpg",
+      "/uploads/boats/f0b9e22fd131b759.jpg",
+      "/uploads/boats/a79f93c93cbb55a2.jpg"
+    ]
   },
   {
     "slug": "velero-chaparron-28",
@@ -277,7 +706,19 @@
     "description": "MG NAUTICA",
     "price_usd": 25000,
     "previous_price_usd": null,
-    "primary_photo_url": "/uploads/boats/bcca446c3fc9474c.jpg"
+    "primary_photo_url": "/uploads/boats/bcca446c3fc9474c.jpg",
+    "photos": [
+      "/uploads/boats/bcca446c3fc9474c.jpg",
+      "/uploads/boats/58c48be321bb09ab.jpg",
+      "/uploads/boats/7904e6a7ac7c2f79.jpg",
+      "/uploads/boats/5f776121d74984c4.jpg",
+      "/uploads/boats/b03986aa635933f1.jpg",
+      "/uploads/boats/8a5239956db5622f.jpg",
+      "/uploads/boats/06f7fe967931585e.jpg",
+      "/uploads/boats/062ecab9a6f0d956.jpg",
+      "/uploads/boats/fe1dd27149f41184.jpg",
+      "/uploads/boats/9c22b9ec48aa0953.jpg"
+    ]
   },
   {
     "slug": "velero-conte-24",
@@ -285,7 +726,10 @@
     "description": "MG NAUTICA",
     "price_usd": 24000,
     "previous_price_usd": null,
-    "primary_photo_url": "/uploads/boats/c2ef8d7281de5bd2.jpg"
+    "primary_photo_url": "/uploads/boats/c2ef8d7281de5bd2.jpg",
+    "photos": [
+      "/uploads/boats/c2ef8d7281de5bd2.jpg"
+    ]
   },
   {
     "slug": "ballenera-clásica-de-madera-1949",
@@ -293,7 +737,24 @@
     "description": "MG NAUTICA",
     "price_usd": 22000,
     "previous_price_usd": null,
-    "primary_photo_url": "/uploads/boats/346db0fbc2cda820.png"
+    "primary_photo_url": "/uploads/boats/346db0fbc2cda820.png",
+    "photos": [
+      "/uploads/boats/346db0fbc2cda820.png",
+      "/uploads/boats/af94bf413f972d68.jpg",
+      "/uploads/boats/06e92ca2b54f9baf.jpg",
+      "/uploads/boats/48e408e63421120e.jpg",
+      "/uploads/boats/4a30e01c25e3279b.jpg",
+      "/uploads/boats/d2ec730fce841ea3.jpg",
+      "/uploads/boats/1de75fed2dda6393.jpg",
+      "/uploads/boats/960cc219e1b81f0d.jpg",
+      "/uploads/boats/a096794a025b657b.jpg",
+      "/uploads/boats/72398beb06f0ab05.jpg",
+      "/uploads/boats/bdd87f8038e7e15f.jpg",
+      "/uploads/boats/2bdfebb117d004e1.jpg",
+      "/uploads/boats/c02e271b6f32f584.jpg",
+      "/uploads/boats/c584b97c81f3a91a.jpg",
+      "/uploads/boats/b6e6ee58f524116f.jpg"
+    ]
   },
   {
     "slug": "velero-pandora-23",
@@ -301,7 +762,19 @@
     "description": "MG NAUTICA",
     "price_usd": 21000,
     "previous_price_usd": 22000,
-    "primary_photo_url": "/uploads/boats/8a930118447a177b.jpg"
+    "primary_photo_url": "/uploads/boats/8a930118447a177b.jpg",
+    "photos": [
+      "/uploads/boats/8a930118447a177b.jpg",
+      "/uploads/boats/f3daf6834e1da581.jpg",
+      "/uploads/boats/cb03f788728d340c.jpg",
+      "/uploads/boats/d6cb68a4e04129b5.jpg",
+      "/uploads/boats/2c56a0dd7c37ee27.jpg",
+      "/uploads/boats/b081fe61beb6353a.jpg",
+      "/uploads/boats/0d019994648909a8.jpg",
+      "/uploads/boats/536eb49323f2b78e.jpg",
+      "/uploads/boats/2620ce33fc85cb1e.jpg",
+      "/uploads/boats/42faf4c5a8c392b3.jpg"
+    ]
   },
   {
     "slug": "velero-cp-26-crucero",
@@ -309,7 +782,23 @@
     "description": "MG NAUTICA",
     "price_usd": 20000,
     "previous_price_usd": null,
-    "primary_photo_url": "/uploads/boats/61e72c108081e5a1.jpg"
+    "primary_photo_url": "/uploads/boats/61e72c108081e5a1.jpg",
+    "photos": [
+      "/uploads/boats/61e72c108081e5a1.jpg",
+      "/uploads/boats/fe4e7617c84f395d.jpg",
+      "/uploads/boats/75a789b86438b94e.jpg",
+      "/uploads/boats/367491f410fdcd96.jpg",
+      "/uploads/boats/f45a23bb08fd9450.jpg",
+      "/uploads/boats/748a79c1eed4bd5e.jpg",
+      "/uploads/boats/1ed11c00c6418b1d.jpg",
+      "/uploads/boats/ce345d229964287a.jpg",
+      "/uploads/boats/7020fff1bb56ece2.jpg",
+      "/uploads/boats/8c231cb6747af976.jpg",
+      "/uploads/boats/3c457b9b27a717c0.jpg",
+      "/uploads/boats/7abe0aaf2493708b.jpg",
+      "/uploads/boats/2341d2daf997324d.jpg",
+      "/uploads/boats/3ccdaaa1f81722dd.jpg"
+    ]
   },
   {
     "slug": "crucero-clásico-a-reparar",
@@ -317,7 +806,10 @@
     "description": "MG NAUTICA",
     "price_usd": 20000,
     "previous_price_usd": 30000,
-    "primary_photo_url": "/uploads/boats/832621ec2c994f73.jpg"
+    "primary_photo_url": "/uploads/boats/832621ec2c994f73.jpg",
+    "photos": [
+      "/uploads/boats/832621ec2c994f73.jpg"
+    ]
   },
   {
     "slug": "velero-bries-27-bandera",
@@ -333,7 +825,13 @@
     "description": "MG NAUTICA",
     "price_usd": 19000,
     "previous_price_usd": 20500,
-    "primary_photo_url": "/uploads/boats/c23d90907649d7b8.jpg"
+    "primary_photo_url": "/uploads/boats/c23d90907649d7b8.jpg",
+    "photos": [
+      "/uploads/boats/c23d90907649d7b8.jpg",
+      "/uploads/boats/3990f7590f374459.jpg",
+      "/uploads/boats/941f74010f7b5324.jpg",
+      "/uploads/boats/a8e62a897bb9afd0.jpg"
+    ]
   },
   {
     "slug": "velero-colibri-24",
@@ -341,7 +839,19 @@
     "description": "MG NAUTICA",
     "price_usd": 18500,
     "previous_price_usd": 19500,
-    "primary_photo_url": "/uploads/boats/d045a1d7446a191e.jpg"
+    "primary_photo_url": "/uploads/boats/d045a1d7446a191e.jpg",
+    "photos": [
+      "/uploads/boats/d045a1d7446a191e.jpg",
+      "/uploads/boats/30d3aeebb4050b47.jpg",
+      "/uploads/boats/13f6bf3dce41dc4f.jpg",
+      "/uploads/boats/cad27df6fcc91bae.jpg",
+      "/uploads/boats/adb1ce8b35e2b2ae.jpg",
+      "/uploads/boats/21c4f0b6f8c99a26.jpg",
+      "/uploads/boats/1f0dde32ecd994f8.jpg",
+      "/uploads/boats/c4e00224f839e8cd.jpg",
+      "/uploads/boats/7afd9a01854236ed.jpg",
+      "/uploads/boats/1a9ee3ed0c82d637.jpg"
+    ]
   },
   {
     "slug": "crucero-trento-250",
@@ -349,7 +859,19 @@
     "description": "MG NAUTICA",
     "price_usd": 17000,
     "previous_price_usd": 19000,
-    "primary_photo_url": "/uploads/boats/f8bfdc154cb403d1.jpg"
+    "primary_photo_url": "/uploads/boats/f8bfdc154cb403d1.jpg",
+    "photos": [
+      "/uploads/boats/f8bfdc154cb403d1.jpg",
+      "/uploads/boats/4276439b35f8aa3f.jpg",
+      "/uploads/boats/4e3f1511e82986ce.jpg",
+      "/uploads/boats/a81c8bc17517a6b1.jpg",
+      "/uploads/boats/34f01d3ea48fb7fb.jpg",
+      "/uploads/boats/db484100bb7f52fc.jpg",
+      "/uploads/boats/6e34355ec9db8230.jpg",
+      "/uploads/boats/32baac1f4f608566.jpg",
+      "/uploads/boats/f6b59531ffa3119e.jpg",
+      "/uploads/boats/8c99ca55625bf036.jpg"
+    ]
   },
   {
     "slug": "lancha-quicksilver-1800-impecable",
@@ -357,7 +879,19 @@
     "description": "MG NAUTICA",
     "price_usd": 16500,
     "previous_price_usd": null,
-    "primary_photo_url": "/uploads/boats/fe94ffa054bea981.jpg"
+    "primary_photo_url": "/uploads/boats/fe94ffa054bea981.jpg",
+    "photos": [
+      "/uploads/boats/fe94ffa054bea981.jpg",
+      "/uploads/boats/05804217bdee756d.jpg",
+      "/uploads/boats/176acd1683faf752.jpg",
+      "/uploads/boats/234ac35a76fc568f.jpg",
+      "/uploads/boats/b1d99726aa79c036.jpg",
+      "/uploads/boats/da15fed00804ccb9.jpg",
+      "/uploads/boats/baf8fb72c6b95b91.jpg",
+      "/uploads/boats/5dec6e36cf2e284a.jpg",
+      "/uploads/boats/6f278e37307a3d35.jpg",
+      "/uploads/boats/eae1bf4b3427e3a6.jpg"
+    ]
   },
   {
     "slug": "velero-clásico-hermosa-ballenera",
@@ -365,7 +899,20 @@
     "description": "MG NAUTICA",
     "price_usd": 16000,
     "previous_price_usd": null,
-    "primary_photo_url": "/uploads/boats/3a396c8d72466d8c.png"
+    "primary_photo_url": "/uploads/boats/3a396c8d72466d8c.png",
+    "photos": [
+      "/uploads/boats/3a396c8d72466d8c.png",
+      "/uploads/boats/607ed58f2160cd2e.jpg",
+      "/uploads/boats/2e71c1fbda7eebe9.jpg",
+      "/uploads/boats/79aebd6800120b6b.jpg",
+      "/uploads/boats/beb16f43b68bf01c.jpg",
+      "/uploads/boats/63ba5d21c60a5389.jpg",
+      "/uploads/boats/ad9c5783179b57ae.jpg",
+      "/uploads/boats/b7388dd230490bef.jpg",
+      "/uploads/boats/37a32ab08c7ceb01.jpg",
+      "/uploads/boats/4190d0b01fe16c62.jpg",
+      "/uploads/boats/9e31ac76ca65d062.jpg"
+    ]
   },
   {
     "slug": "velero-clásico-1er-dorado-frers",
@@ -373,7 +920,19 @@
     "description": "MG NAUTICA",
     "price_usd": 15000,
     "previous_price_usd": 20000,
-    "primary_photo_url": "/uploads/boats/fcc8f15d0ed215aa.jpg"
+    "primary_photo_url": "/uploads/boats/fcc8f15d0ed215aa.jpg",
+    "photos": [
+      "/uploads/boats/fcc8f15d0ed215aa.jpg",
+      "/uploads/boats/d2f505408583f74f.jpg",
+      "/uploads/boats/a210976d811145de.jpg",
+      "/uploads/boats/9d8c0921dc46af41.jpg",
+      "/uploads/boats/96cee7c3c397c723.jpg",
+      "/uploads/boats/c98de0ee9ae99bac.jpg",
+      "/uploads/boats/f8d4710a72adbca5.jpg",
+      "/uploads/boats/8e2267a0a0b4d748.jpg",
+      "/uploads/boats/a66a1bd5780e90a7.jpg",
+      "/uploads/boats/e873a8c69aecc23a.jpg"
+    ]
   },
   {
     "slug": "velero-clásico-1er-dorado-de-frers",
@@ -381,7 +940,19 @@
     "description": "MG NAUTICA",
     "price_usd": 15000,
     "previous_price_usd": 20000,
-    "primary_photo_url": "/uploads/boats/e4bc9a86690fc331.jpg"
+    "primary_photo_url": "/uploads/boats/e4bc9a86690fc331.jpg",
+    "photos": [
+      "/uploads/boats/e4bc9a86690fc331.jpg",
+      "/uploads/boats/d2f505408583f74f.jpg",
+      "/uploads/boats/a210976d811145de.jpg",
+      "/uploads/boats/9d8c0921dc46af41.jpg",
+      "/uploads/boats/51032e60da6b7acd.jpg",
+      "/uploads/boats/c9484c0ef9f5f1c5.jpg",
+      "/uploads/boats/ea67e8193c2a5b76.jpg",
+      "/uploads/boats/8e2267a0a0b4d748.jpg",
+      "/uploads/boats/a66a1bd5780e90a7.jpg",
+      "/uploads/boats/7466af17b18f98b4.jpg"
+    ]
   },
   {
     "slug": "velero-pk-22",
@@ -389,7 +960,19 @@
     "description": "MG NAUTICA",
     "price_usd": 15000,
     "previous_price_usd": null,
-    "primary_photo_url": "/uploads/boats/8f0fe47c7a56eff7.jpg"
+    "primary_photo_url": "/uploads/boats/8f0fe47c7a56eff7.jpg",
+    "photos": [
+      "/uploads/boats/8f0fe47c7a56eff7.jpg",
+      "/uploads/boats/c77589c4a689b5c5.jpg",
+      "/uploads/boats/9432f1281611c1e2.jpg",
+      "/uploads/boats/6c437bc0cbaa66ac.jpg",
+      "/uploads/boats/132841174f33ada4.jpg",
+      "/uploads/boats/c8af44d153ed951a.jpg",
+      "/uploads/boats/e3af849dab62ffbe.jpg",
+      "/uploads/boats/ea886d486c83e41e.jpg",
+      "/uploads/boats/5c32635f4e13c128.jpg",
+      "/uploads/boats/8d6db384546a3193.jpg"
+    ]
   },
   {
     "slug": "velero-limbo-21-impecable",
@@ -397,7 +980,19 @@
     "description": "MG NAUTICA",
     "price_usd": 13000,
     "previous_price_usd": 13500,
-    "primary_photo_url": "/uploads/boats/5bb126354b62682a.jpg"
+    "primary_photo_url": "/uploads/boats/5bb126354b62682a.jpg",
+    "photos": [
+      "/uploads/boats/5bb126354b62682a.jpg",
+      "/uploads/boats/2e317b6c7a5cf29e.jpg",
+      "/uploads/boats/6070390bf85ccb9b.jpg",
+      "/uploads/boats/81982b773d5b3c09.jpg",
+      "/uploads/boats/b19a1386d0314465.jpg",
+      "/uploads/boats/a20dcecf39b1793c.jpg",
+      "/uploads/boats/e9c876ad664de298.jpg",
+      "/uploads/boats/96595e353ee4ce83.jpg",
+      "/uploads/boats/1ce2d630dba958ec.jpg",
+      "/uploads/boats/bb840aa47cdb2efd.jpg"
+    ]
   },
   {
     "slug": "velero-alpha-25-en-venta",
@@ -405,7 +1000,18 @@
     "description": "MG NAUTICA",
     "price_usd": 12000,
     "previous_price_usd": 12500,
-    "primary_photo_url": "/uploads/boats/b7403c001d9a8f03.png"
+    "primary_photo_url": "/uploads/boats/b7403c001d9a8f03.png",
+    "photos": [
+      "/uploads/boats/b7403c001d9a8f03.png",
+      "/uploads/boats/59e39d881cecbefa.jpg",
+      "/uploads/boats/71a93ed4fd5869fe.jpg",
+      "/uploads/boats/e139916700a6f615.jpg",
+      "/uploads/boats/c21f33994803ab0b.jpg",
+      "/uploads/boats/95e44783f8adc45b.jpg",
+      "/uploads/boats/bcf8d0b587ca1294.jpg",
+      "/uploads/boats/0a2868fd59ac12c8.jpg",
+      "/uploads/boats/1a5342752abf96c6.jpg"
+    ]
   },
   {
     "slug": "velero-laminado-con-trabajo-finalizado",
@@ -413,7 +1019,24 @@
     "description": "MG NAUTICA",
     "price_usd": 11900,
     "previous_price_usd": 12900,
-    "primary_photo_url": "/uploads/boats/434737529062e4a5.jpg"
+    "primary_photo_url": "/uploads/boats/434737529062e4a5.jpg",
+    "photos": [
+      "/uploads/boats/434737529062e4a5.jpg",
+      "/uploads/boats/c696879eb8912bbf.jpg",
+      "/uploads/boats/8af4fb56cc4cf8a5.jpg",
+      "/uploads/boats/b7dda27b6d18f7f0.jpg",
+      "/uploads/boats/05144e3ca7ce9cf6.jpg",
+      "/uploads/boats/b5148a752e5d4761.jpg",
+      "/uploads/boats/b2bd7cb8af7fa851.jpg",
+      "/uploads/boats/ab8bd1e8b6f4a732.jpg",
+      "/uploads/boats/7f612280c4d66d43.jpg",
+      "/uploads/boats/466cf4ffe730ffdd.jpg",
+      "/uploads/boats/1e4c384d3e05da94.jpg",
+      "/uploads/boats/7a9d2afff014af9a.jpg",
+      "/uploads/boats/70f0661e2b6374aa.jpg",
+      "/uploads/boats/afcbed678f523e49.jpg",
+      "/uploads/boats/bddb97722627ef2f.jpg"
+    ]
   },
   {
     "slug": "velero-eitin-25",
@@ -421,7 +1044,19 @@
     "description": "MG NAUTICA",
     "price_usd": 11500,
     "previous_price_usd": 12500,
-    "primary_photo_url": "/uploads/boats/122315d123e6731b.jpg"
+    "primary_photo_url": "/uploads/boats/122315d123e6731b.jpg",
+    "photos": [
+      "/uploads/boats/122315d123e6731b.jpg",
+      "/uploads/boats/7b5e77f53a2b7789.jpg",
+      "/uploads/boats/711d0c59cb82f1b4.jpg",
+      "/uploads/boats/9816a9df40c32b37.jpg",
+      "/uploads/boats/574f69c375317c45.jpg",
+      "/uploads/boats/bce77c70a29b759b.jpg",
+      "/uploads/boats/57d01093e83dea5b.jpg",
+      "/uploads/boats/8e0dafd8c28f489f.jpg",
+      "/uploads/boats/a936496484ede979.jpg",
+      "/uploads/boats/018c2d47decbafee.jpg"
+    ]
   },
   {
     "slug": "lancha-505",
@@ -429,7 +1064,19 @@
     "description": "MG NAUTICA",
     "price_usd": 11000,
     "previous_price_usd": null,
-    "primary_photo_url": "/uploads/boats/53744d86d3ead1c6.jpg"
+    "primary_photo_url": "/uploads/boats/53744d86d3ead1c6.jpg",
+    "photos": [
+      "/uploads/boats/53744d86d3ead1c6.jpg",
+      "/uploads/boats/f6ff5e3a97512daa.jpg",
+      "/uploads/boats/e45028c05fdc9353.jpg",
+      "/uploads/boats/6fec646b27e8831e.jpg",
+      "/uploads/boats/609395b4962cd63e.jpg",
+      "/uploads/boats/7ec149a7dc749bdb.jpg",
+      "/uploads/boats/7583c962e73dbedc.jpg",
+      "/uploads/boats/44fd48f0981371ba.jpg",
+      "/uploads/boats/4c9d904e3b6fd91b.jpg",
+      "/uploads/boats/cb6e73909e4f7d3c.jpg"
+    ]
   },
   {
     "slug": "velero-limbo-23",
@@ -437,7 +1084,19 @@
     "description": "MG NAUTICA",
     "price_usd": 11000,
     "previous_price_usd": 12000,
-    "primary_photo_url": "/uploads/boats/8ea85d5f4dcdb580.jpg"
+    "primary_photo_url": "/uploads/boats/8ea85d5f4dcdb580.jpg",
+    "photos": [
+      "/uploads/boats/8ea85d5f4dcdb580.jpg",
+      "/uploads/boats/d4139391366bb15b.jpg",
+      "/uploads/boats/515ea00476955d38.jpg",
+      "/uploads/boats/817872974ddecb74.jpg",
+      "/uploads/boats/8d9475940b0f9388.jpg",
+      "/uploads/boats/c06a4c2c1666d0c1.jpg",
+      "/uploads/boats/0278415b0c82de56.jpg",
+      "/uploads/boats/bd2665f47430fd43.jpg",
+      "/uploads/boats/ee8d4c9be8527115.jpg",
+      "/uploads/boats/8b0bd83990ec5f0f.jpg"
+    ]
   },
   {
     "slug": "velero-clásico-doble-proa",
@@ -445,7 +1104,19 @@
     "description": "MG NAUTICA",
     "price_usd": 11000,
     "previous_price_usd": 11500,
-    "primary_photo_url": "/uploads/boats/23830fb7f132cc6b.png"
+    "primary_photo_url": "/uploads/boats/23830fb7f132cc6b.png",
+    "photos": [
+      "/uploads/boats/23830fb7f132cc6b.png",
+      "/uploads/boats/6dd900ab97e17649.jpg",
+      "/uploads/boats/d6b9af4ecf254609.jpg",
+      "/uploads/boats/3dcc1e1c366d704e.jpg",
+      "/uploads/boats/72b672ba95290165.jpg",
+      "/uploads/boats/b2a57ea05dc30b54.jpg",
+      "/uploads/boats/687d16ae1b94dd20.jpg",
+      "/uploads/boats/84e642152894677d.jpg",
+      "/uploads/boats/412bdcef3695154c.jpg",
+      "/uploads/boats/1c9e661876fd44cf.jpg"
+    ]
   },
   {
     "slug": "velero-plenamar-23",
@@ -461,7 +1132,19 @@
     "description": "MG NAUTICA",
     "price_usd": 9700,
     "previous_price_usd": 10700,
-    "primary_photo_url": "https://static.wixstatic.com/media/fac5f8_ded4eb7750da4a3f886cd83f5616a978~mv2.png/fac5f8_ded4eb7750da4a3f886cd83f5616a978~mv2.png"
+    "primary_photo_url": "/uploads/boats/f971a9725e3e1fa8.png",
+    "photos": [
+      "/uploads/boats/f971a9725e3e1fa8.png",
+      "/uploads/boats/1032d89a5927722b.jpg",
+      "/uploads/boats/4410914d099d8378.jpg",
+      "/uploads/boats/db3fdb39098780ad.jpg",
+      "/uploads/boats/f2e4bd007569d3e3.jpg",
+      "/uploads/boats/bde37b2fe319279b.jpg",
+      "/uploads/boats/baa0889c417066fe.jpg",
+      "/uploads/boats/af68c5c92ba2f0e2.jpg",
+      "/uploads/boats/24acce0d76e270cb.jpg",
+      "/uploads/boats/4c2351381a0e827e.jpg"
+    ]
   },
   {
     "slug": "velero-super-22-nuevo-precio-oportunidad",
@@ -469,7 +1152,19 @@
     "description": "MG NAUTICA",
     "price_usd": 9500,
     "previous_price_usd": 10000,
-    "primary_photo_url": "/uploads/boats/3eecb46bf22a278e.jpg"
+    "primary_photo_url": "/uploads/boats/3eecb46bf22a278e.jpg",
+    "photos": [
+      "/uploads/boats/3eecb46bf22a278e.jpg",
+      "/uploads/boats/d984775c05e88ab9.jpg",
+      "/uploads/boats/9013dff60c9f2f2a.jpg",
+      "/uploads/boats/2d91daf6bb73daeb.jpg",
+      "/uploads/boats/084c9536571b80a3.jpg",
+      "/uploads/boats/5174f4050236e74c.jpg",
+      "/uploads/boats/b5717cfb8084e8be.jpg",
+      "/uploads/boats/93209151e84511d7.jpg",
+      "/uploads/boats/6b0787a865e2f462.jpg",
+      "/uploads/boats/6caad68ce3558ffb.jpg"
+    ]
   },
   {
     "slug": "velero-clásico-ithurbide-oportunidad",
@@ -477,7 +1172,19 @@
     "description": "MG NAUTICA",
     "price_usd": 9000,
     "previous_price_usd": null,
-    "primary_photo_url": "/uploads/boats/b54abfcbf3ea8fe3.jpg"
+    "primary_photo_url": "/uploads/boats/b54abfcbf3ea8fe3.jpg",
+    "photos": [
+      "/uploads/boats/b54abfcbf3ea8fe3.jpg",
+      "/uploads/boats/7f58794f0e935797.jpg",
+      "/uploads/boats/9d0fba34f36bac34.jpg",
+      "/uploads/boats/20ce183648928611.jpg",
+      "/uploads/boats/be58a9c76001cef9.jpg",
+      "/uploads/boats/7b58e834ffd96072.jpg",
+      "/uploads/boats/5b16615aeb1fc7b8.jpg",
+      "/uploads/boats/688d937f91365e2b.jpg",
+      "/uploads/boats/9a96663e1a2ca471.jpg",
+      "/uploads/boats/54c63bca94a0e689.jpg"
+    ]
   },
   {
     "slug": "velero-maxi-20",
@@ -485,7 +1192,19 @@
     "description": "MG NAUTICA",
     "price_usd": 8500,
     "previous_price_usd": 9000,
-    "primary_photo_url": "/uploads/boats/de31cf0ee609d359.jpg"
+    "primary_photo_url": "/uploads/boats/de31cf0ee609d359.jpg",
+    "photos": [
+      "/uploads/boats/de31cf0ee609d359.jpg",
+      "/uploads/boats/b8a1ee36a8f7498e.jpg",
+      "/uploads/boats/86199ed41fcbaedf.jpg",
+      "/uploads/boats/8608a60634db8185.jpg",
+      "/uploads/boats/66f440f311437c75.jpg",
+      "/uploads/boats/4d4feca186b362de.jpg",
+      "/uploads/boats/0f2d44c918bded08.jpg",
+      "/uploads/boats/ef140707620473c1.jpg",
+      "/uploads/boats/ffd0426134954552.jpg",
+      "/uploads/boats/9075f904838703e1.jpg"
+    ]
   },
   {
     "slug": "velero-holland-23",
@@ -493,7 +1212,19 @@
     "description": "MG NAUTICA",
     "price_usd": 8500,
     "previous_price_usd": null,
-    "primary_photo_url": "/uploads/boats/4a8b8a51faeacf21.jpg"
+    "primary_photo_url": "/uploads/boats/4a8b8a51faeacf21.jpg",
+    "photos": [
+      "/uploads/boats/4a8b8a51faeacf21.jpg",
+      "/uploads/boats/aef6a52d60930c81.jpg",
+      "/uploads/boats/d682fbe06b0348d3.jpg",
+      "/uploads/boats/98de22ecc0a36e97.jpg",
+      "/uploads/boats/4617db764c42c0d3.jpg",
+      "/uploads/boats/e936f3b505c95c58.jpg",
+      "/uploads/boats/323259d278c7142f.jpg",
+      "/uploads/boats/a8035b03f1d4db20.jpg",
+      "/uploads/boats/48a0ec86a63d7b0f.jpg",
+      "/uploads/boats/c241f36d0d5c72ef.jpg"
+    ]
   },
   {
     "slug": "velero-miura-25-dominante-ii",
@@ -501,7 +1232,24 @@
     "description": "MG NAUTICA",
     "price_usd": 8500,
     "previous_price_usd": 9000,
-    "primary_photo_url": "/uploads/boats/e9732f4666864041.jpg"
+    "primary_photo_url": "/uploads/boats/e9732f4666864041.jpg",
+    "photos": [
+      "/uploads/boats/e9732f4666864041.jpg",
+      "/uploads/boats/d84e0bee391f9cb9.jpg",
+      "/uploads/boats/3584a8a29f02c5cd.jpg",
+      "/uploads/boats/e94b70d0c260dd06.jpg",
+      "/uploads/boats/59cc34127ba3be4b.jpg",
+      "/uploads/boats/7f5ac8c864e9dece.jpg",
+      "/uploads/boats/0ced9563077a589d.jpg",
+      "/uploads/boats/6d8da36d1cda7051.jpg",
+      "/uploads/boats/5c4c3b40a3bd7ed5.jpg",
+      "/uploads/boats/dd970460e4843dce.jpg",
+      "/uploads/boats/4264113a92c4d2d9.jpg",
+      "/uploads/boats/a7f5b00dcbf01713.jpg",
+      "/uploads/boats/4ae620ce37fde0e2.jpg",
+      "/uploads/boats/a472701968d0f33b.jpg",
+      "/uploads/boats/926f7f12f1d7a88c.jpg"
+    ]
   },
   {
     "slug": "veero-miura-25-a-mejorar",
@@ -509,7 +1257,19 @@
     "description": "MG NAUTICA",
     "price_usd": 8000,
     "previous_price_usd": 9000,
-    "primary_photo_url": "/uploads/boats/69cdcbf0b8a6761a.jpg"
+    "primary_photo_url": "/uploads/boats/69cdcbf0b8a6761a.jpg",
+    "photos": [
+      "/uploads/boats/69cdcbf0b8a6761a.jpg",
+      "/uploads/boats/8a6364afbc2aa8c2.jpg",
+      "/uploads/boats/38597b1ed4380fb6.jpg",
+      "/uploads/boats/272a7f8a60a31f18.jpg",
+      "/uploads/boats/efa92f828e98886f.jpg",
+      "/uploads/boats/30e0c1bbe70779f3.jpg",
+      "/uploads/boats/90b0b3ed99cbd6e0.jpg",
+      "/uploads/boats/b6d1bc13353e8de4.jpg",
+      "/uploads/boats/23d614194a254091.jpg",
+      "/uploads/boats/b3a4fb41739ecbfd.jpg"
+    ]
   },
   {
     "slug": "termo-acero-inoxidable",
@@ -517,7 +1277,10 @@
     "description": "MG NAUTICA",
     "price_usd": 7900,
     "previous_price_usd": null,
-    "primary_photo_url": "https://static.wixstatic.com/media/fac5f8_34ea4a5088884d809b005960070a61e1~mv2.jpg/fac5f8_34ea4a5088884d809b005960070a61e1~mv2.jpg"
+    "primary_photo_url": "/uploads/boats/0144bdc96c5efa86.jpg",
+    "photos": [
+      "/uploads/boats/0144bdc96c5efa86.jpg"
+    ]
   },
   {
     "slug": "lancha-marine-sur-1500",
@@ -525,7 +1288,17 @@
     "description": "MG NAUTICA",
     "price_usd": 7000,
     "previous_price_usd": null,
-    "primary_photo_url": "/uploads/boats/83e601c963c9d825.jpg"
+    "primary_photo_url": "/uploads/boats/83e601c963c9d825.jpg",
+    "photos": [
+      "/uploads/boats/83e601c963c9d825.jpg",
+      "/uploads/boats/9afef64f7894758e.jpg",
+      "/uploads/boats/ebff067cc6464380.jpg",
+      "/uploads/boats/73b6c372ef9cb33f.jpg",
+      "/uploads/boats/f9ff2db1ef6bcee4.jpg",
+      "/uploads/boats/d104ddca55ed0e62.jpg",
+      "/uploads/boats/d80c08eb0d8a94d4.jpg",
+      "/uploads/boats/386f21afb1cfb25f.jpg"
+    ]
   },
   {
     "slug": "velero-jb-23-ideal-primer-barco",
@@ -533,6 +1306,18 @@
     "description": "MG NAUTICA",
     "price_usd": 6000,
     "previous_price_usd": 8500,
-    "primary_photo_url": "/uploads/boats/7e3e82645d381582.jpg"
+    "primary_photo_url": "/uploads/boats/7e3e82645d381582.jpg",
+    "photos": [
+      "/uploads/boats/7e3e82645d381582.jpg",
+      "/uploads/boats/b25ba25ba16c6fde.jpg",
+      "/uploads/boats/313a65b133450ca6.jpg",
+      "/uploads/boats/73727a2060398941.jpg",
+      "/uploads/boats/43532fbfee66c0a1.jpg",
+      "/uploads/boats/07586ae864b9b804.jpg",
+      "/uploads/boats/28f867ade08f75df.jpg",
+      "/uploads/boats/ed946f7dd93a901e.jpg",
+      "/uploads/boats/318175fcfb044b0b.jpg",
+      "/uploads/boats/ce9fc222b704accd.jpg"
+    ]
   }
 ]

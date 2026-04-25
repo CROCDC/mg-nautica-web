@@ -1,9 +1,11 @@
 {
   "permissions": {
-    "defaultMode": "bypassPermissions",
     "allow": [
       "Bash(curl -s *)",
-      "Bash(curl -sL *)"
-    ]
+      "Bash(curl -sL *)",
+      "Bash(git commit *)",
+      "Bash(git rm *)"
+    ],
+    "defaultMode": "bypassPermissions"
   }
 }
