@@ -2,7 +2,8 @@ pipeline {
   agent any
 
   environment {
-    COMPOSE_FILE = 'docker-compose.yml'
+    COMPOSE_FILE         = 'docker-compose.yml'
+    COMPOSE_PROJECT_NAME = 'mg-nautica-web'
   }
 
   stages {
