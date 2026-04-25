@@ -3,7 +3,7 @@ pipeline {
 
   environment {
     COMPOSE_FILE         = 'docker-compose.yml'
-    COMPOSE_PROJECT_NAME = 'mg-nautica-web'
+    COMPOSE_PROJECT_NAME = 'mg-nautica-web-prod'
   }
 
   stages {
