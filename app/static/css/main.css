@@ -479,6 +479,113 @@ h3 { font-size: 1.2rem; font-weight: 600; }
 .not-found h1 { font-size: 6rem; color: var(--border); font-family: var(--ff-heading); line-height: 1; }
 .not-found p { margin: 1rem 0 2rem; color: var(--muted); }
 
+/* ── Animations ── */
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(22px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes scaleReveal {
+  from { opacity: 0; transform: scale(1.06); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes pulseSale {
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(1.06); }
+}
+@keyframes shimmer {
+  from { background-position: -200% center; }
+  to   { background-position: 200% center; }
+}
+
+/* Hero entrance — staggered fade+slide */
+.hero-text > * {
+  opacity: 0;
+  animation: fadeSlideUp .65s cubic-bezier(.22,1,.36,1) forwards;
+}
+.hero-eyebrow { animation-delay: 60ms; }
+.hero h1      { animation-delay: 180ms; }
+.hero-lead    { animation-delay: 300ms; }
+.hero-ctas    { animation-delay: 410ms; }
+.hero-stats   { animation-delay: 520ms; }
+
+.hero-visual-img {
+  opacity: 0;
+  animation: scaleReveal .9s cubic-bezier(.22,1,.36,1) forwards;
+}
+.hero-visual-img:nth-child(1) { animation-delay: 260ms; }
+.hero-visual-img:nth-child(2) { animation-delay: 420ms; }
+.hero-visual-img:nth-child(3) { animation-delay: 540ms; }
+
+/* Scroll reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity .55s cubic-bezier(.22,1,.36,1), transform .55s cubic-bezier(.22,1,.36,1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* Badge sale pulse */
+.badge-sale { animation: pulseSale 2.8s ease-in-out infinite; }
+
+/* Button micro press */
+.btn { transition: var(--transition), transform .08s ease; }
+.btn:active:not(:disabled) { transform: scale(.96) !important; }
+
+/* Nav underline from center */
+.nav-links a { position: relative; }
+.nav-links a::after {
+  content: '';
+  position: absolute; bottom: 2px; left: .7rem; right: .7rem;
+  height: 1px; background: var(--gold);
+  transform: scaleX(0); transform-origin: center;
+  transition: transform .22s cubic-bezier(.22,1,.36,1);
+  border-radius: 1px;
+}
+.nav-links a:hover::after, .nav-links a.active::after { transform: scaleX(1); }
+
+/* Input focus glow */
+.inquiry-form input:focus, .inquiry-form textarea:focus,
+.form input:focus, .form textarea:focus, .form select:focus,
+.filter-group input:focus, .filter-group select:focus {
+  box-shadow: 0 0 0 3px rgba(196,151,58,.18);
+}
+
+/* Price shimmer on sale cards */
+.boat-card .boat-card-price {
+  background: linear-gradient(90deg, var(--navy) 30%, var(--gold) 50%, var(--navy) 70%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+.boat-card:hover .boat-card-price {
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 1.6s linear infinite;
+}
+
+/* Service card icon bounce on hover */
+.service-card:hover .service-icon {
+  display: inline-block;
+  animation: fadeSlideUp .3s cubic-bezier(.22,1,.36,1);
+}
+
+/* Spec block — slide open feel via transition */
+.spec-block { transition: box-shadow var(--transition); }
+.spec-block:hover { box-shadow: var(--shadow-sm); }
+
+/* Reduced motion — respeta accesibilidad */
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+  .hero-text > *, .hero-visual-img { opacity: 1 !important; animation: none !important; }
+  .badge-sale, .service-card:hover .service-icon { animation: none !important; }
+  .boat-card:hover .boat-card-price { animation: none !important; -webkit-text-fill-color: inherit; }
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}
+
 /* ── Responsive ── */
 @media (max-width: 1024px) {
   .hero-inner { grid-template-columns: 1fr; }
