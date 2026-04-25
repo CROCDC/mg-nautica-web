@@ -191,6 +191,14 @@ def boat_detail_vp(request, browser, live_server_url):
 # ── Helper ────────────────────────────────────────────────────────────────────
 
 def shot(page, name: str) -> None:
-    """Guarda screenshot en tests/screenshots/{name}.png."""
+    """Guarda screenshot en tests/screenshots/{name}.png.
+
+    Scroll to bottom then back to top first so IntersectionObserver-based
+    scroll-reveal animations fire and all cards become visible.
+    """
+    page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
+    page.wait_for_timeout(400)
+    page.evaluate("window.scrollTo(0, 0)")
+    page.wait_for_timeout(200)
     path = SCREENSHOTS / f"{name}.png"
     page.screenshot(path=str(path), full_page=True)
