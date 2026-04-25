@@ -49,12 +49,12 @@ def test_boat_detail(vp):
     # Navigate via list so we get a real slug from the seeded DB.
     page.goto(base + "/boats")
     page.wait_for_load_state("networkidle")
-    first_card = page.locator(".boat-card a").first
+    first_card = page.locator("a.boat-card").first
     href = first_card.get_attribute("href")
     page.goto(base + href)
     page.wait_for_load_state("networkidle")
     shot(page, f"boat_detail_{name}")
-    assert page.locator(".gallery-main img").count() >= 1
+    assert page.locator("#gallery-main-img").count() >= 1
     assert page.locator(".detail-title").count() == 1
 
 
@@ -62,7 +62,7 @@ def test_boat_detail_gallery_thumbnails(vp):
     page, base, name = vp
     page.goto(base + "/boats")
     page.wait_for_load_state("networkidle")
-    href = page.locator(".boat-card a").first.get_attribute("href")
+    href = page.locator("a.boat-card").first.get_attribute("href")
     page.goto(base + href)
     page.wait_for_load_state("networkidle")
     shot(page, f"boat_detail_gallery_{name}")
@@ -77,14 +77,14 @@ def test_accessories_list(vp):
     page.goto(base + "/accessories")
     page.wait_for_load_state("networkidle")
     shot(page, f"accessories_list_{name}")
-    assert page.locator(".accessory-card").count() >= 1
+    assert page.locator("a.boat-card").count() >= 1
 
 
 def test_accessory_detail(vp):
     page, base, name = vp
     page.goto(base + "/accessories")
     page.wait_for_load_state("networkidle")
-    href = page.locator(".accessory-card a").first.get_attribute("href")
+    href = page.locator("a.boat-card").first.get_attribute("href")
     page.goto(base + href)
     page.wait_for_load_state("networkidle")
     shot(page, f"accessory_detail_{name}")

@@ -158,7 +158,7 @@ def boat_detail(browser, live_server_url):
     page = context.new_page()
     page.goto(live_server_url + "/boats")
     page.wait_for_load_state("networkidle")
-    href = page.locator(".boat-card a").first.get_attribute("href")
+    href = page.locator("a.boat-card").first.get_attribute("href")
     slug = href.rstrip("/").split("/")[-1]
     page.goto(live_server_url + href)
     page.wait_for_load_state("networkidle")
@@ -180,7 +180,7 @@ def boat_detail_vp(request, browser, live_server_url):
     page = context.new_page()
     page.goto(live_server_url + "/boats")
     page.wait_for_load_state("networkidle")
-    href = page.locator(".boat-card a").first.get_attribute("href")
+    href = page.locator("a.boat-card").first.get_attribute("href")
     slug = href.rstrip("/").split("/")[-1]
     page.goto(live_server_url + href)
     page.wait_for_load_state("networkidle")
