@@ -394,7 +394,7 @@ h3 { font-size: 1.2rem; font-weight: 600; }
 .footer-col a:hover { color: #fff; }
 .footer-bottom { max-width: var(--max-w); margin: 0 auto; padding: 0 var(--gutter); display: flex; justify-content: space-between; align-items: center; font-size: .8rem; flex-wrap: wrap; gap: .5rem; }
 .footer-wa { color: var(--gold); font-weight: 500; }
-nexttech-footer { display: block; background: #060F1E; border-top: 1px solid rgba(255,255,255,.06); }
+nexttech-footer { display: block; background: #060F1E; border-top: 1px solid rgba(255,255,255,.06); padding: .75rem 0; }
 
 /* ── Forms ── */
 .form { display: flex; flex-direction: column; gap: .85rem; max-width: 560px; }
