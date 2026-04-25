@@ -18,9 +18,13 @@ with app.app_context():
     db.create_all()
 
     print("==> Seeding data...")
-    from scripts.seed import seed
+    from scripts.seed import seed, sync_photos
     boats, accessories, admin_created = seed()
     print(f"    {boats} new boats ({db.session.query(Boat).count()} total), "
           f"{accessories} new accessories ({db.session.query(Accessory).count()} total)")
+
+    print("==> Syncing photos...")
+    synced = sync_photos()
+    print(f"    {synced} boats updated with new photos")
 
     print("==> All done.")

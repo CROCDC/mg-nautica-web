@@ -326,6 +326,38 @@ def seed() -> tuple[int, int, bool]:
     return boats_created, accessories_created, admin_created
 
 
+def sync_photos() -> int:
+    """Re-sync BoatPhoto records from products.json for boats that already exist.
+
+    Safe to run multiple times. Only touches boats whose photo count differs
+    from what products.json says (or that have no photos at all).
+    Returns the number of boats updated.
+    """
+    products = json.loads(DATA_FILE.read_text(encoding="utf-8"))
+    updated = 0
+    for p in products:
+        slug = p["slug"]
+        if slug in SKIP_SLUGS:
+            continue
+        photos = p.get("photos") or (
+            [p["primary_photo_url"]] if p.get("primary_photo_url") else []
+        )
+        if not photos:
+            continue
+        boat: Optional[Boat] = db.session.query(Boat).filter_by(slug=slug).one_or_none()
+        if boat is None:
+            continue
+        existing = db.session.query(BoatPhoto).filter_by(boat_id=boat.id).count()
+        if existing == len(photos):
+            continue  # already in sync
+        db.session.query(BoatPhoto).filter_by(boat_id=boat.id).delete()
+        for i, url in enumerate(photos):
+            db.session.add(BoatPhoto(boat_id=boat.id, url=url, position=i, is_primary=(i == 0)))
+        updated += 1
+    db.session.commit()
+    return updated
+
+
 def main() -> int:
     with app.app_context():
         db.create_all()
