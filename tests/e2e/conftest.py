@@ -193,12 +193,26 @@ def boat_detail_vp(request, browser, live_server_url):
 def shot(page, name: str) -> None:
     """Guarda screenshot en tests/screenshots/{name}.png.
 
-    Scroll to bottom then back to top first so IntersectionObserver-based
-    scroll-reveal animations fire and all cards become visible.
+    1. Scroll to bottom → fires all IntersectionObserver scroll-reveal animations.
+    2. Scroll back to top.
+    3. Pin the sticky header to position:relative so Playwright's full-page
+       stitching doesn't repeat it mid-page (pure screenshot artifact; the real
+       site is unaffected).
+    4. Capture, then restore the header position.
     """
     page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
     page.wait_for_timeout(400)
     page.evaluate("window.scrollTo(0, 0)")
     page.wait_for_timeout(200)
+    # Temporarily un-stick the header so it doesn't ghost mid-page.
+    page.evaluate(
+        "var h = document.querySelector('.site-header');"
+        "if (h) h.dataset._pos = h.style.position || '';"
+        "if (h) h.style.position = 'relative';"
+    )
     path = SCREENSHOTS / f"{name}.png"
     page.screenshot(path=str(path), full_page=True)
+    page.evaluate(
+        "var h = document.querySelector('.site-header');"
+        "if (h) h.style.position = h.dataset._pos || '';"
+    )
