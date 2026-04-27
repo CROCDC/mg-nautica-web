@@ -150,6 +150,36 @@ def test_detail_lightbox_counter_updates(boat_detail):
     assert counter_before != counter_after
 
 
+# ── Galería con muchas fotos (stress test) ───────────────────────────────────
+
+def test_many_photos_screenshot(many_photos_vp):
+    page, base, vp_name = many_photos_vp
+    shot(page, f"many_photos_{vp_name}")
+    assert page.locator(".detail-title").count() == 1
+
+
+def test_many_photos_thumb_count(many_photos_vp):
+    page, base, vp_name = many_photos_vp
+    assert page.locator(".gallery-thumb").count() == 24
+
+
+def test_many_photos_lightbox_counter(many_photos_detail):
+    page, base = many_photos_detail
+    page.locator("#gallery-main-img").click()
+    page.wait_for_timeout(400)
+    counter = page.locator("#lb-counter").text_content()
+    shot(page, "many_photos_lightbox")
+    assert "24" in counter
+
+
+def test_many_photos_arrow_wraps_to_last(many_photos_detail):
+    page, base = many_photos_detail
+    # Desde la primera foto, prev debe ir a la 24
+    page.locator("button.gallery-nav.prev").click()
+    page.wait_for_timeout(300)
+    assert "active" in (page.locator(".gallery-thumb").last.get_attribute("class") or "")
+
+
 def test_detail_inquiry_form_submit(boat_detail):
     page, base, slug = boat_detail
     page.fill("input[name='name']", "Ana García")

@@ -46,6 +46,22 @@ def test_admin_login_page_renders(browser, live_server_url):
     context.close()
 
 
+def test_admin_login_success(browser, live_server_url):
+    """El login correcto redirige al dashboard y éste devuelve 200."""
+    context = browser.new_context(viewport={"width": 1280, "height": 800})
+    page = context.new_page()
+    page.goto(live_server_url + "/admin/login")
+    page.fill("input[name='email']", ADMIN_EMAIL)
+    page.fill("input[name='password']", ADMIN_PASSWORD)
+    page.click("button[type='submit']")
+    page.wait_for_load_state("networkidle")
+    shot(page, "admin_login_success")
+    # Debe haber redirigido al dashboard, no quedarse en login ni tirar 500
+    assert "/admin/login" not in page.url
+    assert page.locator("main, .admin-content").count() >= 1
+    context.close()
+
+
 def test_admin_login_invalid_credentials(browser, live_server_url):
     context = browser.new_context(viewport={"width": 1280, "height": 800})
     page = context.new_page()

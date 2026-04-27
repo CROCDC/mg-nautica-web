@@ -89,6 +89,25 @@ def e2e_app():
                 is_primary=(j == 0),
             ))
 
+        # 1 barco con muchas fotos (stress test de la galería)
+        many = make_boat(
+            slug="galeria-test",
+            title="Galería Test 24",
+            price_usd=50000,
+            boat_type=BoatType.SAILBOAT,
+            flag=Flag.AR,
+            featured=False,
+        )
+        _db.session.add(many)
+        _db.session.flush()
+        for j in range(24):
+            _db.session.add(BoatPhoto(
+                boat_id=many.id,
+                url=f"https://picsum.photos/seed/many{j}/800/600",
+                position=j,
+                is_primary=(j == 0),
+            ))
+
         # 1 accesorio
         _db.session.add(make_accessory())
 
@@ -202,6 +221,49 @@ def boat_detail_vp(request, browser, live_server_url):
 
 # ── Helper ────────────────────────────────────────────────────────────────────
 
+def assert_no_visual_bugs(page) -> None:
+    """Fail if common CSS bugs are detected on the current page."""
+    # Unexpected strikethrough: any text outside .boat-card-price-old
+    violations = page.evaluate("""() => {
+        const results = [];
+        for (const el of document.querySelectorAll('*')) {
+            const cs = window.getComputedStyle(el);
+            if (!cs.textDecorationLine.includes('line-through')) continue;
+            if (el.closest('.boat-card-price-old, .sidebar-price-old')) continue;
+            const text = [...el.childNodes]
+                .filter(n => n.nodeType === 3)
+                .map(n => n.textContent.trim())
+                .join('');
+            if (!text) continue;
+            results.push({ tag: el.tagName, classes: el.className, text: text.slice(0, 60) });
+        }
+        return results;
+    }""")
+    assert violations == [], f"Strikethrough encontrado en elementos inesperados: {violations}"
+
+    # Horizontal overflow: find elements wider than the viewport
+    offenders = page.evaluate("""() => {
+        const vw = window.innerWidth;
+        if (document.documentElement.scrollWidth <= vw + 1) return [];
+        const hits = [];
+        for (const el of document.querySelectorAll('*')) {
+            const r = el.getBoundingClientRect();
+            if (r.right > vw + 1 || r.left < -1) {
+                hits.push({
+                    tag: el.tagName,
+                    classes: el.className,
+                    right: Math.round(r.right),
+                    left: Math.round(r.left),
+                    vw,
+                });
+                if (hits.length >= 5) break;
+            }
+        }
+        return hits;
+    }""")
+    assert offenders == [], f"Overflow horizontal detectado: {offenders}"
+
+
 def shot(page, name: str) -> None:
     """Guarda screenshot en tests/screenshots/{name}.png.
 
@@ -219,6 +281,7 @@ def shot(page, name: str) -> None:
     page.wait_for_timeout(400)
     page.evaluate("window.scrollTo(0, 0)")
     page.wait_for_timeout(200)
+    assert_no_visual_bugs(page)
     # Remove sticky from header; wait for layout + paint before screenshot.
     page.evaluate(
         "var h = document.querySelector('.site-header');"
@@ -246,4 +309,33 @@ def full_boat_vp(request, browser, live_server_url):
     page.goto(live_server_url + "/boats/bavaria-46-full")
     page.wait_for_load_state("networkidle")
     yield page, live_server_url, info["name"]
+    context.close()
+
+
+@pytest.fixture(params=VIEWPORTS)
+def many_photos_vp(request, browser, live_server_url):
+    """Barco con 24 fotos × 3 viewports — stress test de la galería."""
+    info = request.param
+    context = browser.new_context(
+        viewport={"width": info["width"], "height": info["height"]},
+        locale="es-AR",
+    )
+    page = context.new_page()
+    page.goto(live_server_url + "/boats/galeria-test")
+    page.wait_for_load_state("networkidle")
+    yield page, live_server_url, info["name"]
+    context.close()
+
+
+@pytest.fixture
+def many_photos_detail(browser, live_server_url):
+    """Barco con 24 fotos en desktop — tests de interacción."""
+    context = browser.new_context(
+        viewport={"width": 1280, "height": 800},
+        locale="es-AR",
+    )
+    page = context.new_page()
+    page.goto(live_server_url + "/boats/galeria-test")
+    page.wait_for_load_state("networkidle")
+    yield page, live_server_url
     context.close()

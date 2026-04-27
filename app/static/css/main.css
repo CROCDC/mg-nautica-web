@@ -242,6 +242,7 @@ h3 { font-size: 1.2rem; font-weight: 600; }
 .boat-card-meta { display: flex; align-items: center; gap: .5rem; margin-top: auto; padding-top: .6rem; border-top: 1px solid var(--border); }
 .boat-card-price { font-family: var(--ff-heading); font-size: 1.2rem; font-weight: 700; color: var(--navy); }
 .boat-card-price-old { font-size: .82rem; color: var(--muted); text-decoration: line-through; }
+.boat-card-spec { font-size: .82rem; color: var(--muted); }
 
 /* ── Catalog / Filters ── */
 .catalog-header { margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: .5rem; }
@@ -272,8 +273,8 @@ h3 { font-size: 1.2rem; font-weight: 600; }
 
 /* ── Boat detail ── */
 .detail-layout { display: grid; grid-template-columns: 1fr 360px; gap: 3rem; align-items: start; }
-.detail-main { min-height: 35vh; }
-.detail-sidebar { position: sticky; top: 88px; }
+.detail-main { min-height: 35vh; min-width: 0; }
+.detail-sidebar { position: sticky; top: 88px; min-width: 0; }
 
 .detail-title { margin-bottom: .4rem; }
 .detail-meta { display: flex; flex-wrap: wrap; gap: .5rem; margin: .6rem 0 1rem; }
@@ -628,6 +629,8 @@ nexttech-footer { display: block; background: #060F1E; border-top: 1px solid rgb
   .sidebar-price { font-size: 1.85rem; }
 }
 @media (max-width: 480px) {
+  .nav-actions .btn { display: none; }
+  .btn { white-space: normal; text-align: center; }
   .filter-bar { flex-direction: column; }
   .filter-group { min-width: 100%; }
   .filter-actions { width: 100%; }

@@ -91,7 +91,7 @@
         {% endif %}
 
         <form method="post" class="form" style="max-width:100%;">
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:.85rem;">
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:.85rem;">
                 <label>Nombre *<input type="text" name="first_name" required></label>
                 <label>Apellido *<input type="text" name="last_name" required></label>
             </div>
