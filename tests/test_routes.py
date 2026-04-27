@@ -165,3 +165,35 @@ class TestStaticPages:
         resp = client.get("/health")
         assert resp.status_code == 200
         assert resp.get_json()["status"] == "ok"
+
+    def test_robots_txt(self, client):
+        resp = client.get("/robots.txt")
+        assert resp.status_code == 200
+
+    def test_uploads_nonexistent_returns_404(self, client):
+        resp = client.get("/uploads/archivo-que-no-existe.png")
+        assert resp.status_code == 404
+
+
+class TestFilterParsing:
+    """Exercises the _parse_int / _parse_float ValueError branches in routes.py."""
+
+    def test_invalid_min_price_ignored(self, client):
+        resp = client.get("/boats?min_price=abc")
+        assert resp.status_code == 200
+
+    def test_invalid_max_price_ignored(self, client):
+        resp = client.get("/boats?max_price=xyz")
+        assert resp.status_code == 200
+
+    def test_invalid_min_length_ignored(self, client):
+        resp = client.get("/boats?min_length=abc")
+        assert resp.status_code == 200
+
+    def test_invalid_max_length_ignored(self, client):
+        resp = client.get("/boats?max_length=xyz")
+        assert resp.status_code == 200
+
+    def test_invalid_year_ignored(self, client):
+        resp = client.get("/boats?min_year=abc&max_year=xyz")
+        assert resp.status_code == 200

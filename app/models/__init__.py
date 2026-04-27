@@ -17,6 +17,7 @@ from app.models.enums import (
     UserRole,
 )
 from app.models.favorite import Favorite
+from app.models.meli_credentials import MeliCredentials
 from app.models.pending_listing import PendingListing
 from app.models.sale_inquiry import SaleInquiry
 from app.models.user import User
@@ -36,6 +37,7 @@ __all__ = [
     "InquiryChannel",
     "InquiryStatus",
     "ListedObject",
+    "MeliCredentials",
     "ModerationStatus",
     "PendingListing",
     "ProductCondition",

@@ -70,6 +70,16 @@ def test_boat_detail_gallery_thumbnails(vp):
     assert page.locator(".gallery-thumb").count() >= 1
 
 
+# ── Full-specs boat detail ────────────────────────────────────────────────────
+
+def test_full_boat_detail(full_boat_vp):
+    page, base, name = full_boat_vp
+    shot(page, f"boat_detail_full_{name}")
+    assert page.locator(".detail-title").count() == 1
+    assert page.locator(".spec-block").count() >= 6
+    assert page.locator(".sidebar-price").count() == 1
+
+
 # ── Accessories ───────────────────────────────────────────────────────────────
 
 def test_accessories_list(vp):

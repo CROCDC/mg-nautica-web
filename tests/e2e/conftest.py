@@ -1,8 +1,8 @@
 """Shared fixtures for Playwright E2E tests.
 
 Live server: Flask + SQLite file-based (thread-safe) con datos sembrados.
-Viewports:   desktop (1280×800), tablet (768×1024), mobile (375×812).
-Screenshots: tests/screenshots/{name}_{viewport}.png  — ignorados por git.
+Viewports:   desktop (800×600), tablet (600×800), mobile (320×568).
+Screenshots: tests/screenshots/{name}_{viewport}.jpg  — ignorados por git.
 """
 import os
 import threading
@@ -15,7 +15,7 @@ from werkzeug.serving import make_server
 from app.factory import create_app
 from app.factory import db as _db
 from app.models import BoatPhoto, BoatType, Flag
-from tests.factories import make_accessory, make_admin, make_boat
+from tests.factories import make_accessory, make_admin, make_boat, make_full_boat
 
 # ── Paths ─────────────────────────────────────────────────────────────────────
 SCREENSHOTS = Path(__file__).parent.parent / "screenshots"
@@ -32,9 +32,9 @@ E2E_CONFIG = {
 }
 
 VIEWPORTS = [
-    pytest.param({"name": "desktop", "width": 1280, "height": 800},  id="desktop"),
-    pytest.param({"name": "tablet",  "width": 768,  "height": 1024}, id="tablet"),
-    pytest.param({"name": "mobile",  "width": 375,  "height": 812},  id="mobile"),
+    pytest.param({"name": "desktop", "width": 800, "height": 600},  id="desktop"),
+    pytest.param({"name": "tablet",  "width": 600, "height": 800},  id="tablet"),
+    pytest.param({"name": "mobile",  "width": 320, "height": 568},  id="mobile"),
 ]
 
 
@@ -76,6 +76,18 @@ def e2e_app():
                     position=j,
                     is_primary=(j == 0),
                 ))
+
+        # 1 barco con todos los campos completados (para screenshots ricos)
+        full = make_full_boat()
+        _db.session.add(full)
+        _db.session.flush()
+        for j in range(8):
+            _db.session.add(BoatPhoto(
+                boat_id=full.id,
+                url=f"https://picsum.photos/seed/full{j}/800/600",
+                position=j,
+                is_primary=(j == 0),
+            ))
 
         # 1 accesorio
         _db.session.add(make_accessory())
@@ -195,24 +207,43 @@ def shot(page, name: str) -> None:
 
     1. Scroll to bottom → fires all IntersectionObserver scroll-reveal animations.
     2. Scroll back to top.
-    3. Pin the sticky header to position:relative so Playwright's full-page
-       stitching doesn't repeat it mid-page (pure screenshot artifact; the real
-       site is unaffected).
-    4. Capture, then restore the header position.
+    3. Un-stick the header (position:static) so Playwright's internal scroll for
+       full_page capture doesn't ghost it mid-page.
+    4. Wait two rAF cycles so the browser reflows and repaints the unstuck header
+       before the CDP screenshot is issued — without this the composited sticky
+       layer position is still used and the header appears at the viewport offset
+       in the stitched image.
+    5. Capture, then restore.
     """
     page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
     page.wait_for_timeout(400)
     page.evaluate("window.scrollTo(0, 0)")
     page.wait_for_timeout(200)
-    # Temporarily un-stick the header so it doesn't ghost mid-page.
+    # Remove sticky from header; wait for layout + paint before screenshot.
     page.evaluate(
         "var h = document.querySelector('.site-header');"
         "if (h) h.dataset._pos = h.style.position || '';"
-        "if (h) h.style.position = 'relative';"
+        "if (h) h.style.position = 'static';"
     )
-    path = SCREENSHOTS / f"{name}.png"
-    page.screenshot(path=str(path), full_page=True)
+    page.evaluate("new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)))")
+    path = SCREENSHOTS / f"{name}.jpg"
+    page.screenshot(path=str(path), full_page=True, type="jpeg", quality=30, scale="css")
     page.evaluate(
         "var h = document.querySelector('.site-header');"
         "if (h) h.style.position = h.dataset._pos || '';"
     )
+
+
+@pytest.fixture(params=VIEWPORTS)
+def full_boat_vp(request, browser, live_server_url):
+    """Bavaria 46 full-specs detail page × 3 viewports."""
+    info = request.param
+    context = browser.new_context(
+        viewport={"width": info["width"], "height": info["height"]},
+        locale="es-AR",
+    )
+    page = context.new_page()
+    page.goto(live_server_url + "/boats/bavaria-46-full")
+    page.wait_for_load_state("networkidle")
+    yield page, live_server_url, info["name"]
+    context.close()

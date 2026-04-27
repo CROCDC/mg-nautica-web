@@ -1,10 +1,16 @@
 """Unit tests for repository layer (runs against SQLite in-memory)."""
+import io
+import tempfile
+
 import pytest
 
-from app.models import BoatStatus, BoatType, Flag
+from app.models import BoatStatus, BoatType, Flag, ModerationStatus, ProductCondition
 from app.repositories.accessory_repository import AccessoryRepository
+from app.repositories.boat_inquiry_repository import BoatInquiryRepository
 from app.repositories.boat_repository import BoatRepository
 from app.repositories.favorite_repository import FavoriteRepository
+from app.repositories.pending_listing_repository import PendingListingRepository
+from app.repositories.sale_inquiry_repository import SaleInquiryRepository
 from tests.factories import make_accessory, make_boat
 
 
@@ -188,3 +194,252 @@ class TestFavoriteRepository:
             favs = FavoriteRepository.list_for_session("my-session")
             assert len(favs) == 2
             assert all(f.session_id == "my-session" for f in favs)
+
+# ── BoatRepository ─────────────────────────────────────────────────────────────
+
+class TestBoatRepositoryGetById:
+    def test_found(self, db, app, boat):
+        with app.app_context():
+            result = BoatRepository.get_by_id(boat.id)
+        assert result is not None
+        assert result.id == boat.id
+
+    def test_not_found(self, db, app):
+        with app.app_context():
+            assert BoatRepository.get_by_id(9999) is None
+
+
+class TestBoatRepositoryLengthYearFilters:
+    def test_filter_min_length(self, db, app):
+        db.session.add(make_boat(slug="short", length_m=5.0))
+        db.session.add(make_boat(slug="long", length_m=15.0))
+        db.session.commit()
+        with app.app_context():
+            results = BoatRepository.list_available(min_length_m=10.0)
+        assert len(results) == 1
+        assert results[0].slug == "long"
+
+    def test_filter_max_length(self, db, app):
+        db.session.add(make_boat(slug="short", length_m=5.0))
+        db.session.add(make_boat(slug="long", length_m=15.0))
+        db.session.commit()
+        with app.app_context():
+            results = BoatRepository.list_available(max_length_m=10.0)
+        assert len(results) == 1
+        assert results[0].slug == "short"
+
+    def test_filter_min_year(self, db, app):
+        db.session.add(make_boat(slug="old", year=2000))
+        db.session.add(make_boat(slug="new", year=2020))
+        db.session.commit()
+        with app.app_context():
+            results = BoatRepository.list_available(min_year=2010)
+        assert len(results) == 1
+        assert results[0].slug == "new"
+
+    def test_filter_max_year(self, db, app):
+        db.session.add(make_boat(slug="old", year=2000))
+        db.session.add(make_boat(slug="new", year=2020))
+        db.session.commit()
+        with app.app_context():
+            results = BoatRepository.list_available(max_year=2010)
+        assert len(results) == 1
+        assert results[0].slug == "old"
+
+
+class TestBoatRepositorySortAndOffset:
+    def test_sort_oldest(self, db, app):
+        db.session.add(make_boat(slug="first"))
+        db.session.add(make_boat(slug="second"))
+        db.session.commit()
+        with app.app_context():
+            results = BoatRepository.list_available(sort="oldest")
+        assert results[0].slug == "first"
+        assert results[1].slug == "second"
+
+    def test_offset(self, db, app):
+        for i in range(5):
+            db.session.add(make_boat(slug=f"b{i}"))
+        db.session.commit()
+        with app.app_context():
+            all_results = BoatRepository.list_available(sort="oldest")
+            offset_results = BoatRepository.list_available(sort="oldest", offset=2)
+        assert len(offset_results) == len(all_results) - 2
+
+
+class TestBoatRepositoryFeatured:
+    def test_returns_featured_available_only(self, db, app):
+        db.session.add(make_boat(slug="feat", featured=True))
+        db.session.add(make_boat(slug="unfeat", featured=False))
+        db.session.add(make_boat(slug="feat-sold", featured=True, status=BoatStatus.SOLD))
+        db.session.commit()
+        with app.app_context():
+            results = BoatRepository.list_featured()
+        slugs = [r.slug for r in results]
+        assert "feat" in slugs
+        assert "unfeat" not in slugs
+        assert "feat-sold" not in slugs
+
+    def test_respects_limit(self, db, app):
+        for i in range(10):
+            db.session.add(make_boat(slug=f"f{i}", featured=True))
+        db.session.commit()
+        with app.app_context():
+            results = BoatRepository.list_featured(limit=3)
+        assert len(results) == 3
+
+
+# ── AccessoryRepository ────────────────────────────────────────────────────────
+
+class TestAccessoryRepositoryExtended:
+    def test_get_by_id_found(self, db, app, accessory):
+        with app.app_context():
+            result = AccessoryRepository.get_by_id(accessory.id)
+        assert result is not None
+        assert result.id == accessory.id
+
+    def test_get_by_id_not_found(self, db, app):
+        with app.app_context():
+            assert AccessoryRepository.get_by_id(9999) is None
+
+    def test_save_persists_new(self, db, app):
+        acc = make_accessory(slug="acc-to-save")
+        with app.app_context():
+            saved = AccessoryRepository.save(acc)
+            assert saved.id is not None
+            assert AccessoryRepository.get_by_id(saved.id) is not None
+
+
+# ── BoatInquiryRepository ──────────────────────────────────────────────────────
+
+class TestBoatInquiryRepository:
+    def test_create_persists(self, db, app, boat):
+        with app.app_context():
+            inq = BoatInquiryRepository.create(
+                boat_id=boat.id,
+                name="Juan",
+                email="juan@test.com",
+                phone="11-1234",
+                message="Me interesa",
+            )
+            assert inq.id is not None
+            assert inq.boat_id == boat.id
+            assert inq.email == "juan@test.com"
+
+    def test_list_for_boat(self, db, app, boat):
+        with app.app_context():
+            BoatInquiryRepository.create(boat_id=boat.id, name="A", email="a@t.com", phone=None, message=None)
+            BoatInquiryRepository.create(boat_id=boat.id, name="B", email="b@t.com", phone=None, message=None)
+            results = BoatInquiryRepository.list_for_boat(boat.id)
+        assert len(results) == 2
+
+    def test_list_for_boat_empty(self, db, app, boat):
+        with app.app_context():
+            assert BoatInquiryRepository.list_for_boat(boat.id) == []
+
+
+# ── SaleInquiryRepository ──────────────────────────────────────────────────────
+
+class TestSaleInquiryRepository:
+    def test_create_persists(self, db, app):
+        with app.app_context():
+            inq = SaleInquiryRepository.create(
+                first_name="Ana",
+                last_name="García",
+                email="ana@test.com",
+                phone=None,
+                boat_type=BoatType.SAILBOAT,
+                message="Quiero vender",
+            )
+            assert inq.id is not None
+            assert inq.email == "ana@test.com"
+
+    def test_list_recent(self, db, app):
+        with app.app_context():
+            SaleInquiryRepository.create("A", "B", "a@t.com", None, BoatType.SAILBOAT, None)
+            SaleInquiryRepository.create("C", "D", "c@t.com", None, BoatType.MOTORBOAT, None)
+            results = SaleInquiryRepository.list_recent()
+        assert len(results) == 2
+
+    def test_list_recent_limit(self, db, app):
+        with app.app_context():
+            for i in range(5):
+                SaleInquiryRepository.create(f"U{i}", "L", f"u{i}@t.com", None, BoatType.SAILBOAT, None)
+            results = SaleInquiryRepository.list_recent(limit=3)
+        assert len(results) == 3
+
+
+# ── PendingListingRepository ───────────────────────────────────────────────────
+
+class TestPendingListingRepositoryIsAllowed:
+    def test_valid_extensions(self, db, app):
+        with app.app_context():
+            for fname in ("foto.png", "doc.pdf", "img.jpg", "img.jpeg", "img.webp", "img.heic"):
+                assert PendingListingRepository._is_allowed(fname) is True
+
+    def test_no_dot_returns_false(self, db, app):
+        with app.app_context():
+            assert PendingListingRepository._is_allowed("nodot") is False
+
+    def test_invalid_extension_returns_false(self, db, app):
+        with app.app_context():
+            assert PendingListingRepository._is_allowed("script.exe") is False
+            assert PendingListingRepository._is_allowed("archive.zip") is False
+
+
+class TestPendingListingRepositorySaveFiles:
+    def test_skips_empty_filename(self, db, app):
+        from werkzeug.datastructures import FileStorage
+        with app.app_context():
+            with tempfile.TemporaryDirectory() as tmpdir:
+                app.config["UPLOAD_FOLDER"] = tmpdir
+                result = PendingListingRepository._save_files(
+                    [FileStorage(stream=io.BytesIO(b""), filename="")]
+                )
+        assert result == []
+
+    def test_skips_invalid_extension(self, db, app):
+        from werkzeug.datastructures import FileStorage
+        with app.app_context():
+            with tempfile.TemporaryDirectory() as tmpdir:
+                app.config["UPLOAD_FOLDER"] = tmpdir
+                result = PendingListingRepository._save_files(
+                    [FileStorage(stream=io.BytesIO(b"data"), filename="virus.exe")]
+                )
+        assert result == []
+
+    def test_saves_valid_file(self, db, app):
+        from werkzeug.datastructures import FileStorage
+        with app.app_context():
+            with tempfile.TemporaryDirectory() as tmpdir:
+                app.config["UPLOAD_FOLDER"] = tmpdir
+                result = PendingListingRepository._save_files(
+                    [FileStorage(stream=io.BytesIO(b"\x89PNG"), filename="foto.png")]
+                )
+        assert len(result) == 1
+        assert result[0].startswith("/uploads/")
+        assert result[0].endswith(".png")
+
+
+class TestPendingListingRepositoryListPending:
+    def test_returns_only_pending(self, db, app):
+        from app.models import PendingListing
+        db.session.add(PendingListing(
+            first_name="P", last_name="B", email="p@b.com",
+            condition=ProductCondition.USED, description="Algo",
+            file_urls=[], moderation_status=ModerationStatus.PENDING,
+        ))
+        db.session.add(PendingListing(
+            first_name="A", last_name="C", email="a@c.com",
+            condition=ProductCondition.NEW, description="Otro",
+            file_urls=[], moderation_status=ModerationStatus.APPROVED,
+        ))
+        db.session.commit()
+        with app.app_context():
+            results = PendingListingRepository.list_pending()
+        assert len(results) == 1
+        assert results[0].email == "p@b.com"
+
+    def test_empty_when_none_pending(self, db, app):
+        with app.app_context():
+            assert PendingListingRepository.list_pending() == []

@@ -1,0 +1,140 @@
+{% extends "admin/base.html" %}
+{% block title %}Mercado Libre - Admin{% endblock %}
+{% block content %}
+<div class="admin-toolbar">
+    <h1>Mercado Libre</h1>
+</div>
+
+{# ── Credentials per site ─────────────────────────────────────── #}
+<section class="admin-section">
+    <h2>Configuración de cuentas</h2>
+    <table class="admin-table">
+        <thead>
+            <tr>
+                <th>Sitio</th>
+                <th>Estado</th>
+                <th>Usuario MELI</th>
+                <th>Token expira</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for site in sites %}
+            {% set c = creds[site] %}
+            <tr>
+                <td><strong>{{ site }}</strong></td>
+                {% if c %}
+                <td>
+                    {% if c.is_expired %}
+                    <span class="badge badge-warning">Expirado</span>
+                    {% else %}
+                    <span class="badge badge-success">Activo</span>
+                    {% endif %}
+                </td>
+                <td>{{ c.meli_user_id or '—' }}</td>
+                <td>{{ c.expires_at.strftime('%d/%m/%Y %H:%M') }} UTC</td>
+                <td>
+                    <a class="btn btn-sm" href="{{ url_for('admin.meli_auth', site_id=site) }}">Reconectar</a>
+                    <form method="post" action="{{ url_for('admin.meli_disconnect', site_id=site) }}" style="display:inline;"
+                          onsubmit="return confirm('¿Eliminar credenciales de {{ site }}?');">
+                        <button type="submit" class="btn btn-danger btn-sm">Desconectar</button>
+                    </form>
+                </td>
+                {% else %}
+                <td><span class="badge badge-danger">Sin configurar</span></td>
+                <td>—</td>
+                <td>—</td>
+                <td>
+                    <a class="btn btn-primary btn-sm" href="{{ url_for('admin.meli_auth', site_id=site) }}">Conectar cuenta</a>
+                </td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+
+{# ── Boats listing status ─────────────────────────────────────── #}
+<section class="admin-section">
+    <h2>Embarcaciones</h2>
+    <table class="admin-table">
+        <thead>
+            <tr>
+                <th>Embarcación</th>
+                <th>Precio</th>
+                {% for site in sites %}
+                <th>{{ site }} — Estado</th>
+                <th>{{ site }} — Acciones</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for boat in boats %}
+            {% set info = meli_info[boat.id] %}
+            <tr>
+                <td>
+                    <a href="{{ url_for('admin.boats_edit', boat_id=boat.id) }}">{{ boat.title }}</a>
+                </td>
+                <td>US$ {{ '{:,}'.format(boat.price_usd) }}</td>
+
+                {% for site in sites %}
+                {% set listing = info[site] %}
+                <td>
+                    {% if listing %}
+                        {% if listing.status == 'active' %}
+                            <span class="badge badge-success">Activa</span>
+                        {% elif listing.status == 'paused' %}
+                            <span class="badge badge-warning">Pausada</span>
+                        {% elif listing.status == 'closed' %}
+                            <span class="badge badge-danger">Cerrada</span>
+                        {% else %}
+                            <span class="badge">{{ listing.status or '?' }}</span>
+                        {% endif %}
+                        {% if listing.permalink %}
+                        <br><a href="{{ listing.permalink }}" target="_blank" rel="noopener">Ver en MELI ↗</a>
+                        {% endif %}
+                        {% if listing.synced_at %}
+                        <br><small>Sync: {{ listing.synced_at.strftime('%d/%m %H:%M') }}</small>
+                        {% endif %}
+                    {% else %}
+                        <span class="badge">Sin publicar</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if not listing %}
+                    <form method="post" action="{{ url_for('admin.meli_publish', boat_id=boat.id, site_id=site) }}" style="display:inline;">
+                        <button class="btn btn-primary btn-sm">Publicar</button>
+                    </form>
+                    {% else %}
+                    <form method="post" action="{{ url_for('admin.meli_update', boat_id=boat.id, site_id=site) }}" style="display:inline;">
+                        <button class="btn btn-sm">Sincronizar</button>
+                    </form>
+                    <form method="post" action="{{ url_for('admin.meli_sync', boat_id=boat.id, site_id=site) }}" style="display:inline;">
+                        <button class="btn btn-sm">Refrescar</button>
+                    </form>
+                    {% if listing.status == 'active' %}
+                    <form method="post" action="{{ url_for('admin.meli_pause', boat_id=boat.id, site_id=site) }}" style="display:inline;">
+                        <button class="btn btn-sm">Pausar</button>
+                    </form>
+                    {% elif listing.status == 'paused' %}
+                    <form method="post" action="{{ url_for('admin.meli_activate', boat_id=boat.id, site_id=site) }}" style="display:inline;">
+                        <button class="btn btn-primary btn-sm">Activar</button>
+                    </form>
+                    {% endif %}
+                    {% if listing.status in ('active', 'paused') %}
+                    <form method="post" action="{{ url_for('admin.meli_close', boat_id=boat.id, site_id=site) }}" style="display:inline;"
+                          onsubmit="return confirm('¿Cerrar definitivamente la publicación en {{ site }}?');">
+                        <button class="btn btn-danger btn-sm">Cerrar</button>
+                    </form>
+                    {% endif %}
+                    {% endif %}
+                </td>
+                {% endfor %}
+            </tr>
+            {% else %}
+            <tr><td colspan="{{ 2 + sites|length * 2 }}" class="empty">No hay embarcaciones.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+{% endblock %}

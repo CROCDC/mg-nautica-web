@@ -15,19 +15,18 @@
         <span>{{ boat.title }}</span>
     </nav>
 
+    <h1 class="detail-title">{{ boat.title }}</h1>
+    <div class="detail-meta">
+        <span class="detail-chip">{{ boat_type_label[boat.boat_type.value] }}</span>
+        <span class="detail-chip">🏳️ {{ flag_label[boat.flag.value] }}</span>
+        {% if boat.city_location %}<span class="detail-chip">📍 {{ boat.city_location }}</span>{% endif %}
+        {% if boat.year %}<span class="detail-chip">📅 {{ boat.year }}</span>{% endif %}
+        {% if boat.length_m %}<span class="detail-chip">📏 {{ boat.length_m }} m</span>{% endif %}
+    </div>
+
     <div class="detail-layout">
         {# ── Main column ── #}
         <div class="detail-main">
-            <h1 class="detail-title">{{ boat.title }}</h1>
-
-            <div class="detail-meta">
-                <span class="detail-chip">{{ boat_type_label[boat.boat_type.value] }}</span>
-                <span class="detail-chip">🏳️ {{ flag_label[boat.flag.value] }}</span>
-                {% if boat.city_location %}<span class="detail-chip">📍 {{ boat.city_location }}</span>{% endif %}
-                {% if boat.year %}<span class="detail-chip">📅 {{ boat.year }}</span>{% endif %}
-                {% if boat.length_m %}<span class="detail-chip">📏 {{ boat.length_m }} m</span>{% endif %}
-            </div>
-
             {# Gallery #}
             {% if boat.photos %}
             <div class="gallery">
@@ -291,14 +290,18 @@ function lbNav(dir) {
 }
 
 document.addEventListener('keydown', e => {
-    if (!document.getElementById('lightbox').classList.contains('open')) return;
+    const lb = document.getElementById('lightbox');
+    if (!lb || !lb.classList.contains('open')) return;
     if (e.key === 'Escape') closeLightbox();
     if (e.key === 'ArrowRight') lbNav(1);
     if (e.key === 'ArrowLeft') lbNav(-1);
 });
 
-document.getElementById('lightbox').addEventListener('click', function(e) {
-    if (e.target === this) closeLightbox();
+document.addEventListener('DOMContentLoaded', function () {
+    const lb = document.getElementById('lightbox');
+    if (lb) lb.addEventListener('click', function(e) {
+        if (e.target === this) closeLightbox();
+    });
 });
 </script>
 {% endblock %}

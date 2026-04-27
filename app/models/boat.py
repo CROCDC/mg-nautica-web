@@ -41,6 +41,18 @@ class Boat(ListedObject):
     last_refit = db.Column(db.String(40), nullable=True)
     last_careening = db.Column(db.String(40), nullable=True)
 
+    # Mercado Libre — Uruguay (MLU)
+    meli_mlu_item_id = db.Column(db.String(30), nullable=True)
+    meli_mlu_status = db.Column(db.String(30), nullable=True)
+    meli_mlu_permalink = db.Column(db.String(500), nullable=True)
+    meli_mlu_synced_at = db.Column(db.DateTime, nullable=True)
+
+    # Mercado Libre — Argentina (MLA)
+    meli_mla_item_id = db.Column(db.String(30), nullable=True)
+    meli_mla_status = db.Column(db.String(30), nullable=True)
+    meli_mla_permalink = db.Column(db.String(500), nullable=True)
+    meli_mla_synced_at = db.Column(db.DateTime, nullable=True)
+
     photos = db.relationship(
         "BoatPhoto",
         back_populates="boat",

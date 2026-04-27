@@ -15,4 +15,4 @@ def _unauthorized(error):  # noqa: ANN001
     return redirect(url_for("admin.login"))
 
 
-from app.admin import accessories, auth, boats, dashboard, inquiries, listings, users  # noqa: E402,F401
+from app.admin import accessories, auth, boats, dashboard, inquiries, listings, meli, users  # noqa: E402,F401

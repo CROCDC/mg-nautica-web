@@ -15,15 +15,14 @@
         <span>{{ accessory.title }}</span>
     </nav>
 
+    <h1 class="detail-title">{{ accessory.title }}</h1>
+    <div class="detail-meta">
+        <span class="detail-chip">{{ accessory_category_label[accessory.category.value] }}</span>
+        {% if accessory.stock %}<span class="detail-chip">📦 Stock: {{ accessory.stock }}</span>{% endif %}
+    </div>
+
     <div class="detail-layout">
         <div class="detail-main">
-            <h1 class="detail-title">{{ accessory.title }}</h1>
-
-            <div class="detail-meta">
-                <span class="detail-chip">{{ accessory_category_label[accessory.category.value] }}</span>
-                {% if accessory.stock %}<span class="detail-chip">📦 Stock: {{ accessory.stock }}</span>{% endif %}
-            </div>
-
             {% if accessory.photo_url %}
             <div class="gallery">
                 <div class="gallery-main">
