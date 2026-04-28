@@ -17,10 +17,16 @@ depends_on = None
 
 
 def upgrade():
-    with op.batch_alter_table('users', schema=None) as batch_op:
-        batch_op.add_column(sa.Column('last_login_at', sa.DateTime(), nullable=True))
+    bind = op.get_bind()
+    existing = {c["name"] for c in sa.inspect(bind).get_columns("users")}
+    if "last_login_at" not in existing:
+        with op.batch_alter_table("users", schema=None) as batch_op:
+            batch_op.add_column(sa.Column("last_login_at", sa.DateTime(), nullable=True))
 
 
 def downgrade():
-    with op.batch_alter_table('users', schema=None) as batch_op:
-        batch_op.drop_column('last_login_at')
+    bind = op.get_bind()
+    existing = {c["name"] for c in sa.inspect(bind).get_columns("users")}
+    if "last_login_at" in existing:
+        with op.batch_alter_table("users", schema=None) as batch_op:
+            batch_op.drop_column("last_login_at")
