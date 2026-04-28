@@ -205,13 +205,13 @@ class TestBoatPhotoDelete:
 class TestNewBoatWithPhoto:
     def test_new_boat_photo_url_field_present(self, admin_page):
         page, base = admin_page
-        page.goto(base + "/admin/boats/new")
+        page.goto(base + "/admin/boats/new/complete")
         page.wait_for_load_state("load")
         assert page.locator("input[name='photo_url']").count() == 1
 
     def test_create_boat_with_photo_url(self, admin_page):
         page, base = admin_page
-        page.goto(base + "/admin/boats/new")
+        page.goto(base + "/admin/boats/new/complete")
         page.wait_for_load_state("load")
 
         page.fill("input[name='slug']", "e2e-barco-con-foto")
@@ -231,7 +231,7 @@ class TestNewBoatWithPhoto:
 
     def test_new_boat_without_photo_url_has_empty_photos(self, admin_page):
         page, base = admin_page
-        page.goto(base + "/admin/boats/new")
+        page.goto(base + "/admin/boats/new/complete")
         page.wait_for_load_state("load")
 
         page.fill("input[name='slug']", "e2e-barco-sin-foto")

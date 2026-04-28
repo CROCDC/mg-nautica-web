@@ -29,6 +29,7 @@ E2E_CONFIG = {
     "SECRET_KEY": "e2e-test-secret-key",
     "SERVER_NAME": None,
     "WTF_CSRF_ENABLED": False,
+    "UPLOAD_FOLDER": "/tmp/mg_nautica_e2e_uploads",
 }
 
 VIEWPORTS = [
@@ -295,6 +296,20 @@ def shot(page, name: str) -> None:
         "var h = document.querySelector('.site-header');"
         "if (h) h.style.position = h.dataset._pos || '';"
     )
+
+
+@pytest.fixture
+def admin_page(browser, live_server_url):
+    """Desktop page pre-authenticated as admin (shared by all e2e admin tests)."""
+    context = browser.new_context(viewport={"width": 1280, "height": 800}, locale="es-AR")
+    page = context.new_page()
+    page.goto(live_server_url + "/admin/login")
+    page.fill("input[name='email']", "admin@mgnautica.local")
+    page.fill("input[name='password']", "admin-pass")
+    page.click("button[type='submit']")
+    page.wait_for_url("**/admin/", timeout=5000)
+    yield page, live_server_url
+    context.close()
 
 
 @pytest.fixture(params=VIEWPORTS)

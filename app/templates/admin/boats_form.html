@@ -8,11 +8,16 @@
 {% endmacro %}
 {% block content %}
 <h1>{{ 'Nueva embarcación' if not boat else ('Editar: ' ~ boat.title) }}</h1>
+{% if not boat %}
+<p style="color:var(--muted);margin-bottom:1rem;">
+    ¿Solo querés lo esencial? <a href="{{ url_for('admin.boats_new_simple') }}">Usar carga rápida</a> · <a href="{{ url_for('admin.boats_new') }}">Volver</a>.
+</p>
+{% endif %}
 
-<form method="post" class="form admin-form">
+<form method="post" enctype="multipart/form-data" class="form admin-form">
     <h2>Datos principales</h2>
     {% set b = boat %}
-    {{ field('slug', 'Slug', required=True, value=(form.get('slug') if form.get('slug') else (b.slug if b else ''))) }}
+    {{ field('slug', 'Slug (se genera automáticamente si se deja vacío)', value=(form.get('slug') if form.get('slug') else (b.slug if b else ''))) }}
     {{ field('title', 'Título', required=True, value=(form.get('title') if form.get('title') else (b.title if b else ''))) }}
     <label>
         Descripción
@@ -87,8 +92,64 @@
     {{ field('last_careening', 'Último carenado', value=(form.get('last_careening') if form.get('last_careening') else (b.last_careening if b else ''))) }}
 
     {% if not boat %}
-    <h2>Foto principal</h2>
-    {{ field('photo_url', 'URL de foto', type='url') }}
+    <h2>Fotos</h2>
+    <label>
+        Imágenes (se pueden seleccionar varias)
+        <input type="file" name="photos" multiple accept="image/*">
+    </label>
+
+    <h2>Ficha técnica <small style="font-weight:normal;font-size:.8em;color:var(--muted)">(opcional)</small></h2>
+    <h3>Motor</h3>
+    {{ field('engine_brand', 'Marca/modelo') }}
+    {{ field('engine_hp', 'HP', type='number') }}
+    {{ field('engine_hours', 'Horas', type='number') }}
+    {{ field('propeller', 'Hélice') }}
+    <label><input type="checkbox" name="bow_thruster"> Hélice de proa</label>
+    {{ field('fuel_liters', 'Combustible (L)', type='number') }}
+    {{ field('fresh_water_liters', 'Agua dulce (L)', type='number') }}
+
+    <h3>Velas y aparejo</h3>
+    <label>Velas<textarea name="sails" rows="2"></textarea></label>
+    {{ field('furlers', 'Enrolladores') }}
+    {{ field('poles', 'Tangones') }}
+    {{ field('bowsprit', 'Botalón') }}
+    {{ field('mast_rig', 'Mástil/jarcia') }}
+
+    <h3>Electrónica</h3>
+    {{ field('electronics_plotter', 'Plotter(s)') }}
+    {{ field('electronics_ais', 'AIS') }}
+    {{ field('electronics_radar', 'Radar') }}
+    {{ field('electronics_wind', 'Wind/Tridata') }}
+    {{ field('electronics_autopilot', 'Piloto automático') }}
+    {{ field('electronics_charts', 'Cartografía') }}
+    {{ field('electronics_vhf', 'VHF') }}
+    {{ field('electronics_satellite', 'Satelital') }}
+    <label><input type="checkbox" name="electronics_starlink"> Starlink</label>
+
+    <h3>Energía</h3>
+    <label>Baterías<textarea name="batteries_config" rows="2"></textarea></label>
+    {{ field('solar_watts', 'Paneles solares (W)', type='number') }}
+    {{ field('inverter_watts', 'Inverter (W)', type='number') }}
+    {{ field('chargers', 'Cargadores') }}
+    {{ field('generator', 'Generador') }}
+
+    <h3>Habitabilidad</h3>
+    {{ field('cabins_qty', 'Camarotes', type='number') }}
+    {{ field('bathrooms_qty', 'Baños', type='number') }}
+    {{ field('saloon', 'Saloon') }}
+    {{ field('galley', 'Cocina') }}
+    {{ field('fridge', 'Nevera') }}
+    {{ field('tv', 'TV') }}
+    {{ field('air_conditioning', 'Aire acondicionado') }}
+    {{ field('water_heater', 'Termotanque') }}
+
+    <h3>Fondeo</h3>
+    <label>Descripción<textarea name="ground_tackle" rows="2"></textarea></label>
+    {{ field('chain_meters', 'Cadena (m)', type='number') }}
+    {{ field('chain_mm', 'Cadena (mm)', type='number') }}
+
+    <h3>Inventario extra</h3>
+    <label><textarea name="extra_inventory" rows="3"></textarea></label>
     {% endif %}
 
     <button type="submit" class="btn btn-primary">Guardar</button>
@@ -108,10 +169,9 @@
         </div>
         {% endfor %}
     </div>
-    <form method="post" action="{{ url_for('admin.boats_photo_add', boat_id=boat.id) }}" class="inline-form">
-        <input type="url" name="url" placeholder="URL de nueva foto" required>
-        <input type="text" name="alt" placeholder="Texto alternativo">
-        <button type="submit" class="btn">Agregar foto</button>
+    <form method="post" enctype="multipart/form-data" action="{{ url_for('admin.boats_photo_add', boat_id=boat.id) }}" class="inline-form">
+        <input type="file" name="photos" multiple accept="image/*" required>
+        <button type="submit" class="btn">Agregar fotos</button>
     </form>
 </section>
 

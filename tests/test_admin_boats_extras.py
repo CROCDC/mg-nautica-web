@@ -1,8 +1,15 @@
 """Integration tests for admin boat photo and specs endpoints."""
+import base64
+import io
+
 import pytest
 
 from app.models import Boat, BoatPhoto, BoatSpecs
 from tests.factories import make_boat
+
+_TINY_PNG = base64.b64decode(
+    "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwADhQGAWjR9awAAAABJRU5ErkJggg=="
+)
 
 _VALID_BOAT_DATA = {
     "slug": "velero-cobertura",
@@ -19,37 +26,41 @@ _VALID_BOAT_DATA = {
 
 class TestAdminBoatPhotoAdd:
     def test_add_photo_persists_to_db(self, db, app, logged_in_admin, boat):
-        logged_in_admin.post(f"/admin/boats/{boat.id}/photos/add", data={
-            "url": "https://example.com/nueva-foto.jpg",
-            "alt": "Vista lateral",
-        })
-        with app.app_context():
-            b = db.session.get(Boat, boat.id)
-            assert len(b.photos) == 1
-            assert b.photos[0].url == "https://example.com/nueva-foto.jpg"
-            assert b.photos[0].alt == "Vista lateral"
+        logged_in_admin.post(
+            f"/admin/boats/{boat.id}/photos/add",
+            data={"photos": (io.BytesIO(_TINY_PNG), "nueva-foto.png")},
+            content_type="multipart/form-data",
+        )
+        b = db.session.get(Boat, boat.id)
+        assert len(b.photos) == 1
+        assert b.photos[0].url.startswith("/uploads/")
 
     def test_first_photo_is_marked_primary(self, db, app, logged_in_admin, boat):
-        logged_in_admin.post(f"/admin/boats/{boat.id}/photos/add", data={
-            "url": "https://example.com/foto-primaria.jpg",
-        })
-        with app.app_context():
-            b = db.session.get(Boat, boat.id)
-            assert b.photos[0].is_primary is True
+        logged_in_admin.post(
+            f"/admin/boats/{boat.id}/photos/add",
+            data={"photos": (io.BytesIO(_TINY_PNG), "primaria.png")},
+            content_type="multipart/form-data",
+        )
+        b = db.session.get(Boat, boat.id)
+        assert b.photos[0].is_primary is True
 
     def test_second_photo_is_not_primary(self, db, app, logged_in_admin, boat_with_photo):
-        logged_in_admin.post(f"/admin/boats/{boat_with_photo.id}/photos/add", data={
-            "url": "https://example.com/segunda-foto.jpg",
-        })
-        with app.app_context():
-            b = db.session.get(Boat, boat_with_photo.id)
-            second = next(p for p in b.photos if p.url == "https://example.com/segunda-foto.jpg")
-            assert second.is_primary is False
+        logged_in_admin.post(
+            f"/admin/boats/{boat_with_photo.id}/photos/add",
+            data={"photos": (io.BytesIO(_TINY_PNG), "segunda.png")},
+            content_type="multipart/form-data",
+        )
+        b = db.session.get(Boat, boat_with_photo.id)
+        new_photo = next(p for p in b.photos if p.url.startswith("/uploads/"))
+        assert new_photo.is_primary is False
 
     def test_add_photo_redirects_to_edit(self, db, logged_in_admin, boat):
-        resp = logged_in_admin.post(f"/admin/boats/{boat.id}/photos/add", data={
-            "url": "https://example.com/foto.jpg",
-        }, follow_redirects=False)
+        resp = logged_in_admin.post(
+            f"/admin/boats/{boat.id}/photos/add",
+            data={"photos": (io.BytesIO(_TINY_PNG), "foto.png")},
+            content_type="multipart/form-data",
+            follow_redirects=False,
+        )
         assert resp.status_code == 302
         assert f"/admin/boats/{boat.id}/edit" in resp.headers["Location"]
 
@@ -214,7 +225,7 @@ class TestAdminBoatsList:
 
 class TestAdminBoatsNewValidation:
     def test_missing_required_fields_returns_400(self, db, logged_in_admin):
-        resp = logged_in_admin.post("/admin/boats/new", data={
+        resp = logged_in_admin.post("/admin/boats/new/complete", data={
             "slug": "",
             "title": "",
             "price_usd": "10000",
@@ -225,7 +236,7 @@ class TestAdminBoatsNewValidation:
         assert resp.status_code == 400
 
     def test_missing_boat_type_returns_400(self, db, logged_in_admin):
-        resp = logged_in_admin.post("/admin/boats/new", data={
+        resp = logged_in_admin.post("/admin/boats/new/complete", data={
             "slug": "sin-tipo",
             "title": "Sin Tipo",
             "price_usd": "10000",
@@ -235,18 +246,19 @@ class TestAdminBoatsNewValidation:
         })
         assert resp.status_code == 400
 
-    def test_with_photo_url_creates_photo(self, db, app, logged_in_admin):
-        data = {**_VALID_BOAT_DATA, "slug": "con-foto-url", "photo_url": "https://example.com/foto.jpg"}
-        logged_in_admin.post("/admin/boats/new", data=data)
-        with app.app_context():
-            b = db.session.query(Boat).filter_by(slug="con-foto-url").one_or_none()
-            assert b is not None
-            assert len(b.photos) == 1
-            assert b.photos[0].url == "https://example.com/foto.jpg"
+    def test_with_photo_file_creates_photo(self, db, logged_in_admin):
+        data = {**_VALID_BOAT_DATA, "slug": "con-foto-file",
+                "photos": (io.BytesIO(_TINY_PNG), "foto.png")}
+        logged_in_admin.post("/admin/boats/new/complete", data=data,
+                             content_type="multipart/form-data")
+        b = db.session.query(Boat).filter_by(slug="con-foto-file").one_or_none()
+        assert b is not None
+        assert len(b.photos) == 1
+        assert b.photos[0].url.startswith("/uploads/")
 
     def test_without_photo_url_creates_no_photos(self, db, app, logged_in_admin):
         data = {**_VALID_BOAT_DATA, "slug": "sin-foto-url"}
-        logged_in_admin.post("/admin/boats/new", data=data)
+        logged_in_admin.post("/admin/boats/new/complete", data=data)
         with app.app_context():
             b = db.session.query(Boat).filter_by(slug="sin-foto-url").one_or_none()
             assert b is not None

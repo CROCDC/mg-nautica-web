@@ -1,0 +1,17 @@
+{% extends "admin/base.html" %}
+{% block title %}Nueva embarcación - Admin{% endblock %}
+{% block content %}
+<h1>Nueva embarcación</h1>
+<p style="color:var(--muted);margin-bottom:2rem;">¿Cómo querés cargarla?</p>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;max-width:640px;">
+    <a href="{{ url_for('admin.boats_new_simple') }}" class="choose-card">
+        <strong>Carga rápida</strong>
+        <span>Título, descripción, fotos, año, eslora y calado. Listo en segundos.</span>
+    </a>
+    <a href="{{ url_for('admin.boats_new_complete') }}" class="choose-card">
+        <strong>Formulario completo</strong>
+        <span>Todos los campos: tipo, bandera, precio, ficha técnica y más.</span>
+    </a>
+</div>
+{% endblock %}

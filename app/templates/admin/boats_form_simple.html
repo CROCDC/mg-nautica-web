@@ -1,0 +1,45 @@
+{% extends "admin/base.html" %}
+{% block title %}Nueva embarcación (rápido) - Admin{% endblock %}
+{% block content %}
+<h1>Nueva embarcación</h1>
+<p style="color:var(--muted);margin-bottom:1.5rem;">
+    Carga rápida — solo los datos esenciales.
+    Podés completar precio, tipo, bandera, ficha técnica y más desde la edición.
+    ¿Necesitás todos los campos? <a href="{{ url_for('admin.boats_new_complete') }}">Usar el formulario completo</a> · <a href="{{ url_for('admin.boats_new') }}">Volver</a>.
+</p>
+
+<form method="post" enctype="multipart/form-data" class="form admin-form">
+    <label>
+        Título *
+        <input name="title" required value="{{ form.get('title') or '' }}" autofocus>
+    </label>
+
+    <label>
+        Descripción
+        <textarea name="description" rows="6">{{ form.get('description') or '' }}</textarea>
+    </label>
+
+    <label>
+        Imágenes
+        <input type="file" name="photos" multiple accept="image/*">
+    </label>
+
+    <label>
+        Año
+        <input type="number" name="year" min="1900" max="2100" value="{{ form.get('year') or '' }}">
+    </label>
+
+    <label>
+        Eslora (m)
+        <input type="text" name="length_m" value="{{ form.get('length_m') or '' }}">
+    </label>
+
+    <label>
+        Calado (m)
+        <input type="text" name="draft_m" value="{{ form.get('draft_m') or '' }}">
+    </label>
+
+    <button type="submit" class="btn btn-primary">Crear embarcación</button>
+    <a href="{{ url_for('admin.boats_list') }}" class="btn">Cancelar</a>
+</form>
+{% endblock %}

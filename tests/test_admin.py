@@ -79,7 +79,7 @@ class TestAdminBoats:
         assert logged_in_admin.get("/admin/boats/new").status_code == 200
 
     def test_create_boat_redirects(self, db, logged_in_admin):
-        resp = logged_in_admin.post("/admin/boats/new", data={
+        resp = logged_in_admin.post("/admin/boats/new/complete", data={
             "slug": "nuevo-velero-admin",
             "title": "Velero creado vía admin",
             "description": "Descripción de prueba.",
@@ -91,7 +91,7 @@ class TestAdminBoats:
         assert resp.status_code == 302
 
     def test_create_boat_persists_to_db(self, db, app, logged_in_admin):
-        logged_in_admin.post("/admin/boats/new", data={
+        logged_in_admin.post("/admin/boats/new/complete", data={
             "slug": "velero-persistido",
             "title": "Velero Persistido",
             "description": "Test.",
@@ -109,7 +109,7 @@ class TestAdminBoats:
     def test_create_boat_duplicate_slug_returns_400(self, db, logged_in_admin):
         db.session.add(make_boat(slug="slug-existente"))
         db.session.commit()
-        resp = logged_in_admin.post("/admin/boats/new", data={
+        resp = logged_in_admin.post("/admin/boats/new/complete", data={
             "slug": "slug-existente",
             "title": "Otro",
             "description": "",

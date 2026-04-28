@@ -4,6 +4,7 @@ from flask import flash, redirect, render_template, request, url_for
 from flask_login import login_required
 
 from app.admin import admin_bp
+from app.admin.boats import _save_photo_file
 from app.factory import db
 from app.models import Accessory, AccessoryCategory
 
@@ -31,7 +32,6 @@ def _payload(form) -> dict[str, Any]:
         "price_usd": _parse_int(form.get("price_usd")) or 0,
         "previous_price_usd": _parse_int(form.get("previous_price_usd")),
         "stock": _parse_int(form.get("stock")) or 0,
-        "photo_url": form.get("photo_url") or None,
         "active": form.get("active") == "on",
     }
 
@@ -65,6 +65,9 @@ def accessories_new() -> Any:
                 categories=list(AccessoryCategory),
             ), 400
         accessory = Accessory(**data)
+        photo_url = _save_photo_file(request.files.get("photo"))
+        if photo_url:
+            accessory.photo_url = photo_url
         db.session.add(accessory)
         db.session.commit()
         flash("Accesorio creado.", "success")
@@ -109,6 +112,9 @@ def accessories_edit(accessory_id: int) -> Any:
             ), 400
         for k, v in data.items():
             setattr(accessory, k, v)
+        photo_url = _save_photo_file(request.files.get("photo"))
+        if photo_url:
+            accessory.photo_url = photo_url
         db.session.commit()
         flash("Accesorio actualizado.", "success")
         return redirect(url_for("admin.accessories_edit", accessory_id=accessory.id))

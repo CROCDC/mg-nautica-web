@@ -16,6 +16,7 @@ TEST_CONFIG = {
     "SECRET_KEY": "test-secret",
     "WTF_CSRF_ENABLED": False,
     "SERVER_NAME": None,
+    "UPLOAD_FOLDER": "/tmp/mg_nautica_test_uploads",
 }
 
 

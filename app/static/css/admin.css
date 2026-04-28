@@ -32,6 +32,10 @@ body.admin { background:#f5f6f8; color:#1b2430; }
 .admin-pre { background:#fff; border:1px solid #dde3ec; padding:1rem; border-radius:4px; white-space:pre-wrap; font-family:inherit; }
 .admin-actions { display:flex; gap:0.5rem; flex-wrap:wrap; }
 .inline-form { display:inline-flex; gap:0.5rem; align-items:center; }
+.choose-card { display:flex; flex-direction:column; gap:0.5rem; padding:1.5rem; background:#fff; border:2px solid #dde3ec; border-radius:8px; text-decoration:none; color:inherit; transition:border-color .15s, box-shadow .15s; }
+.choose-card:hover { border-color:var(--accent,#2563eb); box-shadow:0 2px 8px rgba(0,0,0,.08); }
+.choose-card strong { font-size:1.1rem; }
+.choose-card span { font-size:.9rem; color:var(--muted); }
 .flash-list { list-style:none; padding:0; margin:0 0 1rem; }
 .flash { padding:0.6rem 1rem; border-radius:4px; margin-bottom:0.5rem; }
 .flash-success { background:#e4f5ea; border:1px solid #9dd3ad; color:#1a5a31; }

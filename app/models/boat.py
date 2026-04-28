@@ -11,8 +11,8 @@ class Boat(ListedObject):
 
     id = db.Column(db.Integer, db.ForeignKey("listed_objects.id"), primary_key=True)
 
-    boat_type = db.Column(db.Enum(BoatType, native_enum=False), nullable=False)
-    flag = db.Column(db.Enum(Flag, native_enum=False), nullable=False)
+    boat_type = db.Column(db.Enum(BoatType, native_enum=False), nullable=True)
+    flag = db.Column(db.Enum(Flag, native_enum=False), nullable=True)
     country_location = db.Column(db.String(80), nullable=True)
     city_location = db.Column(db.String(120), nullable=True)
     zone = db.Column(db.String(120), nullable=True)

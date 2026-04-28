@@ -1,8 +1,50 @@
+import os
+import re
+import unicodedata
+import uuid
 from decimal import Decimal
 from typing import Any, Optional
 
-from flask import flash, redirect, render_template, request, url_for
+from flask import current_app, flash, redirect, render_template, request, url_for
 from flask_login import login_required
+
+ALLOWED_EXTENSIONS = {"jpg", "jpeg", "png", "webp", "gif"}
+
+
+def _slugify(text: str) -> str:
+    text = unicodedata.normalize("NFKD", text).encode("ascii", "ignore").decode("ascii")
+    text = text.lower()
+    text = re.sub(r"[^a-z0-9\s-]", "", text)
+    text = re.sub(r"[\s-]+", "-", text).strip("-")
+    return text or "barco"
+
+
+def _unique_slug(base: str, exclude_id: Optional[int] = None) -> str:
+    from app.factory import db as _db
+    candidate = base
+    counter = 2
+    while True:
+        q = _db.session.query(Boat).filter(Boat.slug == candidate)
+        if exclude_id is not None:
+            q = q.filter(Boat.id != exclude_id)
+        if not q.first():
+            return candidate
+        candidate = f"{base}-{counter}"
+        counter += 1
+
+
+def _save_photo_file(file) -> Optional[str]:
+    """Guarda un FileStorage en UPLOAD_FOLDER y retorna la URL relativa, o None si inválido."""
+    if not file or not file.filename:
+        return None
+    ext = file.filename.rsplit(".", 1)[-1].lower() if "." in file.filename else ""
+    if ext not in ALLOWED_EXTENSIONS:
+        return None
+    filename = f"{uuid.uuid4().hex}.{ext}"
+    upload_dir = current_app.config.get("UPLOAD_FOLDER", "./uploads")
+    os.makedirs(upload_dir, exist_ok=True)
+    file.save(os.path.join(upload_dir, filename))
+    return f"/uploads/{filename}"
 
 from app.admin import admin_bp
 from app.factory import db
@@ -86,13 +128,19 @@ def boats_list() -> str:
     return render_template("admin/boats_list.html", boats=boats, q=q)
 
 
-@admin_bp.route("/boats/new", methods=["GET", "POST"])
+@admin_bp.route("/boats/new")
 @login_required
 def boats_new() -> Any:
+    return render_template("admin/boats_new_choose.html")
+
+
+@admin_bp.route("/boats/new/complete", methods=["GET", "POST"])
+@login_required
+def boats_new_complete() -> Any:
     if request.method == "POST":
         data = _boat_payload(request.form)
-        if not data["slug"] or not data["title"] or data["boat_type"] is None or data["flag"] is None:
-            flash("Slug, título, tipo y bandera son obligatorios.", "error")
+        if not data["title"] or data["boat_type"] is None or data["flag"] is None:
+            flash("Título, tipo y bandera son obligatorios.", "error")
             return render_template(
                 "admin/boats_form.html",
                 boat=None,
@@ -102,7 +150,9 @@ def boats_new() -> Any:
                 hull_materials=list(HullMaterial),
                 statuses=list(BoatStatus),
             ), 400
-        if db.session.query(Boat).filter_by(slug=data["slug"]).first():
+        if not data["slug"]:
+            data["slug"] = _unique_slug(_slugify(data["title"]))
+        elif db.session.query(Boat).filter_by(slug=data["slug"]).first():
             flash(f"Ya existe una embarcación con el slug {data['slug']!r}.", "error")
             return render_template(
                 "admin/boats_form.html",
@@ -116,9 +166,29 @@ def boats_new() -> Any:
         boat = Boat(**data)
         db.session.add(boat)
         db.session.flush()
-        photo_url = (request.form.get("photo_url") or "").strip()
-        if photo_url:
-            db.session.add(BoatPhoto(boat_id=boat.id, url=photo_url, position=0, is_primary=True))
+        for i, file in enumerate(request.files.getlist("photos")):
+            url = _save_photo_file(file)
+            if url:
+                db.session.add(BoatPhoto(boat_id=boat.id, url=url, position=i, is_primary=(i == 0)))
+        specs = BoatSpecs(boat_id=boat.id)
+        has_specs = False
+        for f in SPEC_STRING_FIELDS:
+            val = (request.form.get(f) or "").strip() or None
+            setattr(specs, f, val)
+            if val:
+                has_specs = True
+        for f in SPEC_INT_FIELDS:
+            val = _parse_int(request.form.get(f))
+            setattr(specs, f, val)
+            if val is not None:
+                has_specs = True
+        for f in SPEC_BOOL_FIELDS:
+            val = request.form.get(f) == "on"
+            setattr(specs, f, val)
+            if val:
+                has_specs = True
+        if has_specs:
+            db.session.add(specs)
         db.session.commit()
         flash("Embarcación creada.", "success")
         return redirect(url_for("admin.boats_edit", boat_id=boat.id))
@@ -133,6 +203,37 @@ def boats_new() -> Any:
     )
 
 
+@admin_bp.route("/boats/new/simple", methods=["GET", "POST"])
+@login_required
+def boats_new_simple() -> Any:
+    if request.method == "POST":
+        title = (request.form.get("title") or "").strip()
+        if not title:
+            flash("El título es obligatorio.", "error")
+            return render_template("admin/boats_form_simple.html", form=request.form), 400
+        slug = _unique_slug(_slugify(title))
+        boat = Boat(
+            slug=slug,
+            title=title,
+            description=request.form.get("description") or "",
+            year=_parse_int(request.form.get("year")),
+            length_m=_parse_decimal(request.form.get("length_m")),
+            draft_m=_parse_decimal(request.form.get("draft_m")),
+            price_usd=0,
+            status=BoatStatus.AVAILABLE,
+        )
+        db.session.add(boat)
+        db.session.flush()
+        for i, file in enumerate(request.files.getlist("photos")):
+            url = _save_photo_file(file)
+            if url:
+                db.session.add(BoatPhoto(boat_id=boat.id, url=url, position=i, is_primary=(i == 0)))
+        db.session.commit()
+        flash("Embarcación creada. Completá los datos adicionales cuando quieras.", "success")
+        return redirect(url_for("admin.boats_edit", boat_id=boat.id))
+    return render_template("admin/boats_form_simple.html", form={})
+
+
 @admin_bp.route("/boats/<int:boat_id>/edit", methods=["GET", "POST"])
 @login_required
 def boats_edit(boat_id: int) -> Any:
@@ -143,8 +244,8 @@ def boats_edit(boat_id: int) -> Any:
 
     if request.method == "POST":
         data = _boat_payload(request.form)
-        if not data["slug"] or not data["title"] or data["boat_type"] is None or data["flag"] is None:
-            flash("Slug, título, tipo y bandera son obligatorios.", "error")
+        if not data["title"] or data["boat_type"] is None or data["flag"] is None:
+            flash("Título, tipo y bandera son obligatorios.", "error")
             return render_template(
                 "admin/boats_form.html",
                 boat=boat,
@@ -154,22 +255,25 @@ def boats_edit(boat_id: int) -> Any:
                 hull_materials=list(HullMaterial),
                 statuses=list(BoatStatus),
             ), 400
-        dup = (
-            db.session.query(Boat)
-            .filter(Boat.slug == data["slug"], Boat.id != boat.id)
-            .first()
-        )
-        if dup:
-            flash(f"Ya existe otra embarcación con el slug {data['slug']!r}.", "error")
-            return render_template(
-                "admin/boats_form.html",
-                boat=boat,
-                form=request.form,
-                boat_types=list(BoatType),
-                flags=list(Flag),
-                hull_materials=list(HullMaterial),
-                statuses=list(BoatStatus),
-            ), 400
+        if not data["slug"]:
+            data["slug"] = _unique_slug(_slugify(data["title"]), exclude_id=boat.id)
+        else:
+            dup = (
+                db.session.query(Boat)
+                .filter(Boat.slug == data["slug"], Boat.id != boat.id)
+                .first()
+            )
+            if dup:
+                flash(f"Ya existe otra embarcación con el slug {data['slug']!r}.", "error")
+                return render_template(
+                    "admin/boats_form.html",
+                    boat=boat,
+                    form=request.form,
+                    boat_types=list(BoatType),
+                    flags=list(Flag),
+                    hull_materials=list(HullMaterial),
+                    statuses=list(BoatStatus),
+                ), 400
         for k, v in data.items():
             setattr(boat, k, v)
         db.session.commit()
@@ -207,22 +311,27 @@ def boats_photo_add(boat_id: int) -> Any:
     if boat is None:
         flash("Embarcación no encontrada.", "error")
         return redirect(url_for("admin.boats_list"))
-    url = (request.form.get("url") or "").strip()
-    if not url:
-        flash("URL de foto vacía.", "error")
-        return redirect(url_for("admin.boats_edit", boat_id=boat.id))
+    files = request.files.getlist("photos")
+    saved = 0
     max_pos = max((p.position for p in boat.photos), default=-1)
-    db.session.add(
-        BoatPhoto(
-            boat_id=boat.id,
-            url=url,
-            alt=request.form.get("alt") or None,
-            position=max_pos + 1,
-            is_primary=not boat.photos,
-        )
-    )
+    for file in files:
+        url = _save_photo_file(file)
+        if url:
+            max_pos += 1
+            db.session.add(
+                BoatPhoto(
+                    boat_id=boat.id,
+                    url=url,
+                    position=max_pos,
+                    is_primary=not boat.photos and saved == 0,
+                )
+            )
+            saved += 1
+    if not saved:
+        flash("No se recibió ninguna foto válida.", "error")
+        return redirect(url_for("admin.boats_edit", boat_id=boat.id))
     db.session.commit()
-    flash("Foto agregada.", "success")
+    flash(f"{'Foto agregada' if saved == 1 else f'{saved} fotos agregadas'}.", "success")
     return redirect(url_for("admin.boats_edit", boat_id=boat.id))
 
 
