@@ -114,8 +114,9 @@ def test_admin_boats_new_form(admin_page):
     page.goto(base + "/admin/boats/new")
     page.wait_for_load_state("networkidle")
     shot(page, "admin_boats_new_form")
-    assert page.locator("form").count() >= 1
-    assert page.locator("input[name='title'], input[name='slug']").count() >= 1
+    # /admin/boats/new shows a choose page with links to quick and complete forms
+    assert page.locator("a[href*='/admin/boats/new/simple']").count() >= 1
+    assert page.locator("a[href*='/admin/boats/new/complete']").count() >= 1
 
 
 def test_admin_boats_edit_form(admin_page):
