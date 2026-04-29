@@ -8,6 +8,9 @@ from typing import Any, Optional
 from flask import current_app, flash, redirect, render_template, request, url_for
 from flask_login import login_required
 
+from app.integrations.instagram.service import INSTAGRAM_ENABLED
+from app.services.publish import meli_has_credentials, publish_to_instagram, publish_to_meli
+
 ALLOWED_EXTENSIONS = {"jpg", "jpeg", "png", "webp", "gif"}
 
 
@@ -139,6 +142,7 @@ def boats_new() -> Any:
 def boats_new_complete() -> Any:
     if request.method == "POST":
         data = _boat_payload(request.form)
+        _meli_enabled = meli_has_credentials()
         if not data["title"] or data["boat_type"] is None or data["flag"] is None:
             flash("Título, tipo y bandera son obligatorios.", "error")
             return render_template(
@@ -149,6 +153,8 @@ def boats_new_complete() -> Any:
                 flags=list(Flag),
                 hull_materials=list(HullMaterial),
                 statuses=list(BoatStatus),
+                meli_enabled=_meli_enabled,
+                instagram_enabled=INSTAGRAM_ENABLED,
             ), 400
         if not data["slug"]:
             data["slug"] = _unique_slug(_slugify(data["title"]))
@@ -162,6 +168,8 @@ def boats_new_complete() -> Any:
                 flags=list(Flag),
                 hull_materials=list(HullMaterial),
                 statuses=list(BoatStatus),
+                meli_enabled=_meli_enabled,
+                instagram_enabled=INSTAGRAM_ENABLED,
             ), 400
         boat = Boat(**data)
         db.session.add(boat)
@@ -190,6 +198,11 @@ def boats_new_complete() -> Any:
         if has_specs:
             db.session.add(specs)
         db.session.commit()
+        if request.form.get("publish_meli"):
+            publish_to_meli(boat)
+            db.session.commit()
+        if request.form.get("publish_instagram"):
+            publish_to_instagram(boat)
         flash("Embarcación creada.", "success")
         return redirect(url_for("admin.boats_edit", boat_id=boat.id))
     return render_template(
@@ -200,6 +213,8 @@ def boats_new_complete() -> Any:
         flags=list(Flag),
         hull_materials=list(HullMaterial),
         statuses=list(BoatStatus),
+        meli_enabled=meli_has_credentials(),
+        instagram_enabled=INSTAGRAM_ENABLED,
     )
 
 
@@ -243,6 +258,7 @@ def boats_edit(boat_id: int) -> Any:
         return redirect(url_for("admin.boats_list"))
 
     if request.method == "POST":
+        _meli_enabled = meli_has_credentials()
         data = _boat_payload(request.form)
         if not data["title"] or data["boat_type"] is None or data["flag"] is None:
             flash("Título, tipo y bandera son obligatorios.", "error")
@@ -254,6 +270,8 @@ def boats_edit(boat_id: int) -> Any:
                 flags=list(Flag),
                 hull_materials=list(HullMaterial),
                 statuses=list(BoatStatus),
+                meli_enabled=_meli_enabled,
+                instagram_enabled=INSTAGRAM_ENABLED,
             ), 400
         if not data["slug"]:
             data["slug"] = _unique_slug(_slugify(data["title"]), exclude_id=boat.id)
@@ -273,10 +291,17 @@ def boats_edit(boat_id: int) -> Any:
                     flags=list(Flag),
                     hull_materials=list(HullMaterial),
                     statuses=list(BoatStatus),
+                    meli_enabled=_meli_enabled,
+                    instagram_enabled=INSTAGRAM_ENABLED,
                 ), 400
         for k, v in data.items():
             setattr(boat, k, v)
         db.session.commit()
+        if request.form.get("publish_meli"):
+            publish_to_meli(boat)
+            db.session.commit()
+        if request.form.get("publish_instagram"):
+            publish_to_instagram(boat)
         flash("Embarcación actualizada.", "success")
         return redirect(url_for("admin.boats_edit", boat_id=boat.id))
 
@@ -288,6 +313,8 @@ def boats_edit(boat_id: int) -> Any:
         flags=list(Flag),
         hull_materials=list(HullMaterial),
         statuses=list(BoatStatus),
+        meli_enabled=meli_has_credentials(),
+        instagram_enabled=INSTAGRAM_ENABLED,
     )
 
 
