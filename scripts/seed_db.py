@@ -380,10 +380,10 @@ def main() -> int:
 
         if not args.no_wipe:
             print("[WIPE] Deleting all boats and accessories …")
-            db.session.query(BoatPhoto).delete()
-            db.session.query(BoatSpecs).delete()
-            db.session.query(Boat).delete()
-            db.session.query(Accessory).delete()
+            from sqlalchemy import text
+            db.session.execute(text("DELETE FROM boat_photos"))
+            db.session.execute(text("DELETE FROM boat_specs"))
+            db.session.execute(text("DELETE FROM listed_objects"))
             db.session.commit()
             print("  → done")
 
