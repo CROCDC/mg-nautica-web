@@ -59,6 +59,12 @@ class Boat(ListedObject):
         cascade="all, delete-orphan",
         order_by="BoatPhoto.position",
     )
+    videos = db.relationship(
+        "BoatVideo",
+        back_populates="boat",
+        cascade="all, delete-orphan",
+        order_by="BoatVideo.position",
+    )
     specs = db.relationship(
         "BoatSpecs",
         back_populates="boat",

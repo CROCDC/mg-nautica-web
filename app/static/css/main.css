@@ -301,6 +301,9 @@ h3 { font-size: 1.2rem; font-weight: 600; }
 .gallery-thumb { width: 90px; height: 65px; flex-shrink: 0; border-radius: var(--radius-sm); overflow: hidden; cursor: pointer; opacity: .7; transition: opacity var(--transition); border: 2px solid transparent; }
 .gallery-thumb:hover, .gallery-thumb.active { opacity: 1; border-color: var(--gold); }
 .gallery-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.gallery-thumb-video { position: relative; }
+.gallery-thumb-video video { width: 100%; height: 100%; object-fit: cover; }
+.gallery-play-icon { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 1.4rem; color: #fff; text-shadow: 0 1px 4px rgba(0,0,0,.7); pointer-events: none; }
 /* Lightbox */
 .lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.93); z-index: 1000; align-items: center; justify-content: center; }
 .lightbox.open { display: flex; }

@@ -28,26 +28,38 @@
         {# ── Main column ── #}
         <div class="detail-main">
             {# Gallery #}
-            {% if boat.photos %}
+            {% set total_media = boat.photos|length + boat.videos|length %}
+            {% if total_media > 0 %}
             <div class="gallery">
-                <div class="gallery-main" id="gallery-main" onclick="openLightbox(currentIdx)">
+                <div class="gallery-main" id="gallery-main" onclick="onMainClick()">
+                    {% if boat.photos %}
                     <img id="gallery-main-img" src="{{ boat.photos[0].url }}" alt="{{ boat.photos[0].alt or boat.title }}">
-                    {% if boat.photos|length > 1 %}
+                    {% else %}
+                    <img id="gallery-main-img" src="" alt="" style="display:none">
+                    {% endif %}
+                    <video id="gallery-main-video" controls style="display:none;width:100%;height:100%;object-fit:contain;border-radius:8px;" preload="metadata"></video>
+                    {% if total_media > 1 %}
                     <button class="gallery-nav prev" onclick="galleryNav(-1,event)">&#8249;</button>
                     <button class="gallery-nav next" onclick="galleryNav(1,event)">&#8250;</button>
                     {% endif %}
                 </div>
-                {% if boat.photos|length > 1 %}
+                {% if total_media > 1 %}
                 <div class="gallery-thumbs" id="gallery-thumbs">
                     {% for photo in boat.photos %}
-                    <div class="gallery-thumb {% if loop.first %}active{% endif %}" onclick="switchPhoto({{ loop.index0 }})">
+                    <div class="gallery-thumb {% if loop.first and not boat.videos %}active{% elif loop.first %}active{% endif %}" onclick="switchMedia({{ loop.index0 }})">
                         <img src="{{ photo.url }}" alt="{{ photo.alt or '' }}" loading="lazy">
+                    </div>
+                    {% endfor %}
+                    {% for video in boat.videos %}
+                    <div class="gallery-thumb gallery-thumb-video" onclick="switchMedia({{ boat.photos|length + loop.index0 }})">
+                        <video src="{{ video.url }}" style="width:100%;height:100%;object-fit:cover;" muted preload="metadata"></video>
+                        <span class="gallery-play-icon">&#9654;</span>
                     </div>
                     {% endfor %}
                 </div>
                 {% endif %}
             </div>
-            {# Lightbox #}
+            {# Lightbox (solo fotos) #}
             <div class="lightbox" id="lightbox">
                 <button class="lb-close" onclick="closeLightbox()">&#x2715;</button>
                 <button class="lb-arrow prev" onclick="lbNav(-1)">&#8249;</button>
@@ -253,12 +265,28 @@
 
 {% block head %}
 <script>
-const photos = [{% for p in boat.photos %}"{{ p.url }}"{% if not loop.last %},{% endif %}{% endfor %}];
+const media = [
+    {% for p in boat.photos %}{type:'image',url:"{{ p.url }}"}{% if not loop.last or boat.videos %},{% endif %}{% endfor %}
+    {% for v in boat.videos %}{type:'video',url:"{{ v.url }}"}{% if not loop.last %},{% endif %}{% endfor %}
+];
+const photoUrls = [{% for p in boat.photos %}"{{ p.url }}"{% if not loop.last %},{% endif %}{% endfor %}];
 let currentIdx = 0;
 
-function switchPhoto(idx) {
+function switchMedia(idx) {
     currentIdx = idx;
-    document.getElementById('gallery-main-img').src = photos[idx];
+    const item = media[idx];
+    const mainImg = document.getElementById('gallery-main-img');
+    const mainVid = document.getElementById('gallery-main-video');
+    if (item && item.type === 'video') {
+        mainImg.style.display = 'none';
+        mainVid.style.display = '';
+        mainVid.src = item.url;
+        mainVid.load();
+    } else {
+        if (mainVid) { mainVid.pause(); mainVid.style.display = 'none'; mainVid.src = ''; }
+        mainImg.style.display = '';
+        if (item) mainImg.src = item.url;
+    }
     const thumbs = document.querySelectorAll('.gallery-thumb');
     thumbs.forEach((t, i) => t.classList.toggle('active', i === idx));
     if (thumbs[idx]) thumbs[idx].scrollIntoView({behavior:'smooth', block:'nearest', inline:'center'});
@@ -266,13 +294,20 @@ function switchPhoto(idx) {
 
 function galleryNav(dir, e) {
     e.stopPropagation();
-    switchPhoto((currentIdx + dir + photos.length) % photos.length);
+    switchMedia((currentIdx + dir + media.length) % media.length);
+}
+
+function onMainClick() {
+    if (media[currentIdx] && media[currentIdx].type === 'image') openLightbox(currentIdx);
 }
 
 function openLightbox(idx) {
     currentIdx = idx;
-    document.getElementById('lb-img').src = photos[idx];
-    document.getElementById('lb-counter').textContent = (idx + 1) + ' / ' + photos.length;
+    const item = media[idx];
+    if (!item || item.type !== 'image') return;
+    const photoIdx = photoUrls.indexOf(item.url);
+    document.getElementById('lb-img').src = item.url;
+    document.getElementById('lb-counter').textContent = (photoIdx + 1) + ' / ' + photoUrls.length;
     document.getElementById('lightbox').classList.add('open');
     document.body.style.overflow = 'hidden';
 }
@@ -283,10 +318,14 @@ function closeLightbox() {
 }
 
 function lbNav(dir) {
-    currentIdx = (currentIdx + dir + photos.length) % photos.length;
-    document.getElementById('lb-img').src = photos[currentIdx];
-    document.getElementById('lb-counter').textContent = (currentIdx + 1) + ' / ' + photos.length;
-    switchPhoto(currentIdx);
+    const photoIndices = media.reduce((acc, m, i) => { if (m.type === 'image') acc.push(i); return acc; }, []);
+    const pos = photoIndices.indexOf(currentIdx);
+    const nextPos = (pos + dir + photoIndices.length) % photoIndices.length;
+    switchMedia(photoIndices[nextPos]);
+    const item = media[photoIndices[nextPos]];
+    const photoIdx = photoUrls.indexOf(item.url);
+    document.getElementById('lb-img').src = item.url;
+    document.getElementById('lb-counter').textContent = (photoIdx + 1) + ' / ' + photoUrls.length;
 }
 
 document.addEventListener('keydown', e => {
@@ -302,6 +341,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (lb) lb.addEventListener('click', function(e) {
         if (e.target === this) closeLightbox();
     });
+    if (media.length > 0) switchMedia(0);
 });
 </script>
 {% endblock %}

@@ -25,6 +25,12 @@
     </label>
 
     <label>
+        Videos
+        <input type="file" name="videos" multiple accept="video/mp4,video/webm,video/quicktime">
+        <small style="color:var(--muted);">Formatos: mp4, webm, mov</small>
+    </label>
+
+    <label>
         Año
         <input type="number" name="year" min="1900" max="2100" value="{{ form.get('year') or '' }}">
     </label>

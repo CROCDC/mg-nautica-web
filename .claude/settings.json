@@ -10,7 +10,10 @@
       "Bash(docker exec mg-nautica-web python -c ' *)",
       "Bash(sqlite3 /Users/cromero/projects/mg-nautica-web/instance/app.db \"SELECT id, email, role, active, last_login_at FROM user;\")",
       "Bash(sqlite3 /Users/cromero/projects/mg-nautica-web/instance/app.db \".tables\")",
-      "Bash(sqlite3 /Users/cromero/projects/mg-nautica-web/instance/app.db \"SELECT id, email, role, active FROM users;\")"
+      "Bash(sqlite3 /Users/cromero/projects/mg-nautica-web/instance/app.db \"SELECT id, email, role, active FROM users;\")",
+      "Bash(git -C /Users/cromero/projects/mg-nautica-web ls-files promtail.yml)",
+      "Bash(git -C /Users/cromero/projects/mg-nautica-web log --oneline --follow promtail.yml)",
+      "Bash(git -C /Users/cromero/projects/mg-nautica-web log --oneline)"
     ],
     "defaultMode": "bypassPermissions"
   }

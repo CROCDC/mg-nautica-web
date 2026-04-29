@@ -12,6 +12,7 @@ from app.integrations.instagram.service import INSTAGRAM_ENABLED
 from app.services.publish import meli_has_credentials, publish_to_instagram, publish_to_meli
 
 ALLOWED_EXTENSIONS = {"jpg", "jpeg", "png", "webp", "gif"}
+ALLOWED_VIDEO_EXTENSIONS = {"mp4", "webm", "mov"}
 
 
 def _slugify(text: str) -> str:
@@ -49,6 +50,20 @@ def _save_photo_file(file) -> Optional[str]:
     file.save(os.path.join(upload_dir, filename))
     return f"/uploads/{filename}"
 
+
+def _save_video_file(file) -> Optional[str]:
+    """Guarda un video en UPLOAD_FOLDER y retorna la URL relativa, o None si inválido."""
+    if not file or not file.filename:
+        return None
+    ext = file.filename.rsplit(".", 1)[-1].lower() if "." in file.filename else ""
+    if ext not in ALLOWED_VIDEO_EXTENSIONS:
+        return None
+    filename = f"{uuid.uuid4().hex}.{ext}"
+    upload_dir = current_app.config.get("UPLOAD_FOLDER", "./uploads")
+    os.makedirs(upload_dir, exist_ok=True)
+    file.save(os.path.join(upload_dir, filename))
+    return f"/uploads/{filename}"
+
 from app.admin import admin_bp
 from app.factory import db
 from app.models import (
@@ -57,6 +72,7 @@ from app.models import (
     BoatSpecs,
     BoatStatus,
     BoatType,
+    BoatVideo,
     Flag,
     HullMaterial,
 )
@@ -243,6 +259,10 @@ def boats_new_simple() -> Any:
             url = _save_photo_file(file)
             if url:
                 db.session.add(BoatPhoto(boat_id=boat.id, url=url, position=i, is_primary=(i == 0)))
+        for i, file in enumerate(request.files.getlist("videos")):
+            url = _save_video_file(file)
+            if url:
+                db.session.add(BoatVideo(boat_id=boat.id, url=url, position=i))
         db.session.commit()
         flash("Embarcación creada. Completá los datos adicionales cuando quieras.", "success")
         return redirect(url_for("admin.boats_edit", boat_id=boat.id))
@@ -372,6 +392,43 @@ def boats_photo_delete(boat_id: int, photo_id: int) -> Any:
     db.session.delete(photo)
     db.session.commit()
     flash("Foto eliminada.", "success")
+    return redirect(url_for("admin.boats_edit", boat_id=boat_id))
+
+
+@admin_bp.route("/boats/<int:boat_id>/videos/add", methods=["POST"])
+@login_required
+def boats_video_add(boat_id: int) -> Any:
+    boat = db.session.get(Boat, boat_id)
+    if boat is None:
+        flash("Embarcación no encontrada.", "error")
+        return redirect(url_for("admin.boats_list"))
+    files = request.files.getlist("videos")
+    saved = 0
+    max_pos = max((v.position for v in boat.videos), default=-1)
+    for file in files:
+        url = _save_video_file(file)
+        if url:
+            max_pos += 1
+            db.session.add(BoatVideo(boat_id=boat.id, url=url, position=max_pos))
+            saved += 1
+    if not saved:
+        flash("No se recibió ningún video válido (formatos: mp4, webm, mov).", "error")
+        return redirect(url_for("admin.boats_edit", boat_id=boat.id))
+    db.session.commit()
+    flash(f"{'Video agregado' if saved == 1 else f'{saved} videos agregados'}.", "success")
+    return redirect(url_for("admin.boats_edit", boat_id=boat.id))
+
+
+@admin_bp.route("/boats/<int:boat_id>/videos/<int:video_id>/delete", methods=["POST"])
+@login_required
+def boats_video_delete(boat_id: int, video_id: int) -> Any:
+    video = db.session.get(BoatVideo, video_id)
+    if video is None or video.boat_id != boat_id:
+        flash("Video no encontrado.", "error")
+        return redirect(url_for("admin.boats_edit", boat_id=boat_id))
+    db.session.delete(video)
+    db.session.commit()
+    flash("Video eliminado.", "success")
     return redirect(url_for("admin.boats_edit", boat_id=boat_id))
 
 

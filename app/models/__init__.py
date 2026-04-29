@@ -4,6 +4,7 @@ from app.models.boat import Boat
 from app.models.boat_inquiry import BoatInquiry
 from app.models.boat_photo import BoatPhoto
 from app.models.boat_specs import BoatSpecs
+from app.models.boat_video import BoatVideo
 from app.models.enums import (
     AccessoryCategory,
     BoatStatus,
@@ -30,6 +31,7 @@ __all__ = [
     "BoatPhoto",
     "BoatSpecs",
     "BoatStatus",
+    "BoatVideo",
     "BoatType",
     "Favorite",
     "Flag",

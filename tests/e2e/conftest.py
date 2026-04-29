@@ -15,7 +15,7 @@ from werkzeug.serving import make_server
 
 from app.factory import create_app
 from app.factory import db as _db
-from app.models import BoatPhoto, BoatType, Flag
+from app.models import BoatPhoto, BoatVideo, BoatType, Flag
 from tests.factories import make_accessory, make_admin, make_boat, make_full_boat
 
 # ── Paths ─────────────────────────────────────────────────────────────────────
@@ -116,6 +116,35 @@ def e2e_app():
                 position=j,
                 is_primary=(j == 0),
             ))
+
+        # 1 barco con video (para tests de galería multimedia)
+        video_boat = make_boat(
+            slug="barco-con-video",
+            title="Barco Con Video Test",
+            price_usd=40000,
+            boat_type=BoatType.SAILBOAT,
+            flag=Flag.AR,
+            featured=False,
+        )
+        _db.session.add(video_boat)
+        _db.session.flush()
+        _db.session.add(BoatPhoto(
+            boat_id=video_boat.id,
+            url="https://picsum.photos/seed/videoboat/800/600",
+            position=0,
+            is_primary=True,
+        ))
+        # Crea un archivo de video mínimo en uploads para servir correctamente
+        upload_dir = E2E_CONFIG["UPLOAD_FOLDER"]
+        os.makedirs(upload_dir, exist_ok=True)
+        _video_filename = "e2e-test-video.mp4"
+        with open(os.path.join(upload_dir, _video_filename), "wb") as _vf:
+            _vf.write(b"FAKEVIDEOCONTENT")
+        _db.session.add(BoatVideo(
+            boat_id=video_boat.id,
+            url=f"/uploads/{_video_filename}",
+            position=0,
+        ))
 
         # 1 accesorio
         _db.session.add(make_accessory())
@@ -363,6 +392,20 @@ def many_photos_detail(browser, live_server_url):
     )
     page = context.new_page()
     page.goto(live_server_url + "/boats/galeria-test")
+    page.wait_for_load_state("networkidle")
+    yield page, live_server_url
+    context.close()
+
+
+@pytest.fixture
+def video_boat_detail(browser, live_server_url):
+    """Desktop page navegada al barco con foto + video — tests de galería multimedia."""
+    context = browser.new_context(
+        viewport={"width": 1280, "height": 800},
+        locale="es-AR",
+    )
+    page = context.new_page()
+    page.goto(live_server_url + "/boats/barco-con-video")
     page.wait_for_load_state("networkidle")
     yield page, live_server_url
     context.close()
