@@ -290,6 +290,10 @@ def shot(page, name: str) -> None:
     page.wait_for_timeout(400)
     page.evaluate("window.scrollTo(0, 0)")
     page.wait_for_timeout(200)
+    title = page.title()
+    assert "Internal Server Error" not in title, (
+        f"Page returned a 500 Internal Server Error — URL: {page.url}"
+    )
     assert_no_visual_bugs(page)
     # Remove sticky from header; wait for layout + paint before screenshot.
     page.evaluate(
