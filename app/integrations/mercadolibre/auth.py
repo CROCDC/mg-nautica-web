@@ -160,6 +160,46 @@ class MeliOAuth:
         return creds
 
     @staticmethod
+    def seed_from_env() -> None:
+        """Seed MeliCredentials from env vars if no credentials exist yet for a site.
+
+        Reads per-site env vars:
+            MELI_MLU_ACCESS_TOKEN, MELI_MLU_REFRESH_TOKEN, MELI_MLU_USER_ID
+            MELI_MLA_ACCESS_TOKEN, MELI_MLA_REFRESH_TOKEN, MELI_MLA_USER_ID
+
+        Tokens are stored with expires_at = now so the first API call triggers
+        an automatic refresh and persists fresh tokens in the DB.
+        Only runs when the site has no credentials at all (never overwrites).
+        """
+        from app.models.meli_credentials import MeliCredentials
+        from app.factory import db
+
+        seeded = []
+        for site_id in ("MLU", "MLA"):
+            prefix = f"MELI_{site_id}_"
+            access_token = os.environ.get(f"{prefix}ACCESS_TOKEN", "").strip()
+            refresh_token = os.environ.get(f"{prefix}REFRESH_TOKEN", "").strip()
+            if not access_token or not refresh_token:
+                continue
+            if MeliCredentials.query.filter_by(site_id=site_id).first() is not None:
+                continue
+            user_id = os.environ.get(f"{prefix}USER_ID", "").strip()
+            creds = MeliCredentials(
+                site_id=site_id,
+                access_token=access_token,
+                refresh_token=refresh_token,
+                expires_at=datetime.now(timezone.utc),  # expired → auto-refresh on first use
+                meli_user_id=user_id or None,
+            )
+            db.session.add(creds)
+            seeded.append(site_id)
+
+        if seeded:
+            db.session.commit()
+            import logging
+            logging.getLogger(__name__).info("MELI credentials seeded from env vars: %s", seeded)
+
+    @staticmethod
     def predict_category(title: str, site_id: str) -> list[dict]:
         """Use MELI's category predictor to suggest a category_id for a given title.
 

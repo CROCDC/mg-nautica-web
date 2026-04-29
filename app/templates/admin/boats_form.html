@@ -175,12 +175,19 @@
     <h2>Fotos ({{ boat.photos|length }})</h2>
     <div class="admin-photos">
         {% for photo in boat.photos %}
-        <div class="admin-photo">
+        <div class="admin-photo{% if photo.is_primary %} admin-photo--primary{% endif %}">
+            {% if photo.is_primary %}<span class="admin-photo-badge">★ Destacada</span>{% endif %}
             <img src="{{ photo.url }}" alt="{{ photo.alt or '' }}">
-            <small>pos {{ photo.position }}{% if photo.is_primary %} · principal{% endif %}</small>
-            <form method="post" action="{{ url_for('admin.boats_photo_delete', boat_id=boat.id, photo_id=photo.id) }}" onsubmit="return confirm('¿Borrar foto?');">
-                <button type="submit" class="btn btn-danger btn-sm">Borrar</button>
-            </form>
+            <div class="admin-photo-actions">
+                {% if not photo.is_primary %}
+                <form method="post" action="{{ url_for('admin.boats_photo_set_primary', boat_id=boat.id, photo_id=photo.id) }}">
+                    <button type="submit" class="btn btn-sm btn-outline" title="Usar como foto destacada">★ Destacar</button>
+                </form>
+                {% endif %}
+                <form method="post" action="{{ url_for('admin.boats_photo_delete', boat_id=boat.id, photo_id=photo.id) }}" onsubmit="return confirm('¿Borrar foto?');">
+                    <button type="submit" class="btn btn-danger btn-sm">Borrar</button>
+                </form>
+            </div>
         </div>
         {% endfor %}
     </div>

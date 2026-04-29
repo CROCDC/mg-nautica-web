@@ -17,8 +17,8 @@
 
     <h1 class="detail-title">{{ boat.title }}</h1>
     <div class="detail-meta">
-        <span class="detail-chip">{{ boat_type_label[boat.boat_type.value] }}</span>
-        <span class="detail-chip">🏳️ {{ flag_label[boat.flag.value] }}</span>
+        {% if boat.boat_type %}<span class="detail-chip">{{ boat_type_label[boat.boat_type.value] }}</span>{% endif %}
+        {% if boat.flag %}<span class="detail-chip">🏳️ {{ flag_label[boat.flag.value] }}</span>{% endif %}
         {% if boat.city_location %}<span class="detail-chip">📍 {{ boat.city_location }}</span>{% endif %}
         {% if boat.year %}<span class="detail-chip">📅 {{ boat.year }}</span>{% endif %}
         {% if boat.length_m %}<span class="detail-chip">📏 {{ boat.length_m }} m</span>{% endif %}

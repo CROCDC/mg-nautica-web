@@ -61,12 +61,12 @@
                     {% if boat.primary_photo_url %}
                     <img src="{{ boat.primary_photo_url }}" alt="{{ boat.title }}" loading="lazy">
                     {% endif %}
-                    <span class="badge-type">{{ boat_type_label[boat.boat_type.value] }}</span>
+                    {% if boat.boat_type %}<span class="badge-type">{{ boat_type_label[boat.boat_type.value] }}</span>{% endif %}
                 </div>
                 <div class="boat-card-body">
                     <div class="boat-card-title">{{ boat.title }}</div>
                     {% if boat.city_location or boat.country_location %}
-                    <div class="boat-card-location">{{ boat.city_location or boat.country_location }} · {{ flag_label[boat.flag.value] }}</div>
+                    <div class="boat-card-location">{{ boat.city_location or boat.country_location }}{% if boat.flag %} · {{ flag_label[boat.flag.value] }}{% endif %}</div>
                     {% endif %}
                     <div class="boat-card-meta">
                         <div>

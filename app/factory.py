@@ -24,6 +24,9 @@ def create_app(test_config: dict | None = None) -> Flask:
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "dev-secret-change-me")
     app.config["UPLOAD_FOLDER"] = os.environ.get("UPLOAD_FOLDER", "./uploads")
+    app.config["MAX_CONTENT_LENGTH"] = int(
+        os.environ.get("MAX_CONTENT_LENGTH", str(500 * 1024 * 1024))
+    )
 
     if test_config:
         app.config.update(test_config)
@@ -94,5 +97,8 @@ def create_app(test_config: dict | None = None) -> Flask:
         register_routes(app)
         app.register_blueprint(admin_bp, url_prefix="/admin")
         db.create_all()
+
+        from app.integrations.mercadolibre.auth import MeliOAuth
+        MeliOAuth.seed_from_env()
 
     return app

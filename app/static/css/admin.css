@@ -24,8 +24,11 @@ body.admin { background:#f5f6f8; color:#1b2430; }
 .admin-form h2, .admin-form h3 { margin-top:1.5rem; border-bottom:1px solid #dde3ec; padding-bottom:0.25rem; }
 .admin-section { margin-top:2rem; padding:1rem; background:#fff; border:1px solid #dde3ec; border-radius:6px; }
 .admin-photos { display:grid; grid-template-columns:repeat(auto-fill, minmax(150px, 1fr)); gap:1rem; margin-bottom:1rem; }
-.admin-photo { display:flex; flex-direction:column; gap:0.25rem; }
-.admin-photo img { width:100%; aspect-ratio:4/3; object-fit:cover; border-radius:4px; }
+.admin-photo { display:flex; flex-direction:column; gap:0.25rem; position:relative; }
+.admin-photo img { width:100%; aspect-ratio:4/3; object-fit:cover; border-radius:4px; border:2px solid transparent; }
+.admin-photo--primary img { border-color:#f59e0b; }
+.admin-photo-badge { position:absolute; top:4px; left:4px; background:#f59e0b; color:#fff; font-size:0.7rem; font-weight:700; padding:2px 6px; border-radius:3px; line-height:1.4; }
+.admin-photo-actions { display:flex; gap:0.25rem; flex-wrap:wrap; }
 .admin-photo small { color:#56657a; font-size:0.8rem; }
 .admin-dl { display:grid; grid-template-columns:auto 1fr; gap:0.4rem 1rem; margin-bottom:1rem; }
 .admin-dl dt { font-weight:600; color:#56657a; }
@@ -43,5 +46,7 @@ body.admin { background:#f5f6f8; color:#1b2430; }
 .flash-info { background:#e8f0fb; border:1px solid #9cb8dc; color:#1b3f6c; }
 .btn-sm { padding:0.25rem 0.5rem; font-size:0.85rem; }
 .btn-danger { background:#b73030; color:#fff; }
+.btn-outline { background:transparent; border:1px solid #2563eb; color:#2563eb; }
+.btn-outline:hover { background:#2563eb; color:#fff; }
 .btn-link { background:transparent; border:none; color:#cfd9e6; text-decoration:underline; cursor:pointer; padding:0; font-size:inherit; }
 .admin-login { max-width:360px; margin:4rem auto; padding:2rem; background:#fff; border-radius:6px; border:1px solid #dde3ec; }

@@ -17,7 +17,7 @@
                 {% if item.primary_photo_url %}
                 <img src="{{ item.primary_photo_url }}" alt="{{ item.title }}" loading="lazy">
                 {% endif %}
-                {% if item.boat_type is defined %}
+                {% if item.boat_type %}
                 <span class="badge-type">{{ boat_type_label[item.boat_type.value] }}</span>
                 {% endif %}
             </div>

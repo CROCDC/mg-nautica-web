@@ -20,4 +20,4 @@ ENV FLASK_APP=run.py \
 
 EXPOSE 7010
 
-CMD ["gunicorn", "--bind", "0.0.0.0:7010", "--workers", "2", "--timeout", "60", "run:app"]
+CMD ["gunicorn", "--bind", "0.0.0.0:7010", "--workers", "2", "--timeout", "300", "run:app"]

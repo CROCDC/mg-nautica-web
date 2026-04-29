@@ -395,6 +395,21 @@ def boats_photo_delete(boat_id: int, photo_id: int) -> Any:
     return redirect(url_for("admin.boats_edit", boat_id=boat_id))
 
 
+@admin_bp.route("/boats/<int:boat_id>/photos/<int:photo_id>/set_primary", methods=["POST"])
+@login_required
+def boats_photo_set_primary(boat_id: int, photo_id: int) -> Any:
+    photo = db.session.get(BoatPhoto, photo_id)
+    if photo is None or photo.boat_id != boat_id:
+        flash("Foto no encontrada.", "error")
+        return redirect(url_for("admin.boats_edit", boat_id=boat_id))
+    boat = db.session.get(Boat, boat_id)
+    for p in boat.photos:
+        p.is_primary = p.id == photo_id
+    db.session.commit()
+    flash("Foto destacada actualizada.", "success")
+    return redirect(url_for("admin.boats_edit", boat_id=boat_id))
+
+
 @admin_bp.route("/boats/<int:boat_id>/videos/add", methods=["POST"])
 @login_required
 def boats_video_add(boat_id: int) -> Any:
