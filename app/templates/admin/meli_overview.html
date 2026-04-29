@@ -5,47 +5,6 @@
     <h1>Mercado Libre</h1>
 </div>
 
-{# ── Credentials per site ─────────────────────────────────────── #}
-<section class="admin-section">
-    <h2>Cuentas conectadas</h2>
-    <table class="admin-table">
-        <thead>
-            <tr><th>Sitio</th><th>Estado</th><th>Usuario MELI</th><th>Acciones</th></tr>
-        </thead>
-        <tbody>
-            {% for site in sites %}
-            {% set cred = creds[site] %}
-            <tr>
-                <td>{{ site }}</td>
-                <td>
-                    {% if cred %}
-                        {% if cred.is_expired %}
-                            <span class="badge badge-warning">Expirado</span>
-                        {% else %}
-                            <span class="badge badge-success">Activo</span>
-                        {% endif %}
-                    {% else %}
-                        <span class="badge">Sin conectar</span>
-                    {% endif %}
-                </td>
-                <td>{{ cred.meli_user_id if cred else '—' }}</td>
-                <td>
-                    <a href="{{ url_for('admin.meli_auth', site_id=site) }}" class="btn btn-primary btn-sm">
-                        {% if cred %}Reconectar{% else %}Conectar cuenta{% endif %}
-                    </a>
-                    {% if cred %}
-                    <form method="post" action="{{ url_for('admin.meli_disconnect', site_id=site) }}" style="display:inline;"
-                          onsubmit="return confirm('¿Desconectar cuenta de {{ site }}?');">
-                        <button class="btn btn-danger btn-sm">Desconectar</button>
-                    </form>
-                    {% endif %}
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</section>
-
 {# ── Boats listing status ─────────────────────────────────────── #}
 <section class="admin-section">
     <h2>Embarcaciones</h2>

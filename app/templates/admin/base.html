@@ -6,6 +6,7 @@
     <title>{% block title %}Admin - MG Náutica{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+    <script src="{{ url_for('static', filename='js/file-preview.js') }}" defer></script>
 </head>
 <body class="admin">
     {% if current_user.is_authenticated %}

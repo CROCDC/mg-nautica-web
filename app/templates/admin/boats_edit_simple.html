@@ -36,4 +36,55 @@
     <button type="submit" class="btn btn-primary">Guardar</button>
     <a href="{{ url_for('admin.boats_edit', boat_id=boat.id) }}" class="btn">Cancelar</a>
 </form>
+
+<section class="admin-section">
+    <h2>Fotos ({{ boat.photos|length }})</h2>
+    <div class="admin-photos">
+        {% for photo in boat.photos %}
+        <div class="admin-photo{% if photo.is_primary %} admin-photo--primary{% endif %}">
+            {% if photo.is_primary %}<span class="admin-photo-badge">★ Destacada</span>{% endif %}
+            <img src="{{ photo.url }}" alt="{{ photo.alt or '' }}">
+            <div class="admin-photo-actions">
+                {% if not photo.is_primary %}
+                <form method="post" action="{{ url_for('admin.boats_photo_set_primary', boat_id=boat.id, photo_id=photo.id) }}">
+                    <input type="hidden" name="return_to" value="simple">
+                    <button type="submit" class="btn btn-sm btn-outline" title="Usar como foto destacada">★ Destacar</button>
+                </form>
+                {% endif %}
+                <form method="post" action="{{ url_for('admin.boats_photo_delete', boat_id=boat.id, photo_id=photo.id) }}" onsubmit="return confirm('¿Borrar foto?');">
+                    <input type="hidden" name="return_to" value="simple">
+                    <button type="submit" class="btn btn-danger btn-sm">Borrar</button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <form method="post" enctype="multipart/form-data" action="{{ url_for('admin.boats_photo_add', boat_id=boat.id) }}" class="inline-form">
+        <input type="hidden" name="return_to" value="simple">
+        <input type="file" name="photos" multiple accept="image/*" required>
+        <button type="submit" class="btn">Agregar fotos</button>
+    </form>
+</section>
+
+<section class="admin-section">
+    <h2>Videos ({{ boat.videos|length }})</h2>
+    <div class="admin-photos">
+        {% for video in boat.videos %}
+        <div class="admin-photo">
+            <video src="{{ video.url }}" style="width:100%;max-width:160px;height:90px;object-fit:cover;border-radius:4px;" muted preload="metadata"></video>
+            <small>pos {{ video.position }}</small>
+            <form method="post" action="{{ url_for('admin.boats_video_delete', boat_id=boat.id, video_id=video.id) }}" onsubmit="return confirm('¿Borrar video?');">
+                <input type="hidden" name="return_to" value="simple">
+                <button type="submit" class="btn btn-danger btn-sm">Borrar</button>
+            </form>
+        </div>
+        {% endfor %}
+    </div>
+    <form method="post" enctype="multipart/form-data" action="{{ url_for('admin.boats_video_add', boat_id=boat.id) }}" class="inline-form">
+        <input type="hidden" name="return_to" value="simple">
+        <input type="file" name="videos" multiple accept="video/mp4,video/webm,video/quicktime" required>
+        <button type="submit" class="btn">Agregar videos</button>
+    </form>
+    <small style="color:var(--muted);">Formatos aceptados: mp4, webm, mov</small>
+</section>
 {% endblock %}

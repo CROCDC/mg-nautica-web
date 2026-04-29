@@ -23,6 +23,8 @@ class BoatRepository:
         max_price_usd: Optional[int] = None,
         min_length_m: Optional[float] = None,
         max_length_m: Optional[float] = None,
+        min_draft_m: Optional[float] = None,
+        max_draft_m: Optional[float] = None,
         min_year: Optional[int] = None,
         max_year: Optional[int] = None,
         search: Optional[str] = None,
@@ -44,6 +46,10 @@ class BoatRepository:
             query = query.filter(Boat.length_m >= min_length_m)
         if max_length_m is not None:
             query = query.filter(Boat.length_m <= max_length_m)
+        if min_draft_m is not None:
+            query = query.filter(Boat.draft_m >= min_draft_m)
+        if max_draft_m is not None:
+            query = query.filter(Boat.draft_m <= max_draft_m)
         if min_year is not None:
             query = query.filter(Boat.year >= min_year)
         if max_year is not None:

@@ -84,6 +84,8 @@ def register_routes(app: Flask) -> None:
         max_price = _parse_int(request.args.get("max_price"))
         min_length = _parse_float(request.args.get("min_length"))
         max_length = _parse_float(request.args.get("max_length"))
+        min_draft = _parse_float(request.args.get("min_draft"))
+        max_draft = _parse_float(request.args.get("max_draft"))
         min_year = _parse_int(request.args.get("min_year"))
         max_year = _parse_int(request.args.get("max_year"))
         search = request.args.get("q") or None
@@ -96,6 +98,8 @@ def register_routes(app: Flask) -> None:
             max_price_usd=max_price,
             min_length_m=min_length,
             max_length_m=max_length,
+            min_draft_m=min_draft,
+            max_draft_m=max_draft,
             min_year=min_year,
             max_year=max_year,
             search=search,

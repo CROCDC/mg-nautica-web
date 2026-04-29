@@ -408,6 +408,12 @@ def boats_delete(boat_id: int) -> Any:
     return redirect(url_for("admin.boats_list"))
 
 
+def _back_to_edit(boat_id: int):
+    if request.form.get("return_to") == "simple":
+        return redirect(url_for("admin.boats_edit_simple", boat_id=boat_id))
+    return redirect(url_for("admin.boats_edit_complete", boat_id=boat_id))
+
+
 @admin_bp.route("/boats/<int:boat_id>/photos/add", methods=["POST"])
 @login_required
 def boats_photo_add(boat_id: int) -> Any:
@@ -433,10 +439,10 @@ def boats_photo_add(boat_id: int) -> Any:
             saved += 1
     if not saved:
         flash("No se recibió ninguna foto válida.", "error")
-        return redirect(url_for("admin.boats_edit_complete", boat_id=boat.id))
+        return _back_to_edit(boat.id)
     db.session.commit()
     flash(f"{'Foto agregada' if saved == 1 else f'{saved} fotos agregadas'}.", "success")
-    return redirect(url_for("admin.boats_edit_complete", boat_id=boat.id))
+    return _back_to_edit(boat.id)
 
 
 @admin_bp.route("/boats/<int:boat_id>/photos/<int:photo_id>/delete", methods=["POST"])
@@ -445,11 +451,11 @@ def boats_photo_delete(boat_id: int, photo_id: int) -> Any:
     photo = db.session.get(BoatPhoto, photo_id)
     if photo is None or photo.boat_id != boat_id:
         flash("Foto no encontrada.", "error")
-        return redirect(url_for("admin.boats_edit_complete", boat_id=boat_id))
+        return _back_to_edit(boat_id)
     db.session.delete(photo)
     db.session.commit()
     flash("Foto eliminada.", "success")
-    return redirect(url_for("admin.boats_edit_complete", boat_id=boat_id))
+    return _back_to_edit(boat_id)
 
 
 @admin_bp.route("/boats/<int:boat_id>/photos/<int:photo_id>/set_primary", methods=["POST"])
@@ -458,13 +464,13 @@ def boats_photo_set_primary(boat_id: int, photo_id: int) -> Any:
     photo = db.session.get(BoatPhoto, photo_id)
     if photo is None or photo.boat_id != boat_id:
         flash("Foto no encontrada.", "error")
-        return redirect(url_for("admin.boats_edit_complete", boat_id=boat_id))
+        return _back_to_edit(boat_id)
     boat = db.session.get(Boat, boat_id)
     for p in boat.photos:
         p.is_primary = p.id == photo_id
     db.session.commit()
     flash("Foto destacada actualizada.", "success")
-    return redirect(url_for("admin.boats_edit_complete", boat_id=boat_id))
+    return _back_to_edit(boat_id)
 
 
 @admin_bp.route("/boats/<int:boat_id>/videos/add", methods=["POST"])
@@ -485,10 +491,10 @@ def boats_video_add(boat_id: int) -> Any:
             saved += 1
     if not saved:
         flash("No se recibió ningún video válido (formatos: mp4, webm, mov).", "error")
-        return redirect(url_for("admin.boats_edit_complete", boat_id=boat.id))
+        return _back_to_edit(boat.id)
     db.session.commit()
     flash(f"{'Video agregado' if saved == 1 else f'{saved} videos agregados'}.", "success")
-    return redirect(url_for("admin.boats_edit_complete", boat_id=boat.id))
+    return _back_to_edit(boat.id)
 
 
 @admin_bp.route("/boats/<int:boat_id>/videos/<int:video_id>/delete", methods=["POST"])
@@ -497,11 +503,11 @@ def boats_video_delete(boat_id: int, video_id: int) -> Any:
     video = db.session.get(BoatVideo, video_id)
     if video is None or video.boat_id != boat_id:
         flash("Video no encontrado.", "error")
-        return redirect(url_for("admin.boats_edit_complete", boat_id=boat_id))
+        return _back_to_edit(boat_id)
     db.session.delete(video)
     db.session.commit()
     flash("Video eliminado.", "success")
-    return redirect(url_for("admin.boats_edit_complete", boat_id=boat_id))
+    return _back_to_edit(boat_id)
 
 
 SPEC_STRING_FIELDS = [

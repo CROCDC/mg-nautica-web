@@ -41,6 +41,22 @@
             <input id="max_price" type="number" name="max_price" placeholder="Sin límite" value="{{ request.args.get('max_price', '') }}">
         </div>
         <div class="filter-group">
+            <label for="min_length">Eslora mín. (m)</label>
+            <input id="min_length" type="number" name="min_length" placeholder="0" step="0.1" min="0" value="{{ request.args.get('min_length', '') }}">
+        </div>
+        <div class="filter-group">
+            <label for="max_length">Eslora máx. (m)</label>
+            <input id="max_length" type="number" name="max_length" placeholder="Sin límite" step="0.1" min="0" value="{{ request.args.get('max_length', '') }}">
+        </div>
+        <div class="filter-group">
+            <label for="min_draft">Calado mín. (m)</label>
+            <input id="min_draft" type="number" name="min_draft" placeholder="0" step="0.1" min="0" value="{{ request.args.get('min_draft', '') }}">
+        </div>
+        <div class="filter-group">
+            <label for="max_draft">Calado máx. (m)</label>
+            <input id="max_draft" type="number" name="max_draft" placeholder="Sin límite" step="0.1" min="0" value="{{ request.args.get('max_draft', '') }}">
+        </div>
+        <div class="filter-group">
             <label for="sort">Ordenar</label>
             <select id="sort" name="sort">
                 {% for key, label in sort_label.items() %}

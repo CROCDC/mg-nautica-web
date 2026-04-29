@@ -11,7 +11,7 @@ services:
       SECRET_KEY: ${SECRET_KEY}
       FLASK_APP: run.py
       FLASK_DEBUG: "0"
-      MAX_CONTENT_LENGTH: "524288000"
+      MAX_CONTENT_LENGTH: "4294967296"
       VIRTUAL_HOST: mgnautica.nexttech.com.ar
       VIRTUAL_PORT: "7010"
       LETSENCRYPT_HOST: mgnautica.nexttech.com.ar

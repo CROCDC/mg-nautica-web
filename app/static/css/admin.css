@@ -50,3 +50,8 @@ body.admin { background:#f5f6f8; color:#1b2430; }
 .btn-outline:hover { background:#2563eb; color:#fff; }
 .btn-link { background:transparent; border:none; color:#cfd9e6; text-decoration:underline; cursor:pointer; padding:0; font-size:inherit; }
 .admin-login { max-width:360px; margin:4rem auto; padding:2rem; background:#fff; border-radius:6px; border:1px solid #dde3ec; }
+.file-preview-wrap { display:flex; flex-wrap:wrap; gap:0.5rem; margin-top:0.5rem; }
+.file-preview-item { position:relative; width:140px; }
+.file-preview-item img { width:140px; height:105px; object-fit:cover; border-radius:4px; border:1px solid #c3ccd9; display:block; }
+.file-preview-item video { width:140px; height:105px; object-fit:cover; border-radius:4px; border:1px solid #c3ccd9; display:block; }
+.file-preview-item small { display:block; font-size:0.72rem; color:#56657a; margin-top:2px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }

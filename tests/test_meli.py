@@ -541,15 +541,6 @@ class TestMeliAdminOverview:
         assert b"MLU" in resp.data
         assert b"MLA" in resp.data
 
-    def test_overview_shows_connect_button_when_no_creds(self, logged_in_admin):
-        resp = logged_in_admin.get("/admin/meli/")
-        assert b"Conectar cuenta" in resp.data
-
-    def test_overview_shows_credentials_when_configured(self, db, logged_in_admin):
-        _make_creds(db, "MLU")
-        resp = logged_in_admin.get("/admin/meli/")
-        assert b"Activo" in resp.data or b"Expirado" in resp.data
-
     def test_overview_shows_boats(self, db, logged_in_admin):
         boat = make_boat(slug="test-meli-overview", title="Lancha Overview Test")
         db.session.add(boat)
