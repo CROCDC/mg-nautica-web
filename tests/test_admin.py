@@ -126,7 +126,7 @@ class TestAdminBoats:
         assert boat.title.encode() in resp.data
 
     def test_edit_boat_updates_title(self, db, app, logged_in_admin, boat):
-        logged_in_admin.post(f"/admin/boats/{boat.id}/edit", data={
+        logged_in_admin.post(f"/admin/boats/{boat.id}/edit/complete", data={
             "slug": boat.slug,
             "title": "Título Actualizado",
             "description": "Nueva descripción.",
