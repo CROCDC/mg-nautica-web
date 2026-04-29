@@ -57,10 +57,15 @@ def admin_page(browser, live_server_url):
 
 
 def _navigate_to_first_boat_edit(page, base):
-    """Go to the first boat's edit page; return the boat edit URL."""
+    """Go to velero-test-0's edit page; return the edit URL.
+
+    The admin list is ordered newest-first (created_at DESC), so galeria-test
+    (seeded last) is always .first. We use .last to get the oldest seed boat
+    (velero-test-0) which has a stable photo count and won't break gallery tests.
+    """
     page.goto(base + "/admin/boats")
     page.wait_for_load_state("load")
-    edit_link = page.locator("a[href*='/admin/boats/'][href*='/edit']").first
+    edit_link = page.locator("a[href*='/admin/boats/'][href*='/edit']").last
     href = edit_link.get_attribute("href")
     edit_url = base + href
     page.goto(edit_url)
@@ -105,7 +110,7 @@ class TestBoatPhotoAdd:
 
         page.goto(base + "/admin/boats")
         page.wait_for_load_state("load")
-        edit_link = page.locator("a[href*='/admin/boats/'][href*='/edit']").first
+        edit_link = page.locator("a[href*='/admin/boats/'][href*='/edit']").last
         edit_href = edit_link.get_attribute("href")
 
         page.goto(base + edit_href)

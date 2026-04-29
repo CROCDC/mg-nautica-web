@@ -10,6 +10,7 @@ import time
 from pathlib import Path
 
 import pytest
+from sqlalchemy import event, text
 from werkzeug.serving import make_server
 
 from app.factory import create_app
@@ -49,6 +50,13 @@ def e2e_app():
     app = create_app(test_config=E2E_CONFIG)
 
     with app.app_context():
+        # WAL mode: readers don't block writers and vice-versa — needed for
+        # the threaded live server where concurrent requests share one SQLite file.
+        @event.listens_for(_db.engine, "connect")
+        def _set_wal(conn, _rec):
+            conn.execute("PRAGMA journal_mode=WAL")
+            conn.execute("PRAGMA busy_timeout=30000")
+
         _db.create_all()
 
         # 6 barcos con fotos (usa picsum como placeholder)
@@ -122,7 +130,7 @@ def e2e_app():
 
 @pytest.fixture(scope="session")
 def live_server_url(e2e_app):
-    server = make_server("127.0.0.1", 0, e2e_app)
+    server = make_server("127.0.0.1", 0, e2e_app, threaded=True)
     port   = server.server_address[1]
     thread = threading.Thread(target=server.serve_forever, daemon=True)
     thread.start()
