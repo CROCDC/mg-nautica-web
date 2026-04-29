@@ -530,7 +530,7 @@ def download_boat_photos() -> None:
                     try:
                         info = json.loads(el.get_attribute("data-image-info") or "")
                         uri = info.get("imageData", {}).get("uri", "")
-                        if uri:
+                        if uri and not uri.startswith("http"):
                             url = f"https://static.wixstatic.com/media/{uri}/v1/fit/w_1920,h_1280,al_c,q_90,enc_auto/{uri}"
                             if url not in seen:
                                 seen.add(url)
@@ -543,6 +543,17 @@ def download_boat_photos() -> None:
                         if url and url not in seen:
                             seen.add(url)
                             photos.append(url)
+
+                # Extract description from rendered page
+                description = page.evaluate("""
+                    () => {
+                        const el = document.querySelector('[data-hook="description"]');
+                        return el ? el.innerText.trim() : '';
+                    }
+                """)
+                if description and len(description) > 20:
+                    product["description"] = description
+
             except Exception as e:
                 print(f"    scrape ERROR: {e}")
                 photos = []
