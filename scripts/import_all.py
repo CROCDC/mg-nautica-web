@@ -1060,14 +1060,22 @@ def step_scrape_boats() -> None:
     products: list[dict[str, Any]] = []
     for i, url in enumerate(urls, 1):
         print(f"  [{i}/{len(urls)}] {url}")
-        p = scrape_product_page(url, session)
+        p = None
+        for attempt in range(1, 4):
+            p = scrape_product_page(url, session)
+            if p:
+                break
+            if attempt < 3:
+                wait = attempt * 3
+                print(f"    → retry {attempt}/2 in {wait}s …")
+                time.sleep(wait)
         if p:
             slug = url.rstrip("/").split("/product-page/")[-1]
             p["slug"] = slug
             products.append(p)
             print(f"    '{p['title']}' ${p['price_usd']:,}")
         else:
-            print("    → no data")
+            print("    → no data after 3 attempts")
         time.sleep(0.8)
 
     products = _deduplicate(products)
