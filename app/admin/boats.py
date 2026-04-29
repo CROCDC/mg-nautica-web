@@ -139,12 +139,34 @@ def _boat_payload(form) -> dict[str, Any]:
 @login_required
 def boats_list() -> str:
     q = (request.args.get("q") or "").strip()
+    length_min = _parse_decimal(request.args.get("length_min"))
+    length_max = _parse_decimal(request.args.get("length_max"))
+    draft_min = _parse_decimal(request.args.get("draft_min"))
+    draft_max = _parse_decimal(request.args.get("draft_max"))
+
     query = db.session.query(Boat)
     if q:
         term = f"%{q.lower()}%"
         query = query.filter(db.func.lower(Boat.title).like(term))
+    if length_min is not None:
+        query = query.filter(Boat.length_m >= length_min)
+    if length_max is not None:
+        query = query.filter(Boat.length_m <= length_max)
+    if draft_min is not None:
+        query = query.filter(Boat.draft_m >= draft_min)
+    if draft_max is not None:
+        query = query.filter(Boat.draft_m <= draft_max)
+
     boats = query.order_by(Boat.created_at.desc()).all()
-    return render_template("admin/boats_list.html", boats=boats, q=q)
+    return render_template(
+        "admin/boats_list.html",
+        boats=boats,
+        q=q,
+        length_min=request.args.get("length_min", ""),
+        length_max=request.args.get("length_max", ""),
+        draft_min=request.args.get("draft_min", ""),
+        draft_max=request.args.get("draft_max", ""),
+    )
 
 
 @admin_bp.route("/boats/new")
@@ -220,7 +242,7 @@ def boats_new_complete() -> Any:
         if request.form.get("publish_instagram"):
             publish_to_instagram(boat)
         flash("Embarcación creada.", "success")
-        return redirect(url_for("admin.boats_edit", boat_id=boat.id))
+        return redirect(url_for("admin.boats_edit_complete", boat_id=boat.id))
     return render_template(
         "admin/boats_form.html",
         boat=None,
@@ -265,13 +287,48 @@ def boats_new_simple() -> Any:
                 db.session.add(BoatVideo(boat_id=boat.id, url=url, position=i))
         db.session.commit()
         flash("Embarcación creada. Completá los datos adicionales cuando quieras.", "success")
-        return redirect(url_for("admin.boats_edit", boat_id=boat.id))
+        return redirect(url_for("admin.boats_edit_simple", boat_id=boat.id))
     return render_template("admin/boats_form_simple.html", form={})
 
 
-@admin_bp.route("/boats/<int:boat_id>/edit", methods=["GET", "POST"])
+@admin_bp.route("/boats/<int:boat_id>/edit")
 @login_required
 def boats_edit(boat_id: int) -> Any:
+    boat = db.session.get(Boat, boat_id)
+    if boat is None:
+        flash("Embarcación no encontrada.", "error")
+        return redirect(url_for("admin.boats_list"))
+    return render_template("admin/boats_edit_choose.html", boat=boat)
+
+
+@admin_bp.route("/boats/<int:boat_id>/edit/simple", methods=["GET", "POST"])
+@login_required
+def boats_edit_simple(boat_id: int) -> Any:
+    boat = db.session.get(Boat, boat_id)
+    if boat is None:
+        flash("Embarcación no encontrada.", "error")
+        return redirect(url_for("admin.boats_list"))
+
+    if request.method == "POST":
+        title = (request.form.get("title") or "").strip()
+        if not title:
+            flash("El título es obligatorio.", "error")
+            return render_template("admin/boats_edit_simple.html", boat=boat, form=request.form), 400
+        boat.title = title
+        boat.description = request.form.get("description") or ""
+        boat.year = _parse_int(request.form.get("year"))
+        boat.length_m = _parse_decimal(request.form.get("length_m"))
+        boat.draft_m = _parse_decimal(request.form.get("draft_m"))
+        db.session.commit()
+        flash("Embarcación actualizada.", "success")
+        return redirect(url_for("admin.boats_edit_simple", boat_id=boat.id))
+
+    return render_template("admin/boats_edit_simple.html", boat=boat, form={})
+
+
+@admin_bp.route("/boats/<int:boat_id>/edit/complete", methods=["GET", "POST"])
+@login_required
+def boats_edit_complete(boat_id: int) -> Any:
     boat = db.session.get(Boat, boat_id)
     if boat is None:
         flash("Embarcación no encontrada.", "error")
@@ -323,7 +380,7 @@ def boats_edit(boat_id: int) -> Any:
         if request.form.get("publish_instagram"):
             publish_to_instagram(boat)
         flash("Embarcación actualizada.", "success")
-        return redirect(url_for("admin.boats_edit", boat_id=boat.id))
+        return redirect(url_for("admin.boats_edit_complete", boat_id=boat.id))
 
     return render_template(
         "admin/boats_form.html",
@@ -376,10 +433,10 @@ def boats_photo_add(boat_id: int) -> Any:
             saved += 1
     if not saved:
         flash("No se recibió ninguna foto válida.", "error")
-        return redirect(url_for("admin.boats_edit", boat_id=boat.id))
+        return redirect(url_for("admin.boats_edit_complete", boat_id=boat.id))
     db.session.commit()
     flash(f"{'Foto agregada' if saved == 1 else f'{saved} fotos agregadas'}.", "success")
-    return redirect(url_for("admin.boats_edit", boat_id=boat.id))
+    return redirect(url_for("admin.boats_edit_complete", boat_id=boat.id))
 
 
 @admin_bp.route("/boats/<int:boat_id>/photos/<int:photo_id>/delete", methods=["POST"])
@@ -388,11 +445,11 @@ def boats_photo_delete(boat_id: int, photo_id: int) -> Any:
     photo = db.session.get(BoatPhoto, photo_id)
     if photo is None or photo.boat_id != boat_id:
         flash("Foto no encontrada.", "error")
-        return redirect(url_for("admin.boats_edit", boat_id=boat_id))
+        return redirect(url_for("admin.boats_edit_complete", boat_id=boat_id))
     db.session.delete(photo)
     db.session.commit()
     flash("Foto eliminada.", "success")
-    return redirect(url_for("admin.boats_edit", boat_id=boat_id))
+    return redirect(url_for("admin.boats_edit_complete", boat_id=boat_id))
 
 
 @admin_bp.route("/boats/<int:boat_id>/photos/<int:photo_id>/set_primary", methods=["POST"])
@@ -401,13 +458,13 @@ def boats_photo_set_primary(boat_id: int, photo_id: int) -> Any:
     photo = db.session.get(BoatPhoto, photo_id)
     if photo is None or photo.boat_id != boat_id:
         flash("Foto no encontrada.", "error")
-        return redirect(url_for("admin.boats_edit", boat_id=boat_id))
+        return redirect(url_for("admin.boats_edit_complete", boat_id=boat_id))
     boat = db.session.get(Boat, boat_id)
     for p in boat.photos:
         p.is_primary = p.id == photo_id
     db.session.commit()
     flash("Foto destacada actualizada.", "success")
-    return redirect(url_for("admin.boats_edit", boat_id=boat_id))
+    return redirect(url_for("admin.boats_edit_complete", boat_id=boat_id))
 
 
 @admin_bp.route("/boats/<int:boat_id>/videos/add", methods=["POST"])
@@ -428,10 +485,10 @@ def boats_video_add(boat_id: int) -> Any:
             saved += 1
     if not saved:
         flash("No se recibió ningún video válido (formatos: mp4, webm, mov).", "error")
-        return redirect(url_for("admin.boats_edit", boat_id=boat.id))
+        return redirect(url_for("admin.boats_edit_complete", boat_id=boat.id))
     db.session.commit()
     flash(f"{'Video agregado' if saved == 1 else f'{saved} videos agregados'}.", "success")
-    return redirect(url_for("admin.boats_edit", boat_id=boat.id))
+    return redirect(url_for("admin.boats_edit_complete", boat_id=boat.id))
 
 
 @admin_bp.route("/boats/<int:boat_id>/videos/<int:video_id>/delete", methods=["POST"])
@@ -440,11 +497,11 @@ def boats_video_delete(boat_id: int, video_id: int) -> Any:
     video = db.session.get(BoatVideo, video_id)
     if video is None or video.boat_id != boat_id:
         flash("Video no encontrado.", "error")
-        return redirect(url_for("admin.boats_edit", boat_id=boat_id))
+        return redirect(url_for("admin.boats_edit_complete", boat_id=boat_id))
     db.session.delete(video)
     db.session.commit()
     flash("Video eliminado.", "success")
-    return redirect(url_for("admin.boats_edit", boat_id=boat_id))
+    return redirect(url_for("admin.boats_edit_complete", boat_id=boat_id))
 
 
 SPEC_STRING_FIELDS = [
@@ -509,4 +566,4 @@ def boats_specs_save(boat_id: int) -> Any:
         db.session.add(specs)
     db.session.commit()
     flash("Ficha técnica guardada.", "success")
-    return redirect(url_for("admin.boats_edit", boat_id=boat.id))
+    return redirect(url_for("admin.boats_edit_complete", boat_id=boat.id))

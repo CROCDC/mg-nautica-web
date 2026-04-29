@@ -1,0 +1,39 @@
+{% extends "admin/base.html" %}
+{% block title %}Editar (rápido): {{ boat.title }} - Admin{% endblock %}
+{% block content %}
+<h1>Editar: {{ boat.title }}</h1>
+<p style="color:var(--muted);margin-bottom:1.5rem;">
+    Edición rápida — solo los datos esenciales.
+    ¿Necesitás todos los campos? <a href="{{ url_for('admin.boats_edit_complete', boat_id=boat.id) }}">Usar el formulario completo</a> · <a href="{{ url_for('admin.boats_edit', boat_id=boat.id) }}">Volver</a>.
+</p>
+
+<form method="post" class="form admin-form">
+    <label>
+        Título *
+        <input name="title" required value="{{ form.get('title') if form.get('title') is not none else boat.title }}" autofocus>
+    </label>
+
+    <label>
+        Descripción
+        <textarea name="description" rows="6">{{ form.get('description') if form.get('description') is not none else (boat.description or '') }}</textarea>
+    </label>
+
+    <label>
+        Año
+        <input type="number" name="year" min="1900" max="2100" value="{{ form.get('year') if form.get('year') is not none else (boat.year or '') }}">
+    </label>
+
+    <label>
+        Eslora (m)
+        <input type="text" name="length_m" value="{{ form.get('length_m') if form.get('length_m') is not none else (boat.length_m or '') }}">
+    </label>
+
+    <label>
+        Calado (m)
+        <input type="text" name="draft_m" value="{{ form.get('draft_m') if form.get('draft_m') is not none else (boat.draft_m or '') }}">
+    </label>
+
+    <button type="submit" class="btn btn-primary">Guardar</button>
+    <a href="{{ url_for('admin.boats_edit', boat_id=boat.id) }}" class="btn">Cancelar</a>
+</form>
+{% endblock %}

@@ -121,7 +121,6 @@ def test_admin_boats_new_form(admin_page):
 
 def test_admin_boats_edit_form(admin_page):
     page, base = admin_page
-    # Get first boat id from the list
     page.goto(base + "/admin/boats")
     page.wait_for_load_state("networkidle")
     edit_link = page.locator("a[href*='/admin/boats/'][href*='/edit']").first
@@ -130,7 +129,14 @@ def test_admin_boats_edit_form(admin_page):
     href = edit_link.get_attribute("href")
     page.goto(base + href)
     page.wait_for_load_state("networkidle")
-    shot(page, "admin_boats_edit_form")
+    shot(page, "admin_boats_edit_choose")
+    # choose page: should offer simple and complete links
+    assert page.locator("a[href*='/edit/simple']").count() >= 1
+    assert page.locator("a[href*='/edit/complete']").count() >= 1
+    # navigate to simple edit and verify form
+    page.locator("a[href*='/edit/simple']").first.click()
+    page.wait_for_load_state("networkidle")
+    shot(page, "admin_boats_edit_simple")
     assert page.locator("form").count() >= 1
 
 

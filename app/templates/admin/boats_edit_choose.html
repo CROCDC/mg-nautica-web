@@ -1,0 +1,17 @@
+{% extends "admin/base.html" %}
+{% block title %}Editar: {{ boat.title }} - Admin{% endblock %}
+{% block content %}
+<h1>Editar: {{ boat.title }}</h1>
+<p style="color:var(--muted);margin-bottom:2rem;">¿Cómo querés editarla?</p>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;max-width:640px;">
+    <a href="{{ url_for('admin.boats_edit_simple', boat_id=boat.id) }}" class="choose-card">
+        <strong>Edición rápida</strong>
+        <span>Título, descripción, año, eslora y calado. Sin campos obligatorios extras.</span>
+    </a>
+    <a href="{{ url_for('admin.boats_edit_complete', boat_id=boat.id) }}" class="choose-card">
+        <strong>Formulario completo</strong>
+        <span>Todos los campos: tipo, bandera, precio, fotos, videos, ficha técnica y más.</span>
+    </a>
+</div>
+{% endblock %}

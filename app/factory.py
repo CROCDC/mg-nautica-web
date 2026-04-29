@@ -86,6 +86,11 @@ def create_app(test_config: dict | None = None) -> Flask:
                 "price_desc": "Precio: mayor a menor",
                 "oldest": "Más antiguos primero",
             },
+            "status_label": {
+                "available": "Disponible",
+                "reserved": "Reservado",
+                "sold": "Vendido",
+            },
         }
 
     with app.app_context():

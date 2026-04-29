@@ -58,7 +58,9 @@
     <div class="boat-grid">
         {% for boat in boats %}
         <a class="boat-card" href="{{ url_for('boat_detail', slug=boat.slug) }}">
-            <div class="boat-card-img">
+            <div class="boat-card-img"
+                 data-photos="{{ boat.photos | map(attribute='url') | list | tojson | e }}"
+                 data-videos="{{ boat.videos | map(attribute='url') | list | tojson | e }}">
                 {% if boat.primary_photo_url %}
                 <img src="{{ boat.primary_photo_url }}" alt="{{ boat.title }}" loading="lazy">
                 {% else %}
@@ -91,4 +93,67 @@
     </div>
     {% endif %}
 </div>
+<script>
+(function () {
+  var INTERVAL_MS = 2500;
+
+  document.querySelectorAll('.boat-card').forEach(function (card) {
+    var container = card.querySelector('.boat-card-img');
+    var img = container && container.querySelector('img');
+    if (!container || !img) return;
+
+    var photos = JSON.parse(container.dataset.photos || '[]');
+    var videos = JSON.parse(container.dataset.videos || '[]');
+    var media = photos.map(function (u) { return { type: 'photo', url: u }; })
+               .concat(videos.map(function (u) { return { type: 'video', url: u }; }));
+
+    if (media.length <= 1) return;
+
+    var timer = null;
+    var idx = 0;
+    var videoEl = null;
+    var originalSrc = img.src;
+
+    function showMedia(i) {
+      var item = media[i % media.length];
+      if (item.type === 'photo') {
+        if (videoEl) { videoEl.pause(); videoEl.remove(); videoEl = null; }
+        img.style.display = '';
+        img.src = item.url;
+      } else {
+        img.style.display = 'none';
+        if (!videoEl) {
+          videoEl = document.createElement('video');
+          videoEl.muted = true;
+          videoEl.autoplay = true;
+          videoEl.loop = true;
+          videoEl.playsInline = true;
+          videoEl.style.cssText = 'width:100%;height:100%;object-fit:cover;position:absolute;inset:0;';
+          container.appendChild(videoEl);
+        }
+        videoEl.src = item.url;
+        videoEl.play().catch(function () {});
+      }
+    }
+
+    card.addEventListener('mouseenter', function () {
+      idx = 1 % media.length;
+      showMedia(idx);
+      timer = setInterval(function () {
+        idx = (idx + 1) % media.length;
+        showMedia(idx);
+      }, INTERVAL_MS);
+    });
+
+    card.addEventListener('mouseleave', function () {
+      clearInterval(timer);
+      timer = null;
+      if (videoEl) { videoEl.pause(); videoEl.remove(); videoEl = null; }
+      img.style.display = '';
+      img.src = originalSrc;
+      idx = 0;
+    });
+  });
+})();
+</script>
 {% endblock %}

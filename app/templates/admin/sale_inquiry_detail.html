@@ -1,0 +1,49 @@
+{% extends "admin/base.html" %}
+{% block title %}Consulta #{{ inquiry.id }} - Admin{% endblock %}
+{% block content %}
+<div class="admin-toolbar">
+    <h1>Consulta #{{ inquiry.id }}</h1>
+    <a href="{{ url_for('admin.sale_inquiries_list') }}" class="btn btn-secondary">← Volver</a>
+</div>
+
+<div class="detail-card">
+    <table class="admin-table detail-table">
+        <tbody>
+            <tr>
+                <th>Nombre</th>
+                <td>{{ inquiry.first_name }} {{ inquiry.last_name }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td><a href="mailto:{{ inquiry.email }}">{{ inquiry.email }}</a></td>
+            </tr>
+            <tr>
+                <th>Teléfono</th>
+                <td>{{ inquiry.phone or '—' }}</td>
+            </tr>
+            <tr>
+                <th>Tipo de embarcación</th>
+                <td>{{ boat_type_label[inquiry.boat_type.value] }}</td>
+            </tr>
+            <tr>
+                <th>Estado</th>
+                <td>{{ inquiry.status.value }}</td>
+            </tr>
+            <tr>
+                <th>Fecha</th>
+                <td>{{ inquiry.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+            </tr>
+            <tr>
+                <th>Mensaje</th>
+                <td class="message-cell">{{ inquiry.message or '—' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="detail-actions">
+        <form method="post" action="{{ url_for('admin.sale_inquiry_delete', inquiry_id=inquiry.id) }}" onsubmit="return confirm('¿Borrar esta consulta?');">
+            <button type="submit" class="btn btn-danger">Borrar consulta</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

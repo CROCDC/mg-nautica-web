@@ -274,12 +274,12 @@ class TestAdminBoatsEditCoverage:
         assert "/admin/boats" in resp.headers["Location"]
 
     def test_post_not_found_redirects(self, db, logged_in_admin):
-        resp = logged_in_admin.post("/admin/boats/99999/edit", data=_VALID_BOAT_DATA)
+        resp = logged_in_admin.post("/admin/boats/99999/edit/complete", data=_VALID_BOAT_DATA)
         assert resp.status_code == 302
         assert "/admin/boats" in resp.headers["Location"]
 
     def test_missing_required_fields_returns_400(self, db, logged_in_admin, boat):
-        resp = logged_in_admin.post(f"/admin/boats/{boat.id}/edit", data={
+        resp = logged_in_admin.post(f"/admin/boats/{boat.id}/edit/complete", data={
             "slug": "",
             "title": "",
             "price_usd": "10000",
@@ -293,7 +293,7 @@ class TestAdminBoatsEditCoverage:
         other = make_boat(slug="otro-slug")
         db.session.add(other)
         db.session.commit()
-        resp = logged_in_admin.post(f"/admin/boats/{boat.id}/edit", data={
+        resp = logged_in_admin.post(f"/admin/boats/{boat.id}/edit/complete", data={
             **_VALID_BOAT_DATA,
             "slug": "otro-slug",
         })

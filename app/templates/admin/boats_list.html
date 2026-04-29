@@ -6,7 +6,14 @@
     <div>
         <form method="get" class="inline-form">
             <input type="search" name="q" value="{{ q or '' }}" placeholder="Buscar por título...">
-            <button type="submit" class="btn">Buscar</button>
+            <input type="number" step="0.01" min="0" name="length_min" value="{{ length_min }}" placeholder="Eslora mín (m)" style="width:130px;">
+            <input type="number" step="0.01" min="0" name="length_max" value="{{ length_max }}" placeholder="Eslora máx (m)" style="width:130px;">
+            <input type="number" step="0.01" min="0" name="draft_min" value="{{ draft_min }}" placeholder="Calado mín (m)" style="width:130px;">
+            <input type="number" step="0.01" min="0" name="draft_max" value="{{ draft_max }}" placeholder="Calado máx (m)" style="width:130px;">
+            <button type="submit" class="btn">Filtrar</button>
+            {% if q or length_min or length_max or draft_min or draft_max %}
+            <a href="{{ url_for('admin.boats_list') }}" class="btn">Limpiar</a>
+            {% endif %}
         </form>
         <a class="btn btn-primary" href="{{ url_for('admin.boats_new') }}">+ Nueva embarcación</a>
     </div>
@@ -36,7 +43,7 @@
             <td>{{ boat_type_label[b.boat_type.value] }}</td>
             <td>{{ flag_label[b.flag.value] }}</td>
             <td>US$ {{ '{:,}'.format(b.price_usd) }}{% if b.on_sale %} <small>(oferta)</small>{% endif %}</td>
-            <td>{{ b.status.value }}</td>
+            <td>{{ status_label[b.status.value] }}</td>
             <td>{{ 'Sí' if b.featured else '—' }}</td>
             <td>
                 <form method="post" action="{{ url_for('admin.boats_delete', boat_id=b.id) }}" onsubmit="return confirm('¿Borrar esta embarcación?');" style="display:inline;">

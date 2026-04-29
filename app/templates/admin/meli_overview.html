@@ -5,55 +5,6 @@
     <h1>Mercado Libre</h1>
 </div>
 
-{# ── Credentials per site ─────────────────────────────────────── #}
-<section class="admin-section">
-    <h2>Configuración de cuentas</h2>
-    <table class="admin-table">
-        <thead>
-            <tr>
-                <th>Sitio</th>
-                <th>Estado</th>
-                <th>Usuario MELI</th>
-                <th>Token expira</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for site in sites %}
-            {% set c = creds[site] %}
-            <tr>
-                <td><strong>{{ site }}</strong></td>
-                {% if c %}
-                <td>
-                    {% if c.is_expired %}
-                    <span class="badge badge-warning">Expirado</span>
-                    {% else %}
-                    <span class="badge badge-success">Activo</span>
-                    {% endif %}
-                </td>
-                <td>{{ c.meli_user_id or '—' }}</td>
-                <td>{{ c.expires_at.strftime('%d/%m/%Y %H:%M') }} UTC</td>
-                <td>
-                    <a class="btn btn-sm" href="{{ url_for('admin.meli_auth', site_id=site) }}">Reconectar</a>
-                    <form method="post" action="{{ url_for('admin.meli_disconnect', site_id=site) }}" style="display:inline;"
-                          onsubmit="return confirm('¿Eliminar credenciales de {{ site }}?');">
-                        <button type="submit" class="btn btn-danger btn-sm">Desconectar</button>
-                    </form>
-                </td>
-                {% else %}
-                <td><span class="badge badge-danger">Sin configurar</span></td>
-                <td>—</td>
-                <td>—</td>
-                <td>
-                    <a class="btn btn-primary btn-sm" href="{{ url_for('admin.meli_auth', site_id=site) }}">Conectar cuenta</a>
-                </td>
-                {% endif %}
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</section>
-
 {# ── Boats listing status ─────────────────────────────────────── #}
 <section class="admin-section">
     <h2>Embarcaciones</h2>
