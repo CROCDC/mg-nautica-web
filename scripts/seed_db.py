@@ -406,12 +406,15 @@ def main() -> int:
         if not args.no_wipe:
             print("[WIPE] Deleting all boats and accessories …")
             from sqlalchemy import text
+            # boat_photos/specs/videos/inquiries have ON DELETE CASCADE → handled by deleting boats
             db.session.execute(text("DELETE FROM boat_photos"))
             db.session.execute(text("DELETE FROM boat_specs"))
+            db.session.execute(text("DELETE FROM boats"))
+            db.session.execute(text("DELETE FROM accessories"))
             n = db.session.execute(text("DELETE FROM listed_objects RETURNING id")).rowcount
             db.session.commit()
             db.session.expire_all()
-            print(f"  → {n} rows deleted")
+            print(f"  → {n} base rows deleted")
 
         print("[SEED] Inserting from JSON …")
         boats, accessories, admin_created = seed(db)
