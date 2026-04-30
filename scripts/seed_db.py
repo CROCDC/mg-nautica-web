@@ -26,7 +26,7 @@ ACCESSORIES_FILE = DATA_DIR / "accessories.json"
 
 sys.path.insert(0, str(ROOT))
 
-SKIP_SLUGS: set[str] = {"termo-acero-inoxidable", "cojín-asiento-impermeable"}
+SKIP_SLUGS: set[str] = set()
 
 FLAGSHIP_SLUG = "velero-jeanneau-sun-odyssey-39-ds"
 FLAGSHIP_SPECS: dict[str, Any] = {

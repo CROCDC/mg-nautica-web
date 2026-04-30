@@ -286,6 +286,15 @@ def _scrape_product_page(url: str, session) -> Optional[dict[str, Any]]:
     return _extract_from_page_html(url, soup)
 
 
+def _slug_matches_title(slug: str, title: str) -> bool:
+    """Return False when the URL slug has no words in common with the product title.
+    Catches Wix pages where an old URL now serves a completely different product."""
+    slug_words = set(re.split(r"[-\s]+", slug.lower()))
+    title_words = set(re.split(r"[-\s]+", _slugify(title).lower()))
+    significant = {w for w in title_words if len(w) > 3}
+    return bool(slug_words & significant)
+
+
 def _deduplicate(products: list[dict]) -> list[dict]:
     seen: dict[str, dict] = {}
     for p in products:
@@ -297,7 +306,8 @@ def _deduplicate(products: list[dict]) -> list[dict]:
     return list(seen.values())
 
 
-def scrape_boats() -> None:
+def scrape_boats() -> list[str]:
+    """Returns list of URLs that failed requests-based scraping (Playwright fallback needed)."""
     import requests
     print("\n[1/4] Scraping boat listings …")
     session = requests.Session()
@@ -312,6 +322,7 @@ def scrape_boats() -> None:
     print(f"  Found {len(urls)} product URLs")
 
     products: list[dict[str, Any]] = []
+    failed_urls: list[str] = []
     for i, url in enumerate(urls, 1):
         print(f"  [{i}/{len(urls)}] {url}")
         p = None
@@ -324,12 +335,17 @@ def scrape_boats() -> None:
                 print(f"    → retry {attempt}/2 in {wait}s …")
                 time.sleep(wait)
         if p:
-            slug = url.rstrip("/").split("/product-page/")[-1]
-            p["slug"] = slug
+            url_slug = url.rstrip("/").split("/product-page/")[-1]
+            if _slug_matches_title(url_slug, p.get("title", "")):
+                p["slug"] = url_slug
+            else:
+                p["slug"] = _slugify(p["title"])
+                print(f"    → URL slug mismatch ({url_slug!r}), using title slug: {p['slug']!r}")
             products.append(p)
             print(f"    '{p['title']}' ${p['price_usd']:,}")
         else:
-            print("    → no data after 3 attempts")
+            print("    → no data after 3 attempts, queued for Playwright retry")
+            failed_urls.append(url)
         time.sleep(0.8)
 
     products = _deduplicate(products)
@@ -340,6 +356,7 @@ def scrape_boats() -> None:
     DATA_DIR.mkdir(parents=True, exist_ok=True)
     PRODUCTS_FILE.write_text(json.dumps(products, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"  → {len(products)} boats saved to {PRODUCTS_FILE}")
+    return failed_urls
 
 
 # ── accessory scraping ─────────────────────────────────────────────────────────
@@ -501,7 +518,73 @@ def _download_to(url: str, dest_dir: Path, subpath: str) -> Optional[str]:
     return f"/uploads/{subpath}/{fname}"
 
 
-def download_boat_photos() -> None:
+def _extract_photos_playwright(page) -> list[str]:
+    seen: set[str] = set()
+    photos: list[str] = []
+    for el in page.query_selector_all("wow-image[data-image-info]"):
+        try:
+            info = json.loads(el.get_attribute("data-image-info") or "")
+            uri = info.get("imageData", {}).get("uri", "")
+            if uri and not uri.startswith("http"):
+                url = f"https://static.wixstatic.com/media/{uri}/v1/fit/w_1920,h_1280,al_c,q_90,enc_auto/{uri}"
+                if url not in seen:
+                    seen.add(url)
+                    photos.append(url)
+        except (json.JSONDecodeError, AttributeError):
+            pass
+    if not photos:
+        for img in page.query_selector_all("img[src*='wixstatic.com/media']"):
+            url = _clean_wix_url(img.get_attribute("src") or "")
+            if url and url not in seen:
+                seen.add(url)
+                photos.append(url)
+    return photos
+
+
+def _extract_product_playwright(page, url: str) -> Optional[dict[str, Any]]:
+    """Full product extraction from a JS-rendered Wix page."""
+    title = page.evaluate("""
+        () => {
+            for (const sel of ['[data-hook="product-title"]', 'h1']) {
+                const el = document.querySelector(sel);
+                if (el && el.innerText.trim()) return el.innerText.trim();
+            }
+            return '';
+        }
+    """)
+    price_text = page.evaluate("""
+        () => {
+            for (const sel of ['[data-hook="formatted-price-range"]', '[data-hook="product-price"]', '.price']) {
+                const el = document.querySelector(sel);
+                if (el && el.innerText.trim()) return el.innerText.trim();
+            }
+            return '';
+        }
+    """)
+    description = page.evaluate("""
+        () => {
+            const el = document.querySelector('[data-hook="description"]');
+            return el ? el.innerText.trim() : '';
+        }
+    """)
+    prices = _extract_prices_from_text(price_text)
+    price_usd = prices[0] if prices else None
+    if not title or not price_usd:
+        return None
+    url_slug = url.rstrip("/").split("/product-page/")[-1]
+    slug = url_slug if _slug_matches_title(url_slug, title) else _slugify(title)
+    return {
+        "slug": slug,
+        "title": title,
+        "description": description,
+        "price_usd": price_usd,
+        "previous_price_usd": None,
+        "primary_photo_url": None,
+        "_source": "playwright",
+    }
+
+
+def download_boat_photos(failed_urls: Optional[list[str]] = None) -> None:
     from playwright.sync_api import sync_playwright
     print("\n[3/4] Downloading boat gallery photos …")
     if not PRODUCTS_FILE.exists():
@@ -524,27 +607,7 @@ def download_boat_photos() -> None:
                 time.sleep(1)
                 page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
                 time.sleep(1)
-                seen: set[str] = set()
-                photos: list[str] = []
-                for el in page.query_selector_all("wow-image[data-image-info]"):
-                    try:
-                        info = json.loads(el.get_attribute("data-image-info") or "")
-                        uri = info.get("imageData", {}).get("uri", "")
-                        if uri and not uri.startswith("http"):
-                            url = f"https://static.wixstatic.com/media/{uri}/v1/fit/w_1920,h_1280,al_c,q_90,enc_auto/{uri}"
-                            if url not in seen:
-                                seen.add(url)
-                                photos.append(url)
-                    except (json.JSONDecodeError, AttributeError):
-                        pass
-                if not photos:
-                    for img in page.query_selector_all("img[src*='wixstatic.com/media']"):
-                        url = _clean_wix_url(img.get_attribute("src") or "")
-                        if url and url not in seen:
-                            seen.add(url)
-                            photos.append(url)
-
-                # Extract description from rendered page
+                photos = _extract_photos_playwright(page)
                 description = page.evaluate("""
                     () => {
                         const el = document.querySelector('[data-hook="description"]');
@@ -553,7 +616,6 @@ def download_boat_photos() -> None:
                 """)
                 if description and len(description) > 20:
                     product["description"] = description
-
             except Exception as e:
                 print(f"    scrape ERROR: {e}")
                 photos = []
@@ -570,8 +632,41 @@ def download_boat_photos() -> None:
                 print("    → no photos")
             time.sleep(0.3)
 
+        # Playwright fallback for URLs that failed requests-based scraping
+        if failed_urls:
+            print(f"  Retrying {len(failed_urls)} failed URL(s) with Playwright …")
+            for url in failed_urls:
+                url_slug = url.rstrip("/").split("/product-page/")[-1]
+                print(f"  [PW] {url_slug}")
+                try:
+                    page.goto(url, wait_until="domcontentloaded", timeout=30000)
+                    time.sleep(3)
+                    page.evaluate("window.scrollTo(0, document.body.scrollHeight / 2)")
+                    time.sleep(1)
+                    page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
+                    time.sleep(1)
+                    p = _extract_product_playwright(page, url)
+                    if not p:
+                        print("    → no data from Playwright either")
+                        continue
+                    photos = _extract_photos_playwright(page)
+                    if not photos and p.get("primary_photo_url"):
+                        photos = [_normalize_wix_url(p["primary_photo_url"])]
+                    local_paths = [lp for lp in (_download_to(u, BOATS_UPLOAD_DIR, "boats") for u in photos) if lp]
+                    if local_paths:
+                        p["photos"] = local_paths
+                        p["primary_photo_url"] = local_paths[0]
+                    p.pop("_source", None)
+                    products.append(p)
+                    print(f"    '{p['title']}' ${p['price_usd']:,} → {len(local_paths)} photos")
+                except Exception as e:
+                    print(f"    → Playwright ERROR: {e}")
+
         browser.close()
 
+    # Re-deduplicate in case Playwright rescued any failed URLs
+    products = _deduplicate(products)
+    products.sort(key=lambda x: -(x.get("price_usd") or 0))
     PRODUCTS_FILE.write_text(json.dumps(products, ensure_ascii=False, indent=2), encoding="utf-8")
     print("  → products.json updated")
 
@@ -609,9 +704,9 @@ def main() -> int:
         print("ERROR: playwright not installed. Run: pip install playwright && playwright install chromium")
         return 1
 
-    scrape_boats()
+    failed_urls = scrape_boats()
     scrape_accessories()
-    download_boat_photos()
+    download_boat_photos(failed_urls=failed_urls)
     download_accessory_photos()
     print("\nDone. Commit scripts/data/ and uploads/ then deploy.")
     return 0
