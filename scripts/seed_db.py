@@ -140,11 +140,11 @@ def _location(flag, slug: str, title: str, description: str) -> tuple[Optional[s
 
 # ── DB helpers ─────────────────────────────────────────────────────────────────
 
-def _get_or_create_boat(db, boat_data: dict, specs_data: Optional[dict] = None, photos: Optional[list] = None):
+def _get_or_create_boat(db, boat_data: dict, specs_data: Optional[dict] = None, photos: Optional[list] = None) -> tuple[Any, bool]:
     from app.models import Boat, BoatPhoto, BoatSpecs
     existing = db.session.query(Boat).filter_by(slug=boat_data["slug"]).one_or_none()
     if existing:
-        return existing
+        return existing, False
     boat = Boat(**boat_data)
     db.session.add(boat)
     db.session.flush()
@@ -153,18 +153,18 @@ def _get_or_create_boat(db, boat_data: dict, specs_data: Optional[dict] = None, 
     for i, url in enumerate(photos or []):
         db.session.add(BoatPhoto(boat_id=boat.id, url=url, position=i, is_primary=(i == 0)))
     db.session.flush()
-    return boat
+    return boat, True
 
 
-def _get_or_create_accessory(db, data: dict):
+def _get_or_create_accessory(db, data: dict) -> tuple[Any, bool]:
     from app.models import Accessory
     existing = db.session.query(Accessory).filter_by(slug=data["slug"]).one_or_none()
     if existing:
-        return existing
+        return existing, False
     accessory = Accessory(**data)
     db.session.add(accessory)
     db.session.flush()
-    return accessory
+    return accessory, True
 
 
 def _get_or_create_admin(db) -> tuple[Any, bool]:
@@ -191,9 +191,18 @@ def seed(db) -> tuple[int, int, bool]:
     boats_created = accessories_created = 0
 
     accessories_raw = json.loads(ACCESSORIES_FILE.read_text(encoding="utf-8")) if ACCESSORIES_FILE.exists() else []
+
+    # Slugs claimed by accessories — used to skip boats with the same slug
+    acc_slugs: set[str] = set()
+    seen_acc_slugs: set[str] = set()
     for raw in accessories_raw:
+        slug = raw["slug"]
+        if slug in seen_acc_slugs:
+            print(f"  [SKIP] duplicate accessory slug: {slug}")
+            continue
+        seen_acc_slugs.add(slug)
         acc_data = {
-            "slug": raw["slug"], "title": raw["title"],
+            "slug": slug, "title": raw["title"],
             "description": raw.get("description") or "",
             "category": AccessoryCategory(raw["category"]),
             "price_usd": raw.get("price_usd") or 0,
@@ -202,15 +211,32 @@ def seed(db) -> tuple[int, int, bool]:
             "photo_url": raw.get("photo_url"),
             "active": raw.get("active", True),
         }
-        before = db.session.query(Accessory).filter_by(slug=acc_data["slug"]).count()
-        _get_or_create_accessory(db, acc_data)
-        if before == 0:
+        _, created = _get_or_create_accessory(db, acc_data)
+        if created:
             accessories_created += 1
+            acc_slugs.add(slug)
 
+    # Deduplicate boats: keep the entry with the most content (longer description + more photos)
+    best: dict[str, dict] = {}
     for p in products:
         slug = p["slug"]
         if slug in SKIP_SLUGS:
             continue
+        if slug in acc_slugs:
+            print(f"  [SKIP] boat slug conflicts with accessory: {slug}")
+            continue
+        if slug not in best:
+            best[slug] = p
+        else:
+            cur = best[slug]
+            cur_score = len(cur.get("description") or "") + len(cur.get("photos") or []) * 100
+            new_score = len(p.get("description") or "") + len(p.get("photos") or []) * 100
+            if new_score > cur_score:
+                print(f"  [MERGE] better entry found for: {slug}")
+                best[slug] = p
+
+    for p in best.values():
+        slug = p["slug"]
         title = p["title"]
         description = p["description"] or ""
         price = int(p["price_usd"] or 0)
@@ -233,9 +259,8 @@ def seed(db) -> tuple[int, int, bool]:
                 if k in FLAGSHIP_SPECS:
                     boat_data[k] = FLAGSHIP_SPECS[k]
             specs_data = {k: v for k, v in FLAGSHIP_SPECS.items() if k not in _FLAGSHIP_BOAT_FIELDS}
-        before = db.session.query(Boat).filter_by(slug=slug).count()
-        _get_or_create_boat(db, boat_data, specs_data=specs_data, photos=photos)
-        if before == 0:
+        _, created = _get_or_create_boat(db, boat_data, specs_data=specs_data, photos=photos)
+        if created:
             boats_created += 1
 
     _, admin_created = _get_or_create_admin(db)
@@ -383,9 +408,10 @@ def main() -> int:
             from sqlalchemy import text
             db.session.execute(text("DELETE FROM boat_photos"))
             db.session.execute(text("DELETE FROM boat_specs"))
-            db.session.execute(text("DELETE FROM listed_objects"))
+            n = db.session.execute(text("DELETE FROM listed_objects RETURNING id")).rowcount
             db.session.commit()
-            print("  → done")
+            db.session.expire_all()
+            print(f"  → {n} rows deleted")
 
         print("[SEED] Inserting from JSON …")
         boats, accessories, admin_created = seed(db)
