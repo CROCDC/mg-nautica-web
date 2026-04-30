@@ -94,6 +94,7 @@
     </label>
     {{ field('last_refit', 'Último refit', value=(form.get('last_refit') if form.get('last_refit') else (b.last_refit if b else ''))) }}
     {{ field('last_careening', 'Último carenado', value=(form.get('last_careening') if form.get('last_careening') else (b.last_careening if b else ''))) }}
+    {{ field('youtube_video_id', 'YouTube video ID (ej: S2s9CV2zrpQ)', value=(form.get('youtube_video_id') if form.get('youtube_video_id') else (b.youtube_video_id if b else ''))) }}
 
     {% if not boat %}
     <h2>Fotos</h2>
@@ -156,7 +157,7 @@
     <label><textarea name="extra_inventory" rows="3"></textarea></label>
     {% endif %}
 
-    {% if meli_enabled or instagram_enabled %}
+    {% if meli_enabled or instagram_enabled or facebook_enabled or youtube_enabled or whatsapp_enabled %}
     <div class="publish-options" style="margin-bottom:1rem;padding:1rem;background:var(--surface-alt,#f5f5f5);border-radius:6px;">
         <strong style="display:block;margin-bottom:.5rem;">Publicar al guardar</strong>
         {% if meli_enabled %}
@@ -167,6 +168,21 @@
         {% if instagram_enabled %}
         <label style="display:block;margin-bottom:.25rem;">
             <input type="checkbox" name="publish_instagram"> Instagram
+        </label>
+        {% endif %}
+        {% if facebook_enabled %}
+        <label style="display:block;margin-bottom:.25rem;">
+            <input type="checkbox" name="publish_facebook"> Facebook
+        </label>
+        {% endif %}
+        {% if youtube_enabled %}
+        <label style="display:block;margin-bottom:.25rem;">
+            <input type="checkbox" name="publish_youtube"> YouTube (sincroniza título/descripción del video ya subido)
+        </label>
+        {% endif %}
+        {% if whatsapp_enabled %}
+        <label style="display:block;margin-bottom:.25rem;">
+            <input type="checkbox" name="publish_whatsapp"> WhatsApp Catalog (sincroniza el barco como producto)
         </label>
         {% endif %}
     </div>

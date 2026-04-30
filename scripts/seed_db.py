@@ -5,7 +5,11 @@ Run this inside the Docker container after deploying.
 Usage (from project root):
     docker exec mg-nautica-web python scripts/seed_db.py
     docker exec mg-nautica-web python scripts/seed_db.py --no-wipe
-    docker exec mg-nautica-web python scripts/seed_db.py --meli-site MLA
+    docker exec mg-nautica-web python scripts/seed_db.py --no-integrations
+
+After scrape_all.py runs, scripts/data/integrations/*.json contains the
+existing publications on each platform. seed_db links each boat to its
+remote publication by fuzzy title match (or exact slug for WhatsApp).
 """
 
 import argparse
@@ -23,6 +27,16 @@ SCRIPTS_DIR = Path(__file__).resolve().parent
 DATA_DIR = SCRIPTS_DIR / "data"
 PRODUCTS_FILE = DATA_DIR / "products.json"
 ACCESSORIES_FILE = DATA_DIR / "accessories.json"
+
+INTEGRATIONS_DIR = DATA_DIR / "integrations"
+INTEGRATION_FILES = {
+    "meli_mla":         INTEGRATIONS_DIR / "meli_mla.json",
+    "meli_mlu":         INTEGRATIONS_DIR / "meli_mlu.json",
+    "youtube":          INTEGRATIONS_DIR / "youtube.json",
+    "facebook":         INTEGRATIONS_DIR / "facebook.json",
+    "instagram":        INTEGRATIONS_DIR / "instagram.json",
+    "whatsapp_catalog": INTEGRATIONS_DIR / "whatsapp_catalog.json",
+}
 
 sys.path.insert(0, str(ROOT))
 
@@ -300,85 +314,172 @@ def _f1(a: set[str], b: set[str]) -> float:
     return 2 * (inter / len(a)) * (inter / len(b)) / (inter / len(a) + inter / len(b))
 
 
-def _fetch_meli_listings(site: str) -> list[dict]:
+def _load_integration(key: str) -> list[dict]:
+    path = INTEGRATION_FILES[key]
+    if not path.exists():
+        return []
     try:
-        from app.integrations.mercadolibre.auth import MeliOAuth
-        from app.integrations.mercadolibre.client import MeliClient
-        token = MeliOAuth.get_valid_token(site)
-        client = MeliClient(access_token=token)
-        me = client.get("/users/me")
-        user_id = str(me["id"])
-        print(f"  Authenticated as: {me.get('nickname')} (ID {user_id})")
-        ids: list[str] = []
-        offset = 0
-        while True:
-            data = client.get(f"/users/{user_id}/items/search", params={"limit": 100, "offset": offset})
-            batch = data.get("results", [])
-            ids.extend(batch)
-            paging = data.get("paging", {})
-            offset += 100
-            if offset >= paging.get("total", 0) or not batch:
-                break
-        print(f"  Found {len(ids)} items")
-        details = []
-        for i in range(0, len(ids), 50):
-            result = client.get("/items", params={"ids": ",".join(ids[i:i+50]),
-                                                   "attributes": "id,title,status,permalink,price"})
-            for entry in result:
-                body = entry.get("body", {})
-                if body:
-                    details.append(body)
-        return [{"title": it.get("title", ""), "meli_id": it.get("id", ""),
-                 "meli_url": it.get("permalink", ""), "status": it.get("status", ""),
-                 "price_raw": str(it.get("price", ""))}
-                for it in details if it.get("title") and it.get("id")]
-    except Exception as exc:
-        print(f"  ML API unavailable ({exc}) — skipping association")
+        return json.loads(path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        print(f"  [WARN] {path.relative_to(ROOT)} no es JSON válido — saltando")
         return []
 
 
-def associate_meli(site: str, min_score: float, db) -> None:
-    from app.models import Boat
-    print(f"\n[ML] Associating MercadoLibre {site} listings …")
-    listings = _fetch_meli_listings(site)
-    if not listings:
-        return
+def _best_matches(
+    listings: list[dict],
+    boats: list,
+    title_key: str,
+    min_score: float,
+) -> list[tuple[dict, Any, float]]:
+    """Greedy 1-to-1 matching of listings to boats by fuzzy title.
 
-    boats = db.session.query(Boat).all()
-    boat_tokens = {id(b): (_meli_normalize(b.title), b) for b in boats}
-    candidates = []
+    Returns matched (listing, boat, score) triples whose score >= min_score.
+    Each listing and each boat is claimed at most once.
+    """
+    if not listings or not boats:
+        return []
+
+    boat_tokens = [(boat, _meli_normalize(boat.title)) for boat in boats]
+    candidates: list[tuple[float, dict, Any]] = []
     for listing in listings:
-        ml_tokens = _meli_normalize(listing["title"])
-        for _, (db_tokens, boat) in boat_tokens.items():
+        ml_tokens = _meli_normalize(listing.get(title_key, "") or "")
+        if not ml_tokens:
+            continue
+        for boat, db_tokens in boat_tokens:
             score = _f1(ml_tokens, db_tokens)
             if score > 0:
                 candidates.append((score, listing, boat))
     candidates.sort(key=lambda x: -x[0])
 
     claimed_boats: set[int] = set()
-    claimed_listings: set[str] = set()
-    matches: dict[str, dict] = {}
+    claimed_listings: set[int] = set()
+    matched: list[tuple[dict, Any, float]] = []
     for score, listing, boat in candidates:
-        mid, bid = listing["meli_id"], id(boat)
-        if mid in claimed_listings or bid in claimed_boats:
+        if score < min_score:
+            break
+        lid, bid = id(listing), id(boat)
+        if lid in claimed_listings or bid in claimed_boats:
             continue
-        matches[mid] = {"listing": listing, "boat": boat, "score": score}
-        claimed_listings.add(mid)
+        matched.append((listing, boat, score))
+        claimed_listings.add(lid)
         claimed_boats.add(bid)
+    return matched
 
+
+def _associate_meli(db, site: str, min_score: float) -> int:
+    from app.models import Boat
+    key = "meli_mla" if site == "MLA" else "meli_mlu"
+    prefix = site.lower()
+    listings = _load_integration(key)
+    if not listings:
+        return 0
+    boats = db.session.query(Boat).all()
+    matches = _best_matches(listings, boats, title_key="title", min_score=min_score)
     now = datetime.now(timezone.utc)
     updated = 0
-    for m in matches.values():
-        if m["score"] < min_score or m["boat"].meli_mla_item_id:
+    for listing, boat, _score in matches:
+        if getattr(boat, f"meli_{prefix}_item_id"):
             continue
-        boat = m["boat"]
-        boat.meli_mla_item_id = m["listing"]["meli_id"]
-        boat.meli_mla_permalink = m["listing"]["meli_url"]
-        boat.meli_mla_status = m["listing"].get("status", "active")
-        boat.meli_mla_synced_at = now
+        setattr(boat, f"meli_{prefix}_item_id",   listing["item_id"])
+        setattr(boat, f"meli_{prefix}_permalink", listing.get("permalink") or None)
+        setattr(boat, f"meli_{prefix}_status",    listing.get("status") or "active")
+        setattr(boat, f"meli_{prefix}_synced_at", now)
         updated += 1
+    return updated
+
+
+def _associate_youtube(db, min_score: float) -> int:
+    from app.models import Boat
+    listings = _load_integration("youtube")
+    if not listings:
+        return 0
+    boats = db.session.query(Boat).all()
+    matches = _best_matches(listings, boats, title_key="title", min_score=min_score)
+    now = datetime.now(timezone.utc)
+    updated = 0
+    for listing, boat, _score in matches:
+        if boat.youtube_video_id:
+            continue
+        boat.youtube_video_id = listing["video_id"]
+        boat.youtube_synced_at = now
+        updated += 1
+    return updated
+
+
+def _associate_facebook(db, min_score: float) -> int:
+    from app.models import Boat
+    listings = _load_integration("facebook")
+    if not listings:
+        return 0
+    boats = db.session.query(Boat).all()
+    matches = _best_matches(listings, boats, title_key="message", min_score=min_score)
+    now = datetime.now(timezone.utc)
+    updated = 0
+    for listing, boat, _score in matches:
+        if boat.facebook_post_id:
+            continue
+        boat.facebook_post_id = listing["post_id"]
+        boat.facebook_permalink = listing.get("permalink") or None
+        boat.facebook_synced_at = now
+        updated += 1
+    return updated
+
+
+def _associate_instagram(db, min_score: float) -> int:
+    from app.models import Boat
+    listings = _load_integration("instagram")
+    if not listings:
+        return 0
+    boats = db.session.query(Boat).all()
+    matches = _best_matches(listings, boats, title_key="caption", min_score=min_score)
+    now = datetime.now(timezone.utc)
+    updated = 0
+    for listing, boat, _score in matches:
+        if boat.instagram_post_id:
+            continue
+        boat.instagram_post_id = listing["post_id"]
+        boat.instagram_permalink = listing.get("permalink") or None
+        boat.instagram_synced_at = now
+        updated += 1
+    return updated
+
+
+def _associate_whatsapp(db) -> int:
+    """WhatsApp catalog uses retailer_id == slug, so matching is exact."""
+    from app.models import Boat
+    listings = _load_integration("whatsapp_catalog")
+    if not listings:
+        return 0
+    by_slug = {it["retailer_id"]: it for it in listings if it.get("retailer_id")}
+    if not by_slug:
+        return 0
+    now = datetime.now(timezone.utc)
+    updated = 0
+    boats = db.session.query(Boat).filter(Boat.slug.in_(list(by_slug.keys()))).all()
+    for boat in boats:
+        if boat.whatsapp_synced_at:
+            continue
+        boat.whatsapp_synced_at = now
+        updated += 1
+    return updated
+
+
+def associate_integrations(db, min_score: float) -> None:
+    print("\n[INTEG] Asociando publicaciones existentes a boats …")
+    counts = {
+        "MercadoLibre MLA": _associate_meli(db, "MLA", min_score),
+        "MercadoLibre MLU": _associate_meli(db, "MLU", min_score),
+        "YouTube":          _associate_youtube(db, min_score),
+        "Facebook":         _associate_facebook(db, min_score),
+        "Instagram":        _associate_instagram(db, min_score),
+        "WhatsApp":         _associate_whatsapp(db),
+    }
     db.session.commit()
-    print(f"  → {updated} boats linked to {site}")
+    for name, n in counts.items():
+        if n:
+            print(f"  → {n} boats linked to {name}")
+        else:
+            print(f"  · {name}: sin nuevas asociaciones")
 
 
 # ── main ───────────────────────────────────────────────────────────────────────
@@ -386,10 +487,10 @@ def associate_meli(site: str, min_score: float, db) -> None:
 def main() -> int:
     parser = argparse.ArgumentParser(description="Wipe and re-seed DB from JSON files.")
     parser.add_argument("--no-wipe", action="store_true", help="Insert without wiping existing data first")
-    parser.add_argument("--meli-site", default=None, choices=["MLA", "MLU"],
-                        help="Associate ML listings after seed (MLA or MLU)")
-    parser.add_argument("--meli-min-score", type=float, default=0.50,
-                        help="Min match score for ML auto-link (default: 0.50)")
+    parser.add_argument("--no-integrations", action="store_true",
+                        help="Skip association step using scripts/data/integrations/*.json")
+    parser.add_argument("--integrations-min-score", type=float, default=0.50,
+                        help="Min match score for fuzzy-title link (default: 0.50)")
     args = parser.parse_args()
 
     if not PRODUCTS_FILE.exists():
@@ -426,8 +527,8 @@ def main() -> int:
             print(f"  Admin email:    {os.environ.get('ADMIN_EMAIL', 'admin@mgnautica.local')}")
             print(f"  Admin password: {os.environ.get('ADMIN_PASSWORD', 'changeme-admin')}")
 
-        if args.meli_site:
-            associate_meli(args.meli_site, args.meli_min_score, db)
+        if not args.no_integrations:
+            associate_integrations(db, args.integrations_min_score)
 
     print("\nDone.")
     return 0

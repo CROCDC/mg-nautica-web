@@ -8,8 +8,18 @@ from typing import Any, Optional
 from flask import current_app, flash, redirect, render_template, request, url_for
 from flask_login import login_required
 
+from app.integrations.facebook.service import FACEBOOK_ENABLED
 from app.integrations.instagram.service import INSTAGRAM_ENABLED
-from app.services.publish import meli_has_credentials, publish_to_instagram, publish_to_meli
+from app.integrations.whatsapp.service import WHATSAPP_ENABLED
+from app.integrations.youtube.service import YOUTUBE_ENABLED
+from app.services.publish import (
+    meli_has_credentials,
+    publish_to_facebook,
+    publish_to_instagram,
+    publish_to_meli,
+    publish_to_whatsapp,
+    publish_to_youtube,
+)
 
 ALLOWED_EXTENSIONS = {"jpg", "jpeg", "png", "webp", "gif"}
 ALLOWED_VIDEO_EXTENSIONS = {"mp4", "webm", "mov"}
@@ -132,6 +142,7 @@ def _boat_payload(form) -> dict[str, Any]:
         "featured": form.get("featured") == "on",
         "last_refit": form.get("last_refit") or None,
         "last_careening": form.get("last_careening") or None,
+        "youtube_video_id": (form.get("youtube_video_id") or "").strip() or None,
     }
 
 
@@ -193,6 +204,9 @@ def boats_new_complete() -> Any:
                 statuses=list(BoatStatus),
                 meli_enabled=_meli_enabled,
                 instagram_enabled=INSTAGRAM_ENABLED,
+                facebook_enabled=FACEBOOK_ENABLED,
+                youtube_enabled=YOUTUBE_ENABLED,
+                whatsapp_enabled=WHATSAPP_ENABLED,
             ), 400
         if not data["slug"]:
             data["slug"] = _unique_slug(_slugify(data["title"]))
@@ -208,6 +222,9 @@ def boats_new_complete() -> Any:
                 statuses=list(BoatStatus),
                 meli_enabled=_meli_enabled,
                 instagram_enabled=INSTAGRAM_ENABLED,
+                facebook_enabled=FACEBOOK_ENABLED,
+                youtube_enabled=YOUTUBE_ENABLED,
+                whatsapp_enabled=WHATSAPP_ENABLED,
             ), 400
         boat = Boat(**data)
         db.session.add(boat)
@@ -241,6 +258,14 @@ def boats_new_complete() -> Any:
             db.session.commit()
         if request.form.get("publish_instagram"):
             publish_to_instagram(boat)
+        if request.form.get("publish_facebook"):
+            publish_to_facebook(boat)
+        if request.form.get("publish_youtube"):
+            publish_to_youtube(boat)
+            db.session.commit()
+        if request.form.get("publish_whatsapp"):
+            publish_to_whatsapp(boat)
+            db.session.commit()
         flash("Embarcación creada.", "success")
         return redirect(url_for("admin.boats_edit_complete", boat_id=boat.id))
     return render_template(
@@ -253,6 +278,9 @@ def boats_new_complete() -> Any:
         statuses=list(BoatStatus),
         meli_enabled=meli_has_credentials(),
         instagram_enabled=INSTAGRAM_ENABLED,
+        facebook_enabled=FACEBOOK_ENABLED,
+        youtube_enabled=YOUTUBE_ENABLED,
+        whatsapp_enabled=WHATSAPP_ENABLED,
     )
 
 
@@ -349,6 +377,9 @@ def boats_edit_complete(boat_id: int) -> Any:
                 statuses=list(BoatStatus),
                 meli_enabled=_meli_enabled,
                 instagram_enabled=INSTAGRAM_ENABLED,
+                facebook_enabled=FACEBOOK_ENABLED,
+                youtube_enabled=YOUTUBE_ENABLED,
+                whatsapp_enabled=WHATSAPP_ENABLED,
             ), 400
         if not data["slug"]:
             data["slug"] = _unique_slug(_slugify(data["title"]), exclude_id=boat.id)
@@ -370,6 +401,9 @@ def boats_edit_complete(boat_id: int) -> Any:
                     statuses=list(BoatStatus),
                     meli_enabled=_meli_enabled,
                     instagram_enabled=INSTAGRAM_ENABLED,
+                    facebook_enabled=FACEBOOK_ENABLED,
+                    youtube_enabled=YOUTUBE_ENABLED,
+                    whatsapp_enabled=WHATSAPP_ENABLED,
                 ), 400
         for k, v in data.items():
             setattr(boat, k, v)
@@ -379,6 +413,14 @@ def boats_edit_complete(boat_id: int) -> Any:
             db.session.commit()
         if request.form.get("publish_instagram"):
             publish_to_instagram(boat)
+        if request.form.get("publish_facebook"):
+            publish_to_facebook(boat)
+        if request.form.get("publish_youtube"):
+            publish_to_youtube(boat)
+            db.session.commit()
+        if request.form.get("publish_whatsapp"):
+            publish_to_whatsapp(boat)
+            db.session.commit()
         flash("Embarcación actualizada.", "success")
         return redirect(url_for("admin.boats_edit_complete", boat_id=boat.id))
 
@@ -392,6 +434,9 @@ def boats_edit_complete(boat_id: int) -> Any:
         statuses=list(BoatStatus),
         meli_enabled=meli_has_credentials(),
         instagram_enabled=INSTAGRAM_ENABLED,
+        facebook_enabled=FACEBOOK_ENABLED,
+        youtube_enabled=YOUTUBE_ENABLED,
+        whatsapp_enabled=WHATSAPP_ENABLED,
     )
 
 

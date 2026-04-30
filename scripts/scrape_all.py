@@ -10,6 +10,10 @@ Steps:
     2. Scrape accessories → scripts/data/accessories.json
     3. Download boat photos      → uploads/boats/
     4. Download accessory photos → uploads/accessories/
+    5. Scrape integrations       → scripts/data/integrations/*.json
+       (MercadoLibre, Facebook, Instagram, YouTube, WhatsApp Catalog —
+       all via the platform's authenticated API. Each platform is tolerated
+       to fail independently if its credentials are missing.)
 
 Requires: pip install requests beautifulsoup4 lxml playwright
           playwright install chromium
@@ -31,6 +35,16 @@ PRODUCTS_FILE = DATA_DIR / "products.json"
 ACCESSORIES_FILE = DATA_DIR / "accessories.json"
 BOATS_UPLOAD_DIR = ROOT / "uploads" / "boats"
 ACC_UPLOAD_DIR = ROOT / "uploads" / "accessories"
+
+INTEGRATIONS_DIR = DATA_DIR / "integrations"
+INTEGRATION_FILES = {
+    "meli_mla":         INTEGRATIONS_DIR / "meli_mla.json",
+    "meli_mlu":         INTEGRATIONS_DIR / "meli_mlu.json",
+    "youtube":          INTEGRATIONS_DIR / "youtube.json",
+    "facebook":         INTEGRATIONS_DIR / "facebook.json",
+    "instagram":        INTEGRATIONS_DIR / "instagram.json",
+    "whatsapp_catalog": INTEGRATIONS_DIR / "whatsapp_catalog.json",
+}
 
 HEADERS = {
     "User-Agent": (
@@ -699,6 +713,97 @@ def download_accessory_photos() -> None:
     print(f"  → {downloaded} accessory photos downloaded")
 
 
+# ── integration scraping (authenticated APIs via env vars) ─────────────────────
+
+def _save_integration(key: str, data: list[dict]) -> None:
+    INTEGRATIONS_DIR.mkdir(parents=True, exist_ok=True)
+    INTEGRATION_FILES[key].write_text(
+        json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
+    print(f"    → {len(data)} entries saved to {INTEGRATION_FILES[key].relative_to(ROOT)}")
+
+
+def _scrape_meli(app) -> None:
+    from app.integrations.mercadolibre.service import MeliService
+    from app.integrations.mercadolibre.client import MeliNotConfiguredError
+
+    sys.path.insert(0, str(ROOT))
+    with app.app_context():
+        for site_id, key in (("MLA", "meli_mla"), ("MLU", "meli_mlu")):
+            print(f"  · MercadoLibre {site_id}")
+            try:
+                listings = MeliService(site_id).list_publications()
+            except MeliNotConfiguredError as e:
+                print(f"    SKIP: {e}")
+                continue
+            except Exception as e:
+                print(f"    ERROR: {e}")
+                continue
+            _save_integration(key, listings)
+
+
+def _scrape_one(name: str, key: str, fetcher) -> None:
+    """Run a fetcher that returns list[dict]; tolerate any failure."""
+    print(f"  · {name}")
+    try:
+        data = fetcher()
+    except Exception as e:
+        print(f"    SKIP/ERROR: {e}")
+        return
+    _save_integration(key, data)
+
+
+def scrape_integrations() -> None:
+    """Fetch existing publications from each integration via its authenticated API.
+
+    MELI reads credentials from the DB (requires the Flask app context); the
+    rest read tokens from env vars. Each platform is independent: missing
+    credentials are logged and the scrape continues.
+    """
+    print("\n[5/5] Scraping integrations …")
+
+    sys.path.insert(0, str(ROOT))
+
+    # MELI needs app context to access MeliCredentials in the DB
+    try:
+        from app import app
+        _scrape_meli(app)
+    except Exception as e:
+        print(f"  · MercadoLibre SKIP: cannot init app context ({e})")
+
+    # Facebook
+    def _fb():
+        from app.integrations.facebook.service import FacebookService, FACEBOOK_ENABLED
+        if not FACEBOOK_ENABLED:
+            raise RuntimeError("FACEBOOK_PAGE_ACCESS_TOKEN o FACEBOOK_PAGE_ID no configurado")
+        return FacebookService().list_publications()
+    _scrape_one("Facebook", "facebook", _fb)
+
+    # Instagram
+    def _ig():
+        from app.integrations.instagram.service import InstagramService, INSTAGRAM_ENABLED
+        if not INSTAGRAM_ENABLED:
+            raise RuntimeError("INSTAGRAM_ACCESS_TOKEN o INSTAGRAM_BUSINESS_ACCOUNT_ID no configurado")
+        return InstagramService().list_publications()
+    _scrape_one("Instagram", "instagram", _ig)
+
+    # YouTube
+    def _yt():
+        from app.integrations.youtube.service import YouTubeService, YOUTUBE_ENABLED
+        if not YOUTUBE_ENABLED:
+            raise RuntimeError("YOUTUBE_CLIENT_ID/SECRET/REFRESH_TOKEN no configurado")
+        return YouTubeService().list_publications()
+    _scrape_one("YouTube", "youtube", _yt)
+
+    # WhatsApp catalog
+    def _wa():
+        from app.integrations.whatsapp.service import WhatsAppService, WHATSAPP_ENABLED
+        if not WHATSAPP_ENABLED:
+            raise RuntimeError("WHATSAPP_CATALOG_ID o WHATSAPP_ACCESS_TOKEN no configurado")
+        return WhatsAppService().list_publications()
+    _scrape_one("WhatsApp Catalog", "whatsapp_catalog", _wa)
+
+
 # ── main ───────────────────────────────────────────────────────────────────────
 
 def main() -> int:
@@ -712,6 +817,7 @@ def main() -> int:
     scrape_accessories()
     download_boat_photos(failed_urls=failed_urls)
     download_accessory_photos()
+    scrape_integrations()
     print("\nDone. Commit scripts/data/ and uploads/ then deploy.")
     return 0
 

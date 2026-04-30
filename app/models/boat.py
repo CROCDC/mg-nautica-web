@@ -53,6 +53,23 @@ class Boat(ListedObject):
     meli_mla_permalink = db.Column(db.String(500), nullable=True)
     meli_mla_synced_at = db.Column(db.DateTime, nullable=True)
 
+    # YouTube
+    youtube_video_id = db.Column(db.String(20), nullable=True)
+    youtube_synced_at = db.Column(db.DateTime, nullable=True)
+
+    # WhatsApp Business Catalog
+    whatsapp_synced_at = db.Column(db.DateTime, nullable=True)
+
+    # Facebook
+    facebook_post_id = db.Column(db.String(80), nullable=True)
+    facebook_permalink = db.Column(db.String(500), nullable=True)
+    facebook_synced_at = db.Column(db.DateTime, nullable=True)
+
+    # Instagram
+    instagram_post_id = db.Column(db.String(80), nullable=True)
+    instagram_permalink = db.Column(db.String(500), nullable=True)
+    instagram_synced_at = db.Column(db.DateTime, nullable=True)
+
     photos = db.relationship(
         "BoatPhoto",
         back_populates="boat",

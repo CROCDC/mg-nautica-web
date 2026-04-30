@@ -13,7 +13,9 @@
       "Bash(sqlite3 /Users/cromero/projects/mg-nautica-web/instance/app.db \"SELECT id, email, role, active FROM users;\")",
       "Bash(git -C /Users/cromero/projects/mg-nautica-web ls-files promtail.yml)",
       "Bash(git -C /Users/cromero/projects/mg-nautica-web log --oneline --follow promtail.yml)",
-      "Bash(git -C /Users/cromero/projects/mg-nautica-web log --oneline)"
+      "Bash(git -C /Users/cromero/projects/mg-nautica-web log --oneline)",
+      "Bash(pkill -f \"pytest tests/test_instagram\")",
+      "Bash(tee /tmp/pytest-integ.out)"
     ],
     "defaultMode": "bypassPermissions"
   }

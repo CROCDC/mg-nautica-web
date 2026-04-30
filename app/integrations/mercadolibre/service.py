@@ -134,6 +134,51 @@ class MeliService:
             permalink=item.get("permalink", self._get(boat, "permalink")),
         )
 
+    def list_publications(self) -> list[dict]:
+        """List all items published by the authenticated user on this site.
+
+        Returns a list of {item_id, title, status, permalink, price}.
+        Used by scrape_all to mirror remote state into a local JSON.
+        """
+        client = self._client()
+        me = client.get("/users/me")
+        user_id = str(me["id"])
+        ids: list[str] = []
+        offset = 0
+        while True:
+            data = client.get(
+                f"/users/{user_id}/items/search",
+                params={"limit": 100, "offset": offset},
+            )
+            batch = data.get("results", [])
+            ids.extend(batch)
+            paging = data.get("paging", {})
+            offset += 100
+            if offset >= paging.get("total", 0) or not batch:
+                break
+
+        results: list[dict] = []
+        for i in range(0, len(ids), 50):
+            entries = client.get(
+                "/items",
+                params={
+                    "ids": ",".join(ids[i:i + 50]),
+                    "attributes": "id,title,status,permalink,price",
+                },
+            )
+            for entry in entries:
+                body = entry.get("body") or {}
+                if not body.get("id") or not body.get("title"):
+                    continue
+                results.append({
+                    "item_id": body["id"],
+                    "title": body["title"],
+                    "status": body.get("status", ""),
+                    "permalink": body.get("permalink", ""),
+                    "price": body.get("price"),
+                })
+        return results
+
     # ------------------------------------------------------------------
     # Read helpers (no API call)
     # ------------------------------------------------------------------
