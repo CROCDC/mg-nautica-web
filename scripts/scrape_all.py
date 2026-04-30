@@ -340,6 +340,7 @@ def scrape_boats() -> list[str]:
                 p["slug"] = url_slug
             else:
                 p["slug"] = _slugify(p["title"])
+                p["_page_url"] = url  # original URL differs from slug — needed for photo download
                 print(f"    → URL slug mismatch ({url_slug!r}), using title slug: {p['slug']!r}")
             products.append(p)
             print(f"    '{p['title']}' ${p['price_usd']:,}")
@@ -599,9 +600,10 @@ def download_boat_photos(failed_urls: Optional[list[str]] = None) -> None:
 
         for i, product in enumerate(products, 1):
             slug = product["slug"]
+            page_url = product.get("_page_url") or f"{BOATS_BASE_URL}/product-page/{slug}"
             print(f"  [{i}/{len(products)}] {slug}")
             try:
-                page.goto(f"{BOATS_BASE_URL}/product-page/{slug}", wait_until="domcontentloaded", timeout=30000)
+                page.goto(page_url, wait_until="domcontentloaded", timeout=30000)
                 time.sleep(2)
                 page.evaluate("window.scrollTo(0, document.body.scrollHeight / 2)")
                 time.sleep(1)
@@ -667,6 +669,8 @@ def download_boat_photos(failed_urls: Optional[list[str]] = None) -> None:
     # Re-deduplicate in case Playwright rescued any failed URLs
     products = _deduplicate(products)
     products.sort(key=lambda x: -(x.get("price_usd") or 0))
+    for p in products:
+        p.pop("_page_url", None)
     PRODUCTS_FILE.write_text(json.dumps(products, ensure_ascii=False, indent=2), encoding="utf-8")
     print("  → products.json updated")
 
