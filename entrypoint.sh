@@ -18,4 +18,7 @@ if [ -d /app/uploads_baked ] && [ "$(ls -A /app/uploads_baked 2>/dev/null)" ]; t
     done
 fi
 
+echo "Running database migrations..."
+flask db upgrade
+
 exec "$@"
